@@ -46,6 +46,13 @@ minecraft {
     //replaceIn 'LibMisc.java' //I may have missed another file, though I can only find it in here.
 }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileJava {
+    options.encoding = "UTF-8"
+}
+
 //This here is for SCP
 //repositories {
 //    mavenCentral()

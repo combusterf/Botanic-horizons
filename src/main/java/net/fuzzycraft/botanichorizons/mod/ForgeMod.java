@@ -2,10 +2,9 @@ package net.fuzzycraft.botanichorizons.mod;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import net.fuzzycraft.botanichorizons.patches.ApothecaryPatches;
-import net.fuzzycraft.botanichorizons.patches.CraftingPatches;
-import net.fuzzycraft.botanichorizons.patches.OredictPatches;
+import net.fuzzycraft.botanichorizons.patches.*;
 
 @Mod(modid = ForgeMod.MOD_ID, name = ForgeMod.MOD_NAME, version = ForgeMod.VERSION, dependencies = ForgeMod.DEPENDENCIES)
 public class ForgeMod {
@@ -13,7 +12,7 @@ public class ForgeMod {
     public static final String MOD_NAME = MOD_ID;
     public static final String BUILD = "GRADLE:BUILD";
     public static final String VERSION = "GRADLE:VERSION-" + BUILD;
-    public static final String DEPENDENCIES = "required-after:Baubles;required-after:Thaumcraft;required-after:Botania";
+    public static final String DEPENDENCIES = "required-after:Baubles;required-after:Thaumcraft;required-after:Botania;required-after:gregtech";
 
     @Mod.Instance(MOD_ID)
     public static ForgeMod instance;
@@ -25,7 +24,11 @@ public class ForgeMod {
         ApothecaryPatches.applyPatches();
         CraftingPatches.applyPatches();
         OredictPatches.applyPatches();
+        GregtechPatches.applyPatches();
     }
 
-
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        ThaumcraftPatches.applyPatches();
+    }
 }
