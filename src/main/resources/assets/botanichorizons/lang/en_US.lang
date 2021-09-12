@@ -1,0 +1,6 @@
+
+tc.research_category.botanichorizons=Botania
+tc.research_name.BH_FLOWERS=Magical flowers
+tc.research_text.BH_FLOWERS=The difference between spores and seeds
+
+botanichorizons.BH_FLOWERS.body=Old documents speak of magical flowers, but these seem to be extinct in the wild. You did notice that the mushrooms you've seen in deep caves share a lot of the properties with these purported flowers. With the invention of alchemy you think you can recreate these flowers by steeping the spores of a mushroom in the essence of surface plants.

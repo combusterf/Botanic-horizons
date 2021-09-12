@@ -1,14 +1,13 @@
 package net.fuzzycraft.botanichorizons.mod;
 
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.fuzzycraft.botanichorizons.patches.*;
 
 @Mod(modid = ForgeMod.MOD_ID, name = ForgeMod.MOD_NAME, version = ForgeMod.VERSION, dependencies = ForgeMod.DEPENDENCIES)
 public class ForgeMod {
-    public static final String MOD_ID = "BotanicHorizons";
+    public static final String MOD_ID = "botanichorizons";
     public static final String MOD_NAME = MOD_ID;
     public static final String BUILD = "GRADLE:BUILD";
     public static final String VERSION = "GRADLE:VERSION-" + BUILD;
