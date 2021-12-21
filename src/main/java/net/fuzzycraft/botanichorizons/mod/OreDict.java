@@ -8,5 +8,14 @@ public class OreDict {
             "flowerIngredientBrown", "flowerIngredientGreen", "flowerIngredientRed", "flowerIngredientBlack"
     };
 
+    public static final String[] FLOWER_VANILLA = new String[] {
+            "flowerWhite", "flowerOrange", "flowerMagenta", "flowerLightBlue",
+            "flowerYellow", "flowerLime", "flowerPink", "flowerGray",
+            "flowerLightGray", "flowerCyan", "flowerPurple", "flowerBlue",
+            "flowerBrown", "flowerGreen", "flowerRed", "flowerBlack"
+    };
+
     public static final String MUSHROOM = "anyMagicMushroom";
+
+    public static final String FLOWER_NONMAGICAL = "flowerNonmagical";
 }

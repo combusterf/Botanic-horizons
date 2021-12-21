@@ -1,9 +1,12 @@
 package net.fuzzycraft.botanichorizons.patches;
 
+import gregtech.api.util.GT_ModHandler;
 import net.fuzzycraft.botanichorizons.mod.OreDict;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import vazkii.botania.api.BotaniaAPI;
@@ -13,6 +16,8 @@ import vazkii.botania.common.item.ItemTwigWand;
 import vazkii.botania.common.item.ModItems;
 import vazkii.botania.common.lib.LibOreDict;
 
+import java.util.Arrays;
+
 public class CraftingPatches {
     public static void applyPatches() {
 
@@ -21,28 +26,11 @@ public class CraftingPatches {
         ModCraftingRecipes.recipeLexicon = BotaniaAPI.getLatestAddedRecipe();
 
         // Petal/Dye Recipes
-        // TODO: make this 1:1 and add GT extractor version.
+        // Has 2x yield in extractor
         for(int i = 0; i < 16; i++)
-            addShapelessOreDictRecipe(new ItemStack(ModItems.petal, 2, i), LibOreDict.FLOWER[i]);
+            addShapelessOreDictRecipe(new ItemStack(ModItems.petal, 1, i), LibOreDict.FLOWER[i]);
         ModCraftingRecipes.recipesPetals = BotaniaAPI.getLatestAddedRecipes(16);
 
-
-        // Petal Block Recipes
-        // TODO: GT compressor recipe
-        for(int i = 0; i < 16; i++)
-            addOreDictRecipe(new ItemStack(ModBlocks.petalBlock, 1, i),
-                    "PPP", "PPP", "PPP", // PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
-                    'P', LibOreDict.PETAL[i]);
-        ModCraftingRecipes.recipesPetalBlocks = BotaniaAPI.getLatestAddedRecipes(16);
-
-        // Pestle and Mortar Recipe
-        // TODO: should be removed.
-        addOreDictRecipe(new ItemStack(ModItems.pestleAndMortar),
-                " S", "W ", "B ",
-                'S', "stickWood",
-                'W', "plankWood",
-                'B', Items.bowl);
-        ModCraftingRecipes.recipePestleAndMortar = BotaniaAPI.getLatestAddedRecipe();
 
         // Wand of the Forest Recipes
         for(int i = 0; i < 16; i++)
@@ -56,14 +44,22 @@ public class CraftingPatches {
         ModCraftingRecipes.recipesTwigWand = BotaniaAPI.getLatestAddedRecipes(256);
 
         // Petal Apothecary Recipes
-        // TODO: gregify
         for(int i = 0; i < 16; i++)
             addOreDictRecipe(new ItemStack(ModBlocks.altar),
-                    "SPS", " C ", "CCC",
-                    'S', "slabCobblestone",
+                    "SPS", " U ", "CCC",
+                    'S', "plateIron",
                     'P', OreDict.FLOWER_INGREDIENT[i],
-                    'C', "cobblestone");
+                    'C', Blocks.cauldron,
+                    'U', "stone");
         ModCraftingRecipes.recipesApothecary = BotaniaAPI.getLatestAddedRecipes(16);
+
+        // Petal block extraction -- see also GT extractor version
+        for(int i = 0; i < 16; i++) {
+            addShapelessRecipe(new ItemStack(ModItems.petal, 9, i), new ItemStack(ModBlocks.petalBlock, 1, i));
+        }
+        ModCraftingRecipes.recipesPetals = BotaniaAPI.getLatestAddedRecipes(16);
+
+
 
         // TODO: from recipesSpreader
     }
@@ -74,5 +70,9 @@ public class CraftingPatches {
 
     private static void addShapelessOreDictRecipe(ItemStack output, Object... recipe) {
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(output, recipe));
+    }
+
+    private static void addShapelessRecipe(ItemStack output, ItemStack... recipe) {
+        CraftingManager.getInstance().getRecipeList().add(new ShapelessRecipes(output, Arrays.asList(recipe)));
     }
 }
