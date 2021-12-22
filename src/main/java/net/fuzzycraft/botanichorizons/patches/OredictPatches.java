@@ -2,6 +2,7 @@ package net.fuzzycraft.botanichorizons.patches;
 
 import net.fuzzycraft.botanichorizons.mod.OreDict;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import vazkii.botania.common.block.ModBlocks;
@@ -24,15 +25,29 @@ public class OredictPatches {
         oredictThirdPartyBlocks("minecraft:red_flower",
                 "flowerPoppy", "flowerBlueOrchid", "flowerAllium",  "flowerAzureBluet", "flowerTulipRed", "flowerTulipOrange", "flowerTulipWhite", "flowerTulipPink", "flowerOxeyeDaisy");
 
-        oredictThirdPartyBlocks("BiomesOPlenty:flowers", "flowerClover", "flowerSwamp");
-        oredictThirdPartyBlocks("BiomesOPlenty:flowers2", "flowerHibiscusPink", "flowerLilyValley");
+        oredictThirdPartyBlocks("BiomesOPlenty:flowers",
+                "flowerClover", "flowerSwamp",  "flowerDeathbloom", "flowerGlowflower", "flowerHydrangeaBlue",  "flowerCosmosOrange",   "flowerDaffodil",   "flowerWildflower", "flowerViolet", "flowerAnemone",    "flowerWaterlily", "flowerEnderlotus",  "flowerBromeliad",  "flowerEyebulb","flowerDandelionPuff");
+        oredictThirdPartyBlocks("BiomesOPlenty:flowers",
+                "flowerWhite",  "flowerCyan",   "flowerGray",       "flowerWhite",      "flowerLightBlue",      "flowerOrange",         "flowerPink",       "flowerPurple",     "flowerPurple", "flowerWhite",      "flowerLightGray", "flowerBlack",       "flowerOrange",     "flowerBrown",  "flowerLightGray");
+        oredictThirdPartyBlocks("BiomesOPlenty:flowers2",
+                "flowerHibiscusPink",   "flowerLilyValley", "flowerBurningBlossom", "flowerLavender",   "flowerGoldenrod",  "flowerBluebell",   "flowerMinersDelight",  "flowerIcyIris",    "flowerRose");
+        oredictThirdPartyBlocks("BiomesOPlenty:flowers2",
+                "flowerPink",           "flowerWhite",      "flowerOrange",         "flowerPurple",     "flowerYellow",     "flowerBlue",       "flowerBrown",          "flowerLightBlue",  "flowerRed");
 
+        oredictThirdPartyItem("witchery:ingredient", 14, "itemMutandis");
     }
 
     public static void oredictThirdPartyBlocks(final String id, final String... names) {
         Block root = Block.getBlockFromName(id);
+        Item item = Item.getItemFromBlock(root);
         for (int i = 0; i < names.length; i++) {
             OreDictionary.registerOre(names[i], new ItemStack(root, 1, i));
+            OreDictionary.registerOre(names[i], new ItemStack(item, 1, i));
         }
+    }
+
+    public static void oredictThirdPartyItem(final String id, final int meta, final String name) {
+        Item root = (Item) Item.itemRegistry.getObject(id);
+        OreDictionary.registerOre(name, new ItemStack(root, 1, meta));
     }
 }
