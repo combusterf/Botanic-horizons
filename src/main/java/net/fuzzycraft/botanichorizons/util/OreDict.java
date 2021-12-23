@@ -1,4 +1,4 @@
-package net.fuzzycraft.botanichorizons.mod;
+package net.fuzzycraft.botanichorizons.util;
 
 public class OreDict {
     public static final String[] FLOWER_INGREDIENT = new String[] {
@@ -15,7 +15,7 @@ public class OreDict {
             "flowerBrown", "flowerGreen", "flowerRed", "flowerBlack"
     };
 
-    public static final String MUSHROOM = "anyMagicMushroom";
+    public static final String MUSHROOM = "listMagicMushroom";
 
     public static final String FLOWER_NONMAGICAL = "flowerNonmagical";
 }

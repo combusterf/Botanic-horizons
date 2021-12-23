@@ -5,6 +5,7 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.fuzzycraft.botanichorizons.util.Constants;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -55,11 +56,11 @@ public class GregtechPatches {
 
         // Better floral fertiliser
         List<ItemStack> mutandis = OreDictionary.getOres("itemMutandis");
-        List<ItemStack> vinteum = OreDictionary.getOres("dustVinteum");
+        List<ItemStack> dustEV = OreDictionary.getOres("dustDraconium");
         for (ItemStack option: mutandis) {
             addMixerRecipe(new ItemStack(ModItems.fertilizer, 2, 0), 16, 80, option, new ItemStack(Items.dye, 1, 15));
         }
-        for (ItemStack option: vinteum) {
+        for (ItemStack option: dustEV) {
             addMixerRecipe(new ItemStack(ModItems.fertilizer, 2, 0), 16, 80, option, new ItemStack(Items.dye, 1, 15));
         }
 
@@ -90,6 +91,18 @@ public class GregtechPatches {
         addSlabRecipe(new ItemStack(ModFluffBlocks.sunnyQuartzSlab, 2), new ItemStack(ModFluffBlocks.sunnyQuartz, 1), 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.thatchSlab, 2), new ItemStack(ModBlocks.thatch, 1), 16, 80);
         //addSlabRecipe(new ItemStack(ModFluffBlocks.tileSlab, 2), new ItemStack(??, 1), 16, 80);
+
+        // Ingots into blocks. Wouldn't be surprised if this becomes unnecessary when GT provides its own ingots
+        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_MANASTEEL), new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_MANASTEELBLOCK));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_MANASTEELBLOCK), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_MANASTEEL));
+        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_TERRASTEEL), new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_TERRASTEELBLOCK));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_TERRASTEELBLOCK), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_TERRASTEEL));
+        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_ELEMENTIUM), new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_ELEMENTIUMBLOCK));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_ELEMENTIUMBLOCK), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_ELEMENTIUM));
+        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_DRAGONSTONE), new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_DRAGONSTONEBLOCK));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_DRAGONSTONEBLOCK), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_DRAGONSTONE));
+        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_DIAMOND), new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_DIAMONDBLOCK));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_DIAMONDBLOCK), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_DIAMOND));
 
     }
 

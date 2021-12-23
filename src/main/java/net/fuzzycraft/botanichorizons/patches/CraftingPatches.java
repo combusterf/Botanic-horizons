@@ -1,14 +1,11 @@
 package net.fuzzycraft.botanichorizons.patches;
 
-import gregtech.api.util.GT_ModHandler;
-import net.fuzzycraft.botanichorizons.mod.OreDict;
+import net.fuzzycraft.botanichorizons.util.OreDict;
 import net.fuzzycraft.botanichorizons.util.Constants;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import vazkii.botania.api.BotaniaAPI;
@@ -63,7 +60,7 @@ public class CraftingPatches {
 
         // floral fertiliser using witchery, and a less burdensome version using T2 planet dust
         addShapelessOreDictRecipe(new ItemStack(ModItems.fertilizer), "itemMutandis", "dustBone"); // MV
-        addShapelessOreDictRecipe(new ItemStack(ModItems.fertilizer), "dustVinteum", "dustBone");  // EV
+        addShapelessOreDictRecipe(new ItemStack(ModItems.fertilizer), "dustDraconium", "dustBone");  // EV
         ModCraftingRecipes.recipeFertilizerPowder = BotaniaAPI.getLatestAddedRecipe(); // book can hold only one
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,8 +76,8 @@ public class CraftingPatches {
         addOreDictRecipe(new ItemStack(ModBlocks.pool, 1, Constants.POOL_META_REGULAR),
                 "RIR", "RCR", "RRR",
                 'R', new ItemStack(ModFluffBlocks.livingrockSlab),
-                'I', "ingotThaumium",
-                'C', new ItemStack(Items.cauldron)
+                'I', LibOreDict.MANA_STEEL,
+                'C', Constants.thaumcraftCrucible()
         );
         ModCraftingRecipes.recipePool = BotaniaAPI.getLatestAddedRecipe();
 
@@ -88,8 +85,8 @@ public class CraftingPatches {
         addOreDictRecipe(new ItemStack(ModBlocks.pool, 1, Constants.POOL_META_REGULAR_FABULOUS),
                 "RIR", "RCR", "RRR",
                 'R', new ItemStack(ModFluffBlocks.shimmerrockSlab),
-                'I', "ingotThaumium",
-                'C', new ItemStack(Items.cauldron)
+                'I', LibOreDict.MANA_STEEL,
+                'C', Constants.thaumcraftCrucible()
         );
         ModCraftingRecipes.recipePoolFabulous = BotaniaAPI.getLatestAddedRecipe();
 
@@ -147,7 +144,7 @@ public class CraftingPatches {
         );
         ModCraftingRecipes.recipeRedstoneSpreader = BotaniaAPI.getLatestAddedRecipe();
 
-        // TODO: from recipesSpreader
+
     }
 
     private static void addOreDictRecipe(ItemStack output, Object... recipe) {

@@ -3,10 +3,12 @@ package net.fuzzycraft.botanichorizons.util;
 import net.fuzzycraft.botanichorizons.mod.ForgeMod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
+import thaumcraft.api.crafting.ShapedArcaneRecipe;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
@@ -61,21 +63,27 @@ public class ResearchBuilder {
         return this;
     }
 
-    public ResearchBuilder addTextPages(int i18n_start, int i18n_end) {
-        for (int i = i18n_start; i <= i18n_end; i++) {
+    public ResearchBuilder addTextPages(int i18n_start, int count) {
+        for (int i = i18n_start; i < i18n_start + count; i++) {
             content.add(new ResearchPage(this.key, category + "." + key + ".body_" + i));
         }
         return this;
     }
 
+    public ResearchBuilder addCraftingRecipe(ItemStack out, AspectList aspects, Object... craftingRecipe) {
+        ShapedArcaneRecipe recipe = ThaumcraftApi.addArcaneCraftingRecipe(key, out, aspects, craftingRecipe);
+        content.add(new ResearchPage(recipe));
+        return this;
+    }
+
     public ResearchBuilder addCrucibleRecipe(AspectList aspects, ItemStack out, ItemStack in) {
-        CrucibleRecipe recipe = new CrucibleRecipe(key, out, in, aspects);
+        CrucibleRecipe recipe = ThaumcraftApi.addCrucibleRecipe(key, out, in, aspects);
         content.add(new ResearchPage(recipe));
         return this;
     }
 
     public ResearchBuilder addInfusionRecipe(AspectList aspects, ItemStack out, int instability, ItemStack centerItem, ItemStack... inputs) {
-        InfusionRecipe recipe = new InfusionRecipe(key,out, instability, aspects, centerItem, inputs);
+        InfusionRecipe recipe = ThaumcraftApi.addInfusionCraftingRecipe(key,out, instability, aspects, centerItem, inputs);
         content.add(new ResearchPage(recipe));
         return this;
     }

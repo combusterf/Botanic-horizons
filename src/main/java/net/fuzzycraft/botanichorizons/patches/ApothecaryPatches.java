@@ -1,6 +1,6 @@
 package net.fuzzycraft.botanichorizons.patches;
 
-import net.fuzzycraft.botanichorizons.mod.OreDict;
+import net.fuzzycraft.botanichorizons.util.OreDict;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -9,13 +9,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.recipe.IFlowerComponent;
-import vazkii.botania.common.Botania;
 import vazkii.botania.common.CustomBotaniaAPI;
 import vazkii.botania.common.block.ModBlocks;
-import vazkii.botania.common.core.handler.ConfigHandler;
 import vazkii.botania.common.core.helper.ItemNBTHelper;
 import vazkii.botania.common.crafting.ModPetalRecipes;
-import vazkii.botania.common.item.ModItems;
 import vazkii.botania.common.item.block.ItemBlockSpecialFlower;
 import vazkii.botania.common.lib.LibBlockNames;
 import vazkii.botania.common.lib.LibOreDict;

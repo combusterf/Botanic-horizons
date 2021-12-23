@@ -20,9 +20,13 @@ public class ForgeMod {
     public void preInit(FMLPreInitializationEvent event) {
         System.out.println("Initializer called");
 
-        ApothecaryPatches.applyPatches();
-        CraftingPatches.applyPatches();
         OredictPatches.applyPatches();
+
+        CraftingPatches.applyPatches();
+        ApothecaryPatches.applyPatches();
+        DaisyPatches.applyPatches();
+        RunicAltarPatches.applyPatches();
+
         GregtechPatches.applyPatches();
     }
 

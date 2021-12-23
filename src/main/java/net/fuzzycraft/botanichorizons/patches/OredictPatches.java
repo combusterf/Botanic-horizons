@@ -1,6 +1,6 @@
 package net.fuzzycraft.botanichorizons.patches;
 
-import net.fuzzycraft.botanichorizons.mod.OreDict;
+import net.fuzzycraft.botanichorizons.util.OreDict;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,6 +33,10 @@ public class OredictPatches {
                 "flowerHibiscusPink",   "flowerLilyValley", "flowerBurningBlossom", "flowerLavender",   "flowerGoldenrod",  "flowerBluebell",   "flowerMinersDelight",  "flowerIcyIris",    "flowerRose");
         oredictThirdPartyBlocks("BiomesOPlenty:flowers2",
                 "flowerPink",           "flowerWhite",      "flowerOrange",         "flowerPurple",     "flowerYellow",     "flowerBlue",       "flowerBrown",          "flowerLightBlue",  "flowerRed");
+
+        oredictThirdPartyBlocks("BiomesOPlenty:mushrooms",
+                "listInedibleMushroom", "listInedibleMushroom", "listInedibleMushroom", "listInedibleMushroom", "listInedibleMushroom", "listInedibleMushroom");
+
 
         oredictThirdPartyItem("witchery:ingredient", 14, "itemMutandis");
     }
