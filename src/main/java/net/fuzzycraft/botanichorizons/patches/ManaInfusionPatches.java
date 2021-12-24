@@ -9,6 +9,7 @@ import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.block.ModFluffBlocks;
 import vazkii.botania.common.crafting.ModManaAlchemyRecipes;
+import vazkii.botania.common.crafting.ModManaConjurationRecipes;
 import vazkii.botania.common.crafting.ModManaInfusionRecipes;
 import vazkii.botania.common.item.ModItems;
 
@@ -179,5 +180,25 @@ public class ManaInfusionPatches {
         ModManaAlchemyRecipes.flowersRecipes.add(BotaniaAPI.registerManaAlchemyRecipe(new ItemStack(Blocks.double_plant, 1, 4), new ItemStack(Blocks.double_plant, 1, 1), 400));
         ModManaAlchemyRecipes.flowersRecipes.add(BotaniaAPI.registerManaAlchemyRecipe(new ItemStack(Blocks.double_plant, 1, 5), new ItemStack(Blocks.double_plant, 1, 4), 400));
         ModManaAlchemyRecipes.flowersRecipes.add(BotaniaAPI.registerManaAlchemyRecipe(new ItemStack(Blocks.yellow_flower), new ItemStack(Blocks.double_plant, 1, 5), 400));
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Conjuration catalyst
+
+        ModManaConjurationRecipes.redstoneRecipe = BotaniaAPI.registerManaConjurationRecipe(new ItemStack(Items.redstone, 2), new ItemStack(Items.redstone), 5000);
+        ModManaConjurationRecipes.glowstoneRecipe = BotaniaAPI.registerManaConjurationRecipe(new ItemStack(Items.glowstone_dust, 2), new ItemStack(Items.glowstone_dust), 5000);
+        ModManaConjurationRecipes.quartzRecipe = BotaniaAPI.registerManaConjurationRecipe(new ItemStack(Items.quartz, 2), new ItemStack(Items.quartz), 7500);
+        ModManaConjurationRecipes.coalRecipe = BotaniaAPI.registerManaConjurationRecipe(new ItemStack(Items.coal, 2), new ItemStack(Items.coal), 7500);
+        ModManaConjurationRecipes.snowballRecipe = BotaniaAPI.registerManaConjurationRecipe(new ItemStack(Items.snowball, 2), new ItemStack(Items.snowball), 200);
+        ModManaConjurationRecipes.netherrackRecipe = BotaniaAPI.registerManaConjurationRecipe(new ItemStack(Blocks.netherrack, 2), new ItemStack(Blocks.netherrack), 200);
+        ModManaConjurationRecipes.soulSandRecipe = BotaniaAPI.registerManaConjurationRecipe(new ItemStack(Blocks.soul_sand, 2), new ItemStack(Blocks.soul_sand), 4500);
+        ModManaConjurationRecipes.gravelRecipe = BotaniaAPI.registerManaConjurationRecipe(new ItemStack(Block.getBlockFromName("gravel"), 2), new ItemStack(Block.getBlockFromName("gravel")), 720);
+
+        ModManaConjurationRecipes.leavesRecipes = new ArrayList();
+        for(int i = 0; i < 4; i++)
+            ModManaConjurationRecipes.leavesRecipes.add(BotaniaAPI.registerManaConjurationRecipe(new ItemStack(Blocks.leaves, 2, i), new ItemStack(Blocks.leaves, 1, i), 2000));
+        for(int i = 0; i < 2; i++)
+            ModManaConjurationRecipes.leavesRecipes.add(BotaniaAPI.registerManaConjurationRecipe(new ItemStack(Blocks.leaves2, 2, i), new ItemStack(Blocks.leaves2, 1, i), 2000));
+
+        ModManaConjurationRecipes.grassRecipe = BotaniaAPI.registerManaConjurationRecipe(new ItemStack(Blocks.tallgrass, 2, 1), new ItemStack(Blocks.tallgrass, 1, 1), 2000);
     }
 }

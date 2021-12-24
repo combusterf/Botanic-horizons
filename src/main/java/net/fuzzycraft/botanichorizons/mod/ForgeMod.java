@@ -26,6 +26,8 @@ public class ForgeMod {
         ApothecaryPatches.applyPatches();
         DaisyPatches.applyPatches();
         RunicAltarPatches.applyPatches();
+        AlfheimPatches.applyPatches();
+        BreweryPatches.applyPatches();
 
         GregtechPatches.applyPatches();
     }
