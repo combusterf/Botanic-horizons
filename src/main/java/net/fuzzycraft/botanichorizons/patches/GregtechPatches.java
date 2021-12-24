@@ -65,32 +65,42 @@ public class GregtechPatches {
         }
 
         // Slabs
-        addSlabRecipe(new ItemStack(ModFluffBlocks.blazeQuartzSlab, 2), new ItemStack(ModFluffBlocks.blazeQuartz, 1), 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.blazeQuartzSlab, 2),       new ItemStack(ModFluffBlocks.blazeQuartz, 1),     1, 16, 80);
         //addSlabRecipe(new ItemStack(ModFluffBlocks.darkPrismarineSlab, 2), new ItemStack(??, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.darkQuartzSlab, 2), new ItemStack(ModFluffBlocks.darkQuartz, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.dirtPathSlab, 2), new ItemStack(ModBlocks.dirtPath, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.dreamwoodPlankSlab, 2), new ItemStack(ModBlocks.dreamwood, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.elfQuartzSlab, 2), new ItemStack(ModFluffBlocks.elfQuartz, 1), 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.darkQuartzSlab, 2),        new ItemStack(ModFluffBlocks.darkQuartz, 1),      1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.dirtPathSlab, 2),          new ItemStack(ModBlocks.dirtPath, 1),             1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.elfQuartzSlab, 2),         new ItemStack(ModFluffBlocks.elfQuartz, 1),       1, 16, 80);
         //addSlabRecipe(new ItemStack(ModFluffBlocks.enderBrickSlab, 2), new ItemStack(??, 1), 16, 80);
         //addSlabRecipe(new ItemStack(ModFluffBlocks.endStoneSlab, 2), new ItemStack(??, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.lavenderQuartzSlab, 2), new ItemStack(ModFluffBlocks.lavenderQuartz, 1), 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.lavenderQuartzSlab, 2),    new ItemStack(ModFluffBlocks.lavenderQuartz, 1),  1, 16, 80);
         //addSlabRecipe(new ItemStack(ModFluffBlocks.livingrockBrickSlab, 2), new ItemStack(??, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.livingrockSlab, 2), new ItemStack(ModBlocks.livingrock, 1), 16, 80);
-        //addSlabRecipe(new ItemStack(ModFluffBlocks.livingwoodPlankSlab, 2), new ItemStack(??, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.livingwoodSlab, 2), new ItemStack(ModBlocks.livingwood, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.manaQuartzSlab, 2), new ItemStack(ModFluffBlocks.manaQuartz, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.netherBrickSlab, 2), new ItemStack(Blocks.nether_brick, 1), 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.livingrockSlab, 2),        new ItemStack(ModBlocks.livingrock, 1),           1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.manaQuartzSlab, 2),        new ItemStack(ModFluffBlocks.manaQuartz, 1),      1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.netherBrickSlab, 2),       new ItemStack(Blocks.nether_brick, 1),            1, 16, 80);
         //addSlabRecipe(new ItemStack(ModFluffBlocks.prismarineBrickSlab, 2), new ItemStack(??, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.prismarineSlab, 2), new ItemStack(ModBlocks.prismarine, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.redQuartzSlab, 2), new ItemStack(ModFluffBlocks.redQuartz, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.reedSlab, 2), new ItemStack(ModBlocks.reedBlock, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.shimmerrockSlab, 2), new ItemStack(ModBlocks.shimmerrock, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.shimmerwoodPlankSlab, 2), new ItemStack(ModBlocks.shimmerwoodPlanks, 1), 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.prismarineSlab, 2),        new ItemStack(ModBlocks.prismarine, 1),           1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.redQuartzSlab, 2),         new ItemStack(ModFluffBlocks.redQuartz, 1),       1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.reedSlab, 2),              new ItemStack(ModBlocks.reedBlock, 1),            1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.shimmerrockSlab, 2),       new ItemStack(ModBlocks.shimmerrock, 1),          1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.shimmerwoodPlankSlab, 2),  new ItemStack(ModBlocks.shimmerwoodPlanks, 1),    1, 16, 80);
         //addSlabRecipe(new ItemStack(ModFluffBlocks.soulBrickSlab, 2), new ItemStack(??, 1), 16, 80);
         //addSlabRecipe(new ItemStack(ModFluffBlocks.snowBrickSlab, 2), new ItemStack(??, 2), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.sunnyQuartzSlab, 2), new ItemStack(ModFluffBlocks.sunnyQuartz, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.thatchSlab, 2), new ItemStack(ModBlocks.thatch, 1), 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.sunnyQuartzSlab, 2),       new ItemStack(ModFluffBlocks.sunnyQuartz, 1),     1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.thatchSlab, 2),            new ItemStack(ModBlocks.thatch, 1),               1, 16, 80);
         //addSlabRecipe(new ItemStack(ModFluffBlocks.tileSlab, 2), new ItemStack(??, 1), 16, 80);
+
+        // Blocks to either planks or slabs
+        ModCraftingRecipes.recipeLivingwoodDecor1 = addSlabRecipe(new ItemStack(ModBlocks.livingwood, 4, Constants.LIVINGWOOD_META_PLANK), new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_BLOCK), 2, 16, 200);
+        addSlabRecipe(new ItemStack(ModBlocks.dreamwood,  4, Constants.LIVINGWOOD_META_PLANK), new ItemStack(ModBlocks.dreamwood, 1,  Constants.LIVINGWOOD_META_BLOCK), 2, 16, 200);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.livingwoodSlab, 2),      new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_BLOCK),  1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.livingwoodPlankSlab, 2), new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_PLANK),  1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.dreamwoodSlab, 2),      new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_BLOCK),   1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.dreamwoodPlankSlab, 2), new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_PLANK),   1, 16, 80);
+        ModCraftingRecipes.recipeLivingwoodTwig = addSlabRecipe(new ItemStack(ModItems.manaResource, 2, Constants.MANARESOURCE_META_TWIG_WOOD), new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_PLANK), 2, 16, 200);
+        ModCraftingRecipes.recipeDreamwoodTwig = addSlabRecipe(new ItemStack(ModItems.manaResource, 2, Constants.MANARESOURCE_META_TWIG_DREAM), new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_PLANK), 2, 16, 200);
+
+        // Cracked blocks
+        ModCraftingRecipes.recipeLivingrockDecor3 = addHammerRecipe(new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_CRACKED), new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_BRICK));
 
         // Ingots into blocks. Wouldn't be surprised if this becomes unnecessary when GT provides its own ingots
         GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_MANASTEEL), new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_MANASTEELBLOCK));
@@ -118,10 +128,17 @@ public class GregtechPatches {
     }
 
     @Nullable
-    private static IRecipe addSlabRecipe(ItemStack output, ItemStack input, int volt, int ticks) {
+    private static IRecipe addSlabRecipe(ItemStack output, ItemStack input, int circuit, int volt, int ticks) {
+        ItemStack[] inputs;
+        if (circuit == 0) {
+            inputs = new ItemStack[]{input};
+        } else {
+            ItemStack circuitStack = GT_Utility.getIntegratedCircuit(circuit);
+            inputs = new ItemStack[]{input, circuitStack};
+        }
         GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(
                 true,
-                new ItemStack[]{input},
+                inputs,
                 new ItemStack[]{output},
                 null, null,
                 new FluidStack[]{Materials.Water.getFluid(4)},
@@ -130,7 +147,7 @@ public class GregtechPatches {
         );
         GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(
                 true,
-                new ItemStack[]{input},
+                inputs,
                 new ItemStack[]{output},
                 null, null,
                 new FluidStack[]{GT_ModHandler.getDistilledWater(3)},
@@ -139,7 +156,7 @@ public class GregtechPatches {
         );
         GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(
                 true,
-                new ItemStack[]{input},
+                inputs,
                 new ItemStack[]{output},
                 null, null,
                 new FluidStack[]{Materials.Lubricant.getFluid(1)},
@@ -148,21 +165,43 @@ public class GregtechPatches {
         );
         if (volt < 32 && (output.stackSize % 2) == 0) {
             ItemStack half_output = new ItemStack(output.getItem(), output.stackSize / 2, output.getItemDamage());
+            String r1 = (circuit <= 1) ? "sR" : "s ";
+            String r2 = (circuit <= 1) ? "  " : "R ";
             GT_ModHandler.addCraftingRecipe(
                     half_output,
                     new Object[]{
-                            "sR",
+                            r1, r2,
                             'R', input
                     }
             );
-            /* Might need this later for the lexicon?
             return new ShapedOreRecipe(
                     half_output,
-                    "sR",
+                    r1, r2,
                     's', ToolDictNames.craftingToolSaw.name(),
                     'R', input
-            );*/
-        }
-        return null;
+            );
+        } else return null;
+    }
+
+    public static IRecipe addHammerRecipe(ItemStack output, ItemStack input) {
+        GT_Recipe.GT_Recipe_Map.sHammerRecipes.addRecipe(
+                true,
+                new ItemStack[]{input},
+                new ItemStack[]{output},
+                null, null, null,null,
+                32, 4, 0
+        );
+        GT_ModHandler.addCraftingRecipe(
+                output,
+                new Object[]{
+                        "h", "R",
+                        'R', input
+                }
+        );
+        return new ShapedOreRecipe(
+                output, "h", "R",
+                'R', input,
+                'h', ToolDictNames.craftingToolHardHammer.name()
+        );
     }
 }

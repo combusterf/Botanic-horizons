@@ -144,6 +144,34 @@ public class CraftingPatches {
         );
         ModCraftingRecipes.recipeRedstoneSpreader = BotaniaAPI.getLatestAddedRecipe();
 
+        // Living- and dreamstuff chisel recipes
+        addOreDictRecipe(new ItemStack(ModBlocks.livingwood, 4, Constants.LIVINGWOOD_META_FRAMED),
+                "WW", "WW", 'W', new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_PLANK));
+        ModCraftingRecipes.recipeLivingwoodDecor3 = BotaniaAPI.getLatestAddedRecipe();
+        addOreDictRecipe(new ItemStack(ModBlocks.livingwood, 4, Constants.LIVINGWOOD_META_PATTERNED),
+                "WW", "WW", 'W', new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_FRAMED));
+        ModCraftingRecipes.recipeLivingwoodDecor4 = BotaniaAPI.getLatestAddedRecipe();
+        addShapelessOreDictRecipe(new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_MOSSY),
+                "cropVine", new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_PLANK));
+        ModCraftingRecipes.recipeLivingwoodDecor2 = BotaniaAPI.getLatestAddedRecipe();
+
+        addOreDictRecipe(new ItemStack(ModBlocks.dreamwood, 4, Constants.LIVINGWOOD_META_FRAMED),
+                "WW", "WW", 'W', new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_PLANK));
+        addOreDictRecipe(new ItemStack(ModBlocks.dreamwood, 4, Constants.LIVINGWOOD_META_PATTERNED),
+                "WW", "WW", 'W', new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_FRAMED));
+        addShapelessOreDictRecipe(new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_MOSSY),
+                "cropVine", new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_PLANK));
+        // no lexicon for fancy dreamwood
+
+        addOreDictRecipe(new ItemStack(ModBlocks.livingrock, 4, Constants.LIVINGSTONE_META_BRICK),
+                "WW", "WW", 'W', new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_BLOCK));
+        ModCraftingRecipes.recipeLivingrockDecor1 = BotaniaAPI.getLatestAddedRecipe();
+        addOreDictRecipe(new ItemStack(ModBlocks.livingrock, 4, Constants.LIVINGSTONE_META_CHISELED),
+                "WW", "WW", 'W', new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_BRICK));
+        ModCraftingRecipes.recipeLivingrockDecor4 = BotaniaAPI.getLatestAddedRecipe();
+        addShapelessOreDictRecipe(new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_MOSSY),
+                "cropVine", new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_BRICK));
+        ModCraftingRecipes.recipeLivingrockDecor2 = BotaniaAPI.getLatestAddedRecipe();
 
     }
 

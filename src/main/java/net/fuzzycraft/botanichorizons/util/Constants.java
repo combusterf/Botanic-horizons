@@ -19,11 +19,15 @@ public final class Constants {
     public static final int MANARESOURCE_META_MANASTEEL = 0;
     public static final int MANARESOURCE_META_DIAMOND = 2;
     public static final int MANARESOURCE_META_PEARL = 1;
+    public static final int MANARESOURCE_META_TWIG_WOOD = 3;
     public static final int MANARESOURCE_META_TERRASTEEL = 4;
     public static final int MANARESOURCE_META_GAIA_SPIRIT = 5;
+    public static final int MANARESOURCE_META_ROOT = 6;
     public static final int MANARESOURCE_META_ELEMENTIUM = 7;
+    public static final int MANARESOURCE_META_PIXIE_DUST = 6;
     public static final int MANARESOURCE_META_DRAGONSTONE = 9;
     public static final int MANARESOURCE_META_PRISMARINE = 10;
+    public static final int MANARESOURCE_META_TWIG_DREAM = 13;
     public static final int MANARESOURCE_META_GAIA_INGOT = 14;
     public static final int MANARESOURCE_META_MANAPOWDER = 23;
 
@@ -49,6 +53,12 @@ public final class Constants {
     public static final int LIVINGWOOD_META_FRAMED = 3;
     public static final int LIVINGWOOD_META_PATTERNED = 4;
     public static final int LIVINGWOOD_META_GLIMMERING = 5;
+
+    public static final int LIVINGSTONE_META_BLOCK = 0;
+    public static final int LIVINGSTONE_META_BRICK = 1;
+    public static final int LIVINGSTONE_META_MOSSY = 2;
+    public static final int LIVINGSTONE_META_CRACKED = 3;
+    public static final int LIVINGSTONE_META_CHISELED = 4;
 
     public static final int PYLON_META_MANA = 0;
     public static final int PYLON_META_NATURA = 1;
