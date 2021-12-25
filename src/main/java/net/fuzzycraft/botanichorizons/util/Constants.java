@@ -64,6 +64,9 @@ public final class Constants {
     public static final int PYLON_META_NATURA = 1;
     public static final int PYLON_META_GAIA = 2;
 
+    public static final int VIAL_META_MANAGLASS = 0;
+    public static final int VIAL_META_ALFGLASS = 1;
+
     public static final int QUARTZ_META_MANA = 1;
 
     public static final String THAUMCRAFT_METAL_DEVICE = "Thaumcraft:blockMetalDevice";

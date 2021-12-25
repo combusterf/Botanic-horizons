@@ -15,6 +15,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchPage;
 import vazkii.botania.common.block.ModBlocks;
+import vazkii.botania.common.block.ModFluffBlocks;
 import vazkii.botania.common.item.ModItems;
 import vazkii.botania.common.lib.LibOreDict;
 
@@ -254,6 +255,40 @@ public class ThaumcraftPatches {
                 );
             })
             .commit();
+
+        // Brewery
+        new ResearchBuilder("BREWERY")
+                .setBookLocation(-2, 0)
+                .setDifficulty(2)
+                .setResearchAspects(Aspect.MAN, Aspect.MAGIC, Aspect.CRYSTAL, Aspect.MECHANISM)
+                .addSingleTextPage()
+                .apply(builder -> {
+                    ItemStack glass = new ItemStack(ModBlocks.manaGlass);
+                    ItemStack slab = new ItemStack(ModFluffBlocks.livingrockSlab);
+                    ItemStack orangeChip = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:item.EngravedGoldChip"));
+                    builder.addInfusionRecipe(
+                            new AspectList().add(Aspect.MECHANISM, 32).add(Aspect.MAN, 16).add(Aspect.MAGIC, 16),
+                            new ItemStack(ModBlocks.brewery),
+                            8,
+                            new ItemStack(Items.brewing_stand),
+                            orangeChip, glass, slab, slab, slab, glass, orangeChip, glass, slab, slab, slab, glass
+                    );
+                })
+                .commit();
+
+        new ResearchBuilder("ALFGLASS_FLASK")
+                .setBookLocation(-4, -1)
+                .setDifficulty(2)
+                .setResearchAspects(Aspect.CRYSTAL, Aspect.VOID, Aspect.TRAP, Aspect.MAGIC, Aspect.SLIME)
+                .addSingleTextPage()
+                .addCraftingRecipe(
+                        new ItemStack(ModItems.vial, 1, Constants.VIAL_META_ALFGLASS),
+                        new AspectList().add(Aspect.WATER, 25),
+                        "GSG", "G G", "GGG",
+                        'G', new ItemStack(ModBlocks.elfGlass),
+                        'S', "springSmallAnySyntheticRubber"
+                )
+                .commit();
     }
 
     public static AspectList researchList(Aspect... aspects) {

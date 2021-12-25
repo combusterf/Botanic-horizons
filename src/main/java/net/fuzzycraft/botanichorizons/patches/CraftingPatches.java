@@ -173,6 +173,13 @@ public class CraftingPatches {
                 "cropVine", new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_BRICK));
         ModCraftingRecipes.recipeLivingrockDecor2 = BotaniaAPI.getLatestAddedRecipe();
 
+        // Brewery vial
+        addOreDictRecipe(new ItemStack(ModItems.vial, 1, Constants.VIAL_META_MANAGLASS),
+                "GSG", "G G", "GGG",
+                'G', new ItemStack(ModBlocks.manaGlass),
+                'S', "springSmallAnyRubber"
+        );
+        ModCraftingRecipes.recipeVial = BotaniaAPI.getLatestAddedRecipe();
     }
 
     private static void addOreDictRecipe(ItemStack output, Object... recipe) {
