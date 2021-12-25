@@ -25,6 +25,7 @@ public class ForgeMod {
         CraftingPatches.applyPatches();
         ApothecaryPatches.applyPatches();
         DaisyPatches.applyPatches();
+        ManaInfusionPatches.applyPatches();
         RunicAltarPatches.applyPatches();
         AlfheimPatches.applyPatches();
         BreweryPatches.applyPatches();
