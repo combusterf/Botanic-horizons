@@ -14,8 +14,10 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchPage;
+import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.block.ModFluffBlocks;
+import vazkii.botania.common.crafting.ModCraftingRecipes;
 import vazkii.botania.common.item.ModItems;
 import vazkii.botania.common.lib.LibOreDict;
 
@@ -289,17 +291,72 @@ public class ThaumcraftPatches {
                         'S', "springSmallAnySyntheticRubber"
                 )
                 .commit();
-    }
 
-    public static AspectList researchList(Aspect... aspects) {
-        AspectList list = new AspectList();
-        for (Aspect aspect: aspects) {
-            list.add(aspect, 1);
-        }
-        return list;
-    }
+        // Terrasteel tool recipes
+        new ResearchBuilder("TERRASTEEL_SWORD")
+                .setBookLocation(-2, -3)
+                .setDifficulty(2)
+                .setResearchAspects(Aspect.EARTH, Aspect.MAGIC, Aspect.WEAPON, Aspect.MAN, Aspect.BEAST)
+                .addSingleTextPage()
+                .apply(builder -> {
+                    ItemStack twig = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_TWIG_WOOD);
+                    ItemStack terra = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_TERRASTEEL);
+                    ItemStack crystal = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:blockCrystal"), 1, 3);
+                    ItemStack gem1 = OreDictionary.getOres("gemFlawlessGreenSapphire").get(0);
+                    ItemStack gem2 = OreDictionary.getOres("gemFlawlessOlivine").get(0);
+                    builder.addInfusionRecipe(
+                            new AspectList().add(Aspect.EARTH, 32).add(Aspect.MAGIC, 16).add(Aspect.WEAPON, 48).add(Aspect.BEAST, 16),
+                            new ItemStack(ModItems.terraSword),
+                            8,
+                            new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:ItemSwordElemental")),
+                            gem1, twig, terra, crystal, terra, twig, gem2, twig, terra, crystal, terra, twig
+                    );
+                })
+                .commit();
 
-    public static ResearchPage textPage(String category, String key) {
-        return new ResearchPage(key, category + "." + key + ".body");
+        new ResearchBuilder("TERRASTEEL_PICK")
+                .setBookLocation(-3, -3)
+                .setDifficulty(2)
+                .setResearchAspects(Aspect.EARTH, Aspect.MAGIC, Aspect.TOOL, Aspect.MAN, Aspect.MINE)
+                .addSingleTextPage()
+                .apply(builder -> {
+                    ItemStack twig = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_TWIG_WOOD);
+                    ItemStack terra = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_TERRASTEEL);
+                    ItemStack crystal = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:blockCrystal"), 1, 3);
+                    ItemStack gem1 = OreDictionary.getOres("gemFlawlessGreenSapphire").get(0);
+                    ItemStack gem2 = OreDictionary.getOres("gemFlawlessOlivine").get(0);
+                    builder.addInfusionRecipe(
+                            new AspectList().add(Aspect.EARTH, 32).add(Aspect.MAGIC, 16).add(Aspect.TOOL, 16).add(Aspect.MINE, 48),
+                            new ItemStack(ModItems.terraPick),
+                            8,
+                            new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:ItemPickaxeElemental")),
+                            gem1, twig, terra, crystal, terra, twig, gem2, twig, terra, crystal, terra, twig
+                    );
+                })
+                .commit();
+
+        new ResearchBuilder("TERRASTEEL_AXE")
+                .setBookLocation(-3, -2)
+                .setDifficulty(2)
+                .setResearchAspects(Aspect.EARTH, Aspect.MAGIC, Aspect.TOOL, Aspect.MAN, Aspect.TREE)
+                .addSingleTextPage()
+                .apply(builder -> {
+                    ItemStack twig = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_TWIG_WOOD);
+                    ItemStack terra = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_TERRASTEEL);
+                    ItemStack crystal = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:blockCrystal"), 1, 3);
+                    ItemStack gem1 = OreDictionary.getOres("gemFlawlessGreenSapphire").get(0);
+                    ItemStack gem2 = OreDictionary.getOres("gemFlawlessOlivine").get(0);
+                    ItemStack axeIn = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:ItemAxeElemental"));
+                    ItemStack axeOut = new ItemStack(ModItems.terraAxe);
+                    System.out.println("parts:" + axeOut + axeIn + twig + terra + crystal + gem1 + gem2);
+                    builder.addInfusionRecipe(
+                            new AspectList().add(Aspect.EARTH, 32).add(Aspect.MAGIC, 16).add(Aspect.TOOL, 16).add(Aspect.TREE, 48),
+                            axeOut,
+                            8,
+                            axeIn,
+                            gem1, twig, terra, crystal, terra, twig, gem2, twig, terra, crystal, terra, twig
+                    );
+                })
+                .commit();
     }
 }

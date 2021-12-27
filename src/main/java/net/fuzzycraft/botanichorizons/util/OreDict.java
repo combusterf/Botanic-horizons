@@ -1,5 +1,7 @@
 package net.fuzzycraft.botanichorizons.util;
 
+import vazkii.botania.common.lib.LibOreDict;
+
 public class OreDict {
     public static final String[] FLOWER_INGREDIENT = new String[] {
             "flowerIngredientWhite", "flowerIngredientOrange", "flowerIngredientMagenta", "flowerIngredientLightBlue",
@@ -14,6 +16,8 @@ public class OreDict {
             "flowerLightGray", "flowerCyan", "flowerPurple", "flowerBlue",
             "flowerBrown", "flowerGreen", "flowerRed", "flowerBlack"
     };
+
+    public static final String GAIA_SPIRIT = LibOreDict.LIFE_ESSENCE;
 
     public static final String MUSHROOM = "listMagicMushroom";
 
