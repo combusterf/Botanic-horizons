@@ -21,6 +21,7 @@ import vazkii.botania.common.crafting.ModCraftingRecipes;
 import vazkii.botania.common.item.ModItems;
 import vazkii.botania.common.lib.LibOreDict;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -346,16 +347,73 @@ public class ThaumcraftPatches {
                     ItemStack crystal = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:blockCrystal"), 1, 3);
                     ItemStack gem1 = OreDictionary.getOres("gemFlawlessGreenSapphire").get(0);
                     ItemStack gem2 = OreDictionary.getOres("gemFlawlessOlivine").get(0);
-                    ItemStack axeIn = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:ItemAxeElemental"));
-                    ItemStack axeOut = new ItemStack(ModItems.terraAxe);
-                    System.out.println("parts:" + axeOut + axeIn + twig + terra + crystal + gem1 + gem2);
                     builder.addInfusionRecipe(
                             new AspectList().add(Aspect.EARTH, 32).add(Aspect.MAGIC, 16).add(Aspect.TOOL, 16).add(Aspect.TREE, 48),
-                            axeOut,
+                            new ItemStack(ModItems.terraAxe),
                             8,
-                            axeIn,
+                            new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:ItemAxeElemental")),
                             gem1, twig, terra, crystal, terra, twig, gem2, twig, terra, crystal, terra, twig
                     );
+                })
+                .commit();
+
+        // Laputa; Lower levels are LuV, Chad value increases per level until late UHV
+        new ResearchBuilder("LAPUTA")
+                .setBookLocation(-2, -7)
+                .setDifficulty(3)
+                .setResearchAspects(Aspect.WEATHER, Aspect.AIR, Aspect.EARTH, Aspect.FLIGHT, Aspect.TRAVEL)
+                .addTextPages(0, 1)
+                .apply(builder -> {
+                    ItemStack gaia = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_GAIA_INGOT);
+                    ItemStack ingot = OreDictionary.getOres(LibOreDict.TERRA_STEEL).get(0);
+                    ItemStack crystal = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:blockCrystal"), 1, 0);
+                    ItemStack chip = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:item.EngravedQuantumChip"), 1, 0);
+                    ItemStack gem1 = OreDictionary.getOres("gemExquisiteOpal").get(0);
+                    ItemStack gem2 = OreDictionary.getOres("gemExquisiteDiamond").get(0);
+                    ItemStack rune1 = new ItemStack(ModItems.rune, 1, 2);
+                    ItemStack rune2 = new ItemStack(ModItems.rune, 1, 3);
+                    builder.addInfusionRecipe(
+                            new AspectList().add(Aspect.WEATHER, 64).add(Aspect.AIR, 128).add(Aspect.EARTH, 16).add(Aspect.TRAVEL, 48),
+                            new ItemStack(ModItems.laputaShard, 1, 0),
+                            16,
+                            gaia,
+                            gem1, ingot, crystal, chip, rune1, chip, crystal, ingot, gem2, ingot, crystal, chip, rune2, chip, crystal, ingot
+                    );
+                })
+                .addTextPages(1, 1)
+                .apply(builder -> {
+                    for (int level = 1; level < 20; level++) { // note: tooltips add +1
+                        List<ItemStack> ingots;
+                        if (level <= 5) {
+                            ingots = OreDictionary.getOres("ingotAdamantium");
+                        } else if (level <= 10) {
+                            ingots = OreDictionary.getOres("ingotIchorium");
+                        } else if (level <= 15) {
+                            ingots = OreDictionary.getOres("ingotDraconiumAwakened");
+                        } else {
+                            ingots = OreDictionary.getOres("ingotInfinity");
+                        }
+                        ItemStack crystal = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:blockCrystal"), 1, 0);
+                        ItemStack chip = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:item.EngravedQuantumChip"), 1, 0);
+                        for (ItemStack ingot: ingots) {
+                            ArrayList<ItemStack> ingredients = new ArrayList<>();
+                            ingredients.add(ingot);
+                            ingredients.add(chip);
+                            for (int size = 0; size < (level + 1) / 2; size++) ingredients.add(crystal);
+                            ingredients.add(chip);
+                            ingredients.add(ingot);
+                            ingredients.add(chip);
+                            for (int size = 0; size < (level + 1) / 2; size++) ingredients.add(crystal);
+                            ingredients.add(chip);
+                            builder.addInfusionRecipe(
+                                    new AspectList().add(Aspect.WEATHER, 8 * level).add(Aspect.AIR, 32 * level).add(Aspect.EARTH, 8 * level).add(Aspect.TRAVEL, 24 * level),
+                                    new ItemStack(ModItems.laputaShard, 1, level),
+                                    10 + 2 * level,
+                                    new ItemStack(ModItems.laputaShard, 1, level - 1),
+                                    ingredients.toArray(new ItemStack[0])
+                            );
+                        }
+                    }
                 })
                 .commit();
     }

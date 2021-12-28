@@ -114,6 +114,9 @@ public class GregtechPatches {
         GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_DIAMOND), new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_DIAMONDBLOCK));
         GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_DIAMONDBLOCK), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_DIAMOND));
 
+        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_PRISMARINE), new ItemStack(ModBlocks.prismarine));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.prismarine), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_PRISMARINE));
+
     }
 
     private static void addMixerRecipe(ItemStack output, int volt, int ticks, ItemStack... input) {

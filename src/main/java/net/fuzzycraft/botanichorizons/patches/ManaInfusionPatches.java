@@ -1,5 +1,6 @@
 package net.fuzzycraft.botanichorizons.patches;
 
+import net.fuzzycraft.botanichorizons.util.Constants;
 import net.fuzzycraft.botanichorizons.util.OreDict;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -8,10 +9,12 @@ import net.minecraft.item.ItemStack;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.block.ModFluffBlocks;
+import vazkii.botania.common.crafting.ModCraftingRecipes;
 import vazkii.botania.common.crafting.ModManaAlchemyRecipes;
 import vazkii.botania.common.crafting.ModManaConjurationRecipes;
 import vazkii.botania.common.crafting.ModManaInfusionRecipes;
 import vazkii.botania.common.item.ModItems;
+import vazkii.botania.common.lib.LibOreDict;
 
 import java.util.ArrayList;
 
@@ -48,7 +51,7 @@ public class ManaInfusionPatches {
         ModManaInfusionRecipes.podzolSeedsRecipe = BotaniaAPI.registerManaInfusionRecipe(new ItemStack(ModItems.grassSeeds, 1, SEEDS_META_PODZOL), new ItemStack(Blocks.deadbush), 2500);
 
         ModManaInfusionRecipes.mycelSeedsRecipes = new ArrayList<>();
-        ModManaInfusionRecipes.mycelSeedsRecipes.add(BotaniaAPI.registerManaInfusionRecipe(new ItemStack(ModItems.grassSeeds, 1, SEEDS_META_MYCELIUM), "listAllMushroom", 6500));
+        ModManaInfusionRecipes.mycelSeedsRecipes.add(BotaniaAPI.registerManaInfusionRecipe(new ItemStack(ModItems.grassSeeds, 1, SEEDS_META_MYCELIUM), "listAllmushroom", 6500));
         ModManaInfusionRecipes.mycelSeedsRecipes.add(BotaniaAPI.registerManaInfusionRecipe(new ItemStack(ModItems.grassSeeds, 1, SEEDS_META_MYCELIUM), "listInedibleMushroom", 6500));
         ModManaInfusionRecipes.mycelSeedsRecipes.add(BotaniaAPI.registerManaInfusionRecipe(new ItemStack(ModItems.grassSeeds, 1, SEEDS_META_MYCELIUM), OreDict.MUSHROOM, 3500));
 
@@ -68,6 +71,9 @@ public class ManaInfusionPatches {
         ModManaInfusionRecipes.manaCookieRecipe = BotaniaAPI.registerManaInfusionRecipe(new ItemStack(ModItems.manaCookie), new ItemStack(Items.cookie), 20000);
 
         ModManaInfusionRecipes.tinyPotatoRecipe = BotaniaAPI.registerManaInfusionRecipe(new ItemStack(ModBlocks.tinyPotato), new ItemStack(Items.potato), 31337);
+
+        // Manaweave Cloth Recipe
+        BotaniaAPI.registerManaInfusionRecipe(new ItemStack(ModItems.manaResource, 1, MANARESOURCE_META_CLOTH), "materialCloth", 15000);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -200,5 +206,6 @@ public class ManaInfusionPatches {
             ModManaConjurationRecipes.leavesRecipes.add(BotaniaAPI.registerManaConjurationRecipe(new ItemStack(Blocks.leaves2, 2, i), new ItemStack(Blocks.leaves2, 1, i), 2000));
 
         ModManaConjurationRecipes.grassRecipe = BotaniaAPI.registerManaConjurationRecipe(new ItemStack(Blocks.tallgrass, 2, 1), new ItemStack(Blocks.tallgrass, 1, 1), 2000);
+
     }
 }

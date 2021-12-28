@@ -29,6 +29,7 @@ public final class Constants {
     public static final int MANARESOURCE_META_PRISMARINE = 10;
     public static final int MANARESOURCE_META_TWIG_DREAM = 13;
     public static final int MANARESOURCE_META_GAIA_INGOT = 14;
+    public static final int MANARESOURCE_META_CLOTH = 22;
     public static final int MANARESOURCE_META_MANAPOWDER = 23;
 
     public static final int STORAGE_META_MANASTEELBLOCK = 0;
