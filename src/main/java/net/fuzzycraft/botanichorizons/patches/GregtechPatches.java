@@ -1,15 +1,16 @@
 package net.fuzzycraft.botanichorizons.patches;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.fuzzycraft.botanichorizons.util.Constants;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,6 +24,7 @@ import vazkii.botania.common.item.ModItems;
 import vazkii.botania.common.lib.LibOreDict;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 
 public class GregtechPatches {
@@ -98,9 +100,25 @@ public class GregtechPatches {
         addSlabRecipe(new ItemStack(ModFluffBlocks.dreamwoodPlankSlab, 2), new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_PLANK),   1, 16, 80);
         ModCraftingRecipes.recipeLivingwoodTwig = addSlabRecipe(new ItemStack(ModItems.manaResource, 2, Constants.MANARESOURCE_META_TWIG_WOOD), new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_PLANK), 2, 16, 200);
         ModCraftingRecipes.recipeDreamwoodTwig = addSlabRecipe(new ItemStack(ModItems.manaResource, 2, Constants.MANARESOURCE_META_TWIG_DREAM), new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_PLANK), 2, 16, 200);
+        addStairs(ModFluffBlocks.livingrockStairs, new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_BLOCK));
+        addStairs(ModFluffBlocks.livingrockBrickStairs, new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_BRICK));
+        addStairs(ModFluffBlocks.livingwoodStairs, new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_BLOCK));
+        addStairs(ModFluffBlocks.livingwoodPlankStairs, new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_PLANK));
+        addStairs(ModFluffBlocks.dreamwoodStairs, new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_BLOCK));
+        addStairs(ModFluffBlocks.dreamwoodPlankStairs, new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_PLANK));
 
         // Cracked blocks
         ModCraftingRecipes.recipeLivingrockDecor3 = addHammerRecipe(new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_CRACKED), new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_BRICK));
+
+        // Quartzes and derivatives
+        ModCraftingRecipes.recipeDarkQuartz = addQuartzRecipes(Constants.QUARTZ_META_DARK, new ItemStack(Items.coal, 1, Short.MAX_VALUE), ModFluffBlocks.darkQuartz, ModFluffBlocks.darkQuartzStairs, ModFluffBlocks.darkQuartzSlab);
+        addQuartzRecipes(Constants.QUARTZ_META_MANA, null, ModFluffBlocks.manaQuartz, ModFluffBlocks.manaQuartzStairs, ModFluffBlocks.manaQuartzSlab);
+        ModCraftingRecipes.recipeBlazeQuartz = addQuartzRecipes(Constants.QUARTZ_META_BLAZE, new ItemStack(Items.blaze_powder), ModFluffBlocks.blazeQuartz, ModFluffBlocks.blazeQuartzStairs, ModFluffBlocks.blazeQuartzSlab);
+        ModCraftingRecipes.recipesLavenderQuartz = Collections.singletonList(addQuartzRecipes(Constants.QUARTZ_META_LAVENDER, "flowerLavender", ModFluffBlocks.lavenderQuartz, ModFluffBlocks.lavenderQuartzStairs, ModFluffBlocks.lavenderQuartzSlab));
+        ModCraftingRecipes.recipeRedQuartz = addQuartzRecipes(Constants.QUARTZ_META_RED, "dustRedstone", ModFluffBlocks.redQuartz, ModFluffBlocks.redQuartzStairs, ModFluffBlocks.redQuartzSlab);
+        addQuartzRecipes(Constants.QUARTZ_META_ELVEN, null, ModFluffBlocks.elfQuartz, ModFluffBlocks.elfQuartzStairs, ModFluffBlocks.elfQuartzSlab);
+        ModCraftingRecipes.recipeSunnyQuartz = addQuartzRecipes(Constants.QUARTZ_META_SUNNY, new ItemStack(Blocks.double_plant, 1, 0), ModFluffBlocks.sunnyQuartz, ModFluffBlocks.sunnyQuartzStairs, ModFluffBlocks.sunnyQuartzSlab);
+
 
         // Ingots into blocks. Wouldn't be surprised if this becomes unnecessary when GT provides its own ingots
         GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_MANASTEEL), new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_MANASTEELBLOCK));
@@ -226,5 +244,46 @@ public class GregtechPatches {
                 'R', input,
                 'h', ToolDictNames.craftingToolHardHammer.name()
         );
+    }
+
+    public static IRecipe addQuartzRecipes(int quartzMeta, @Nullable Object ingredient, Block block, Block stairs, Block slab) {
+
+        // quartz-to-block and vice versa
+        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.quartz, 4, quartzMeta), new ItemStack(block));
+        for (int i = 0; i < 3; i++) {
+            GT_ModHandler.addExtractionRecipe(new ItemStack(block, 1, i), new ItemStack(ModItems.quartz, 4, quartzMeta));
+        }
+
+        addSlabRecipe(new ItemStack(slab, 2, 0), new ItemStack(block, 1, 0), 1, 16, 80);
+
+        // deco flavours
+        GameRegistry.addRecipe(new ItemStack(block, 4, 1), "QQ", "QQ", 'Q', block); // chisel
+        GameRegistry.addRecipe(new ItemStack(block, 1, 2), "Q", "Q", 'Q', slab); // pillar
+        addStairs(stairs, block);
+
+        // un-deco
+        for (int i = 1; i < 3; i++) {
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(block, 1, 0),
+                    "Qf",
+                    'Q', new ItemStack(block, 1, i),
+                    'f', ToolDictNames.craftingToolFile.name()
+            ));
+        }
+
+        if (ingredient != null) {
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.quartz, 8, quartzMeta),
+                    "QQQ", "QCQ", "QQQ",
+                    'Q', "gemQuartz",
+                    'C', ingredient));
+            return BotaniaAPI.getLatestAddedRecipe();
+        } else {
+            return null;
+        }
+    }
+
+    public static void addStairs(Block stairsBlock, Object baseBlock) {
+        GameRegistry.addRecipe(new ItemStack(stairsBlock, 4), "  Q", " QQ", "QQQ", 'Q', baseBlock);
+        GameRegistry.addRecipe(new ItemStack(stairsBlock, 4), "Q  ", "QQ ", "QQQ", 'Q', baseBlock);
+
     }
 }

@@ -68,7 +68,13 @@ public final class Constants {
     public static final int VIAL_META_MANAGLASS = 0;
     public static final int VIAL_META_ALFGLASS = 1;
 
+    public static final int QUARTZ_META_DARK = 0;
     public static final int QUARTZ_META_MANA = 1;
+    public static final int QUARTZ_META_BLAZE = 2;
+    public static final int QUARTZ_META_LAVENDER = 3;
+    public static final int QUARTZ_META_RED = 4;
+    public static final int QUARTZ_META_ELVEN = 5;
+    public static final int QUARTZ_META_SUNNY = 6;
 
     public static final String THAUMCRAFT_METAL_DEVICE = "Thaumcraft:blockMetalDevice";
     public static final String THAUMCRAFT_STONE_DEVICE = "Thaumcraft:blockStoneDevice";
