@@ -117,6 +117,26 @@ public class GregtechPatches {
         GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_PRISMARINE), new ItemStack(ModBlocks.prismarine));
         GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.prismarine), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_PRISMARINE));
 
+        // Decorative baubles
+        for(int i = 0; i < 32; i++) {
+            Item choice = (i < 16) ? ModItems.petal : ModItems.dye;
+            ItemStack fabric = new ItemStack(ModItems.manaResource, 2, Constants.MANARESOURCE_META_CLOTH);
+            ItemStack output = new ItemStack(ModItems.cosmetic, 1, i);
+            CraftingPatches.addOreDictRecipe(output,
+                    "SPS", "PSP", "SPS",
+                    'P', new ItemStack(choice, 1, i % 16),
+                    'S', LibOreDict.MANAWEAVE_CLOTH
+            );
+            GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.addRecipe(true,
+                    new ItemStack[]{fabric, new ItemStack(choice, 2, i % 16), GT_Utility.getIntegratedCircuit(4)},
+                    new ItemStack[]{output},
+                    null, null, null,
+                    120, 80, 0
+            );
+            GT_ModHandler.addExtractionRecipe(new ItemStack(ModItems.cosmetic, 1, i), fabric);
+        }
+        ModCraftingRecipes.recipesCosmeticItems = BotaniaAPI.getLatestAddedRecipes(32);
+
     }
 
     private static void addMixerRecipe(ItemStack output, int volt, int ticks, ItemStack... input) {

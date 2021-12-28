@@ -47,7 +47,7 @@ public class ThaumcraftPatches {
                         builder.addCrucibleRecipe(
                             ThaumcraftAspects.FLOWER,
                             new ItemStack(ModBlocks.flower, 1, i),
-                            new ItemStack(ModBlocks.mushroom, 2, i)
+                            new ItemStack(ModBlocks.mushroom, 1, i)
                         );
                     }
                 }).commit();
@@ -88,6 +88,23 @@ public class ThaumcraftPatches {
                 }
             })
             .commit();
+
+        // flowers back into mushrooms
+        new ResearchBuilder("MUSHROOMS")
+                .setBookLocation(-3,6)
+                .setResearchIconItem("botania", "grassSeeds0.png")
+                .setResearchAspects(Aspect.PLANT, Aspect.EXCHANGE, Aspect.DARKNESS)
+                .setDifficulty(1)
+                .addSingleTextPage()
+                .apply(builder -> {
+                    for (int i = 0; i < 16; i++) {
+                        builder.addCrucibleRecipe(
+                                new AspectList().add(Aspect.DARKNESS, 4),
+                                new ItemStack(ModBlocks.mushroom, 1, i),
+                                new ItemStack(ModBlocks.shinyFlower, 1, i)
+                        );
+                    }
+                }).commit();
 
         // Runic altar
         new ResearchBuilder("ALTAR")

@@ -679,6 +679,10 @@ public class CraftingPatches {
         addShapelessOreDictRecipe(new ItemStack(ModItems.manaResource, 1, 6), "dustRedstone", "circuitPrimitive", new ItemStack(Blocks.tallgrass, 1, 1));
         ModCraftingRecipes.recipeRedstoneRoot = BotaniaAPI.getLatestAddedRecipe();
 
+        // Red String Recipe
+        addShapelessOreDictRecipe(new ItemStack(ModItems.manaResource, 1, 12), new ItemStack(Items.string), "blockRedstone", LibOreDict.PIXIE_DUST, LibOreDict.ENDER_AIR_BOTTLE);
+        ModCraftingRecipes.recipeRedString = BotaniaAPI.getLatestAddedRecipe();
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Baubles
 
@@ -790,6 +794,12 @@ public class CraftingPatches {
                 'E', LibOreDict.ENDER_AIR_BOTTLE);
         ModCraftingRecipes.recipeFlightTiara = BotaniaAPI.getLatestAddedRecipe();
 
+        // Flügel variants
+        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.flightTiara, 1, 1), new ItemStack(ModItems.flightTiara, 1, Short.MAX_VALUE), "gemQuartz"));
+        for(int i = 0; i < 7; i++)
+            GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.flightTiara, 1, 2 + i), new ItemStack(ModItems.flightTiara, 1, Short.MAX_VALUE), LibOreDict.QUARTZ[i]));
+        ModCraftingRecipes.recipesWings = BotaniaAPI.getLatestAddedRecipes(8);
+
         // Great Fairy Ring Recipe
         addOreDictRecipe(new ItemStack(ModItems.pixieRing),
                 "DE ", "EhE", " E ",
@@ -800,11 +810,89 @@ public class CraftingPatches {
 
         // Globetrotter's Sash Recipe
         addOreDictRecipe(new ItemStack(ModItems.superTravelBelt),
-                "E  ", " S ", "L E",
+                "E/s", "/S/", "L/E",
                 'E', LibOreDict.ELEMENTIUM,
                 'L', LibOreDict.LIFE_ESSENCE,
-                'S', new ItemStack(ModItems.travelBelt));
+                'S', new ItemStack(ModItems.travelBelt),
+                '/', "screwTitanium",
+                's', ToolDictNames.craftingToolScrewdriver.name());
         ModCraftingRecipes.recipeSuperTravelBelt = BotaniaAPI.getLatestAddedRecipe();
+
+        // Ring of Far Reach Recipe
+        addOreDictRecipe(new ItemStack(ModItems.reachRing),
+                "RE ", "EhE", " E ",
+                'R', LibOreDict.RUNE[15],
+                'E', LibOreDict.ELEMENTIUM,
+                'h', ToolDictNames.craftingToolHardHammer.name());
+        ModCraftingRecipes.recipeReachRing = BotaniaAPI.getLatestAddedRecipe();
+
+        // The Spectator Recipe
+        addOreDictRecipe(new ItemStack(ModItems.itemFinder),
+                " I ", "IYI", "IEI",
+                'I', "ingotIron",
+                'Y', new ItemStack(Items.ender_eye),
+                'E', "gemFlawlessEmerald");
+        ModCraftingRecipes.recipeItemFinder = BotaniaAPI.getLatestAddedRecipe();
+
+        // Crimson Pendant Recipe
+        addOreDictRecipe(new ItemStack(ModItems.superLavaPendant),
+                "BBB", "BPB", "NGN",
+                'B', new ItemStack(Items.blaze_rod),
+                'P', new ItemStack(ModItems.lavaPendant),
+                'N', new ItemStack(Blocks.nether_brick),
+                'G', LibOreDict.LIFE_ESSENCE);
+        ModCraftingRecipes.recipeSuperLavaPendant = BotaniaAPI.getLatestAddedRecipe();
+
+        // Tainted Blood Pendant Recipe
+        addOreDictRecipe(new ItemStack(ModItems.bloodPendant),
+                " Pf", "PGP", "DPf",
+                'P', LibOreDict.PRISMARINE_SHARD,
+                'G', new ItemStack(Items.ghast_tear),
+                'D', LibOreDict.MANA_DIAMOND,
+                'h', ToolDictNames.craftingToolHardHammer.name(),
+                'f', ToolDictNames.craftingToolFile.name());
+        ModCraftingRecipes.recipeBloodPendant = BotaniaAPI.getLatestAddedRecipe();
+
+        // Cloak of Virtue Recipe (belt)
+        addOreDictRecipe(new ItemStack(ModItems.holyCloak),
+                "WCW", "GWG", "GSG",
+                'C', LibOreDict.MANAWEAVE_CLOTH,
+                'W', new ItemStack(Blocks.wool),
+                'G', "dustGlowstone",
+                'S', LibOreDict.LIFE_ESSENCE);
+        ModCraftingRecipes.recipeHolyCloak = BotaniaAPI.getLatestAddedRecipe();
+
+        // Cloak of Sin Recipe (belt)
+        addOreDictRecipe(new ItemStack(ModItems.unholyCloak),
+                "WCW", "RWR", "RSR",
+                'C', LibOreDict.MANAWEAVE_CLOTH,
+                'W', new ItemStack(Blocks.wool, 1, 15),
+                'R', "dustRedstone",
+                'S', LibOreDict.LIFE_ESSENCE);
+        ModCraftingRecipes.recipeUnholyCloak = BotaniaAPI.getLatestAddedRecipe();
+
+        // Manaseer Monocle Recipe (amulet)
+        addOreDictRecipe(new ItemStack(ModItems.monocle),
+                "GI ", "ISw", "mSR",
+                'G', new ItemStack(ModBlocks.manaGlass),
+                'I', LibOreDict.MANA_STEEL,
+                'S', "springSmallGold",
+                'R', "ringGold",
+                'w', ToolDictNames.craftingToolWrench.name(),
+                'm', ToolDictNames.craftingToolSoftHammer.name());
+        ModCraftingRecipes.recipeMonocle = BotaniaAPI.getLatestAddedRecipe();
+
+        // Ring of Correction Recipe
+        addOreDictRecipe(new ItemStack(ModItems.swapRing),
+                "CM ", "MhM", " M ",
+                'C', new ItemStack(Blocks.clay),
+                'M', LibOreDict.MANA_STEEL,
+                'h', ToolDictNames.craftingToolHardHammer.name());
+        ModCraftingRecipes.recipeSwapRing = BotaniaAPI.getLatestAddedRecipe();
+
+        // Greater Ring of Magnetization Recipe
+        addShapelessOreDictRecipe(new ItemStack(ModItems.magnetRingGreater), LibOreDict.TERRA_STEEL, new ItemStack(ModItems.magnetRing));
+        ModCraftingRecipes.recipeGreaterMagnetRing = BotaniaAPI.getLatestAddedRecipe();
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Misc utility items
@@ -834,14 +922,6 @@ public class CraftingPatches {
                 'W', LibOreDict.LIVING_WOOD,
                 'S', new ItemStack(ModItems.grassSeeds));
         ModCraftingRecipes.recipeGrassHorn = BotaniaAPI.getLatestAddedRecipe();
-
-        // Drum of the Wild Recipe
-        addOreDictRecipe(new ItemStack(ModBlocks.forestDrum),
-                "WLW", "WHW", "WLW",
-                'W', LibOreDict.LIVING_WOOD,
-                'L', new ItemStack(Items.leather),
-                'H', new ItemStack(ModItems.grassHorn));
-        ModCraftingRecipes.recipeForestDrum = BotaniaAPI.getLatestAddedRecipe();
 
         // Tiny Planet Recipe
         addOreDictRecipe(new ItemStack(ModItems.tinyPlanet),
@@ -917,6 +997,14 @@ public class CraftingPatches {
                 'S', "stone",
                 'P', ModItems.tinyPlanet);
         ModCraftingRecipes.recipeTinyPlanetBlock = BotaniaAPI.getLatestAddedRecipe();
+
+        // Drum of the Wild Recipe
+        addOreDictRecipe(new ItemStack(ModBlocks.forestDrum),
+                "WLW", "WHW", "WLW",
+                'W', LibOreDict.LIVING_WOOD,
+                'L', new ItemStack(Items.leather),
+                'H', new ItemStack(ModItems.grassHorn));
+        ModCraftingRecipes.recipeForestDrum = BotaniaAPI.getLatestAddedRecipe();
 
         // Open Crate Recipe
         addOreDictRecipe(new ItemStack(ModBlocks.openCrate),
@@ -1001,15 +1089,15 @@ public class CraftingPatches {
         ModCraftingRecipes.recipeSeaLamp = BotaniaAPI.getLatestAddedRecipe();
     }
 
-    private static void addOreDictRecipe(ItemStack output, Object... recipe) {
+    public static void addOreDictRecipe(ItemStack output, Object... recipe) {
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(output, recipe));
     }
 
-    private static void addShapelessOreDictRecipe(ItemStack output, Object... recipe) {
+    public static void addShapelessOreDictRecipe(ItemStack output, Object... recipe) {
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(output, recipe));
     }
 
-    private static void addShapelessRecipe(ItemStack output, ItemStack... recipe) {
+    public static void addShapelessRecipe(ItemStack output, ItemStack... recipe) {
         CraftingManager.getInstance().getRecipeList().add(new ShapelessRecipes(output, Arrays.asList(recipe)));
     }
 }
