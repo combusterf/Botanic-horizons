@@ -5,6 +5,7 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GT_Utility;
 import net.fuzzycraft.botanichorizons.util.OreDict;
 import net.fuzzycraft.botanichorizons.util.Constants;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -60,6 +61,14 @@ public class CraftingPatches {
                     'U', new ItemStack(Items.cauldron),
                     'C', "stone");
         ModCraftingRecipes.recipesApothecary = BotaniaAPI.getLatestAddedRecipes(16);
+
+        // Metamorphic Petal Apothecary Recipes
+        for(int i = 0; i < 8; i++)
+            GameRegistry.addRecipe(new ItemStack(ModBlocks.altar, 1, i + 1),
+                    "SSS", "SAS", "SSS",
+                    'S', new ItemStack(ModFluffBlocks.biomeStoneA, 1, i + 8),
+                    'A', new ItemStack(ModBlocks.altar));
+        ModCraftingRecipes.recipesAltarMeta = BotaniaAPI.getLatestAddedRecipes(8);
 
         // Petal block extraction -- see also GT extractor version
         for(int i = 0; i < 16; i++) {
@@ -1527,6 +1536,10 @@ public class CraftingPatches {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Deco blocks
 
+        addWall(ModFluffBlocks.livingwoodWall, 0, new ItemStack(ModBlocks.livingwood, 1, 0));
+        addWall(ModFluffBlocks.livingrockWall, 0, new ItemStack(ModBlocks.livingrock, 1, 0));
+        addWall(ModFluffBlocks.dreamwoodWall,  0, new ItemStack(ModBlocks.dreamwood, 1, 0));
+        addWall(ModFluffBlocks.prismarineWall, 0, new ItemStack(ModBlocks.prismarine, 1, 0));
         GregtechPatches.addStairs(ModFluffBlocks.prismarineStairs, new ItemStack(ModBlocks.prismarine, 1, Constants.PRISMARINE_META_BLOCK));
 
         // Prismarine Brick Recipe
@@ -1558,6 +1571,7 @@ public class CraftingPatches {
                 's', "string");
         ModCraftingRecipes.recipeReedBlock = BotaniaAPI.getLatestAddedRecipe();
         GregtechPatches.addStairs(ModFluffBlocks.reedStairs, ModBlocks.reedBlock);
+        addWall(ModFluffBlocks.reedWall, 0, ModBlocks.reedBlock);
 
         // Thatch Recipe
         addOreDictRecipe(new ItemStack(ModBlocks.thatch),
@@ -1616,6 +1630,7 @@ public class CraftingPatches {
                 "SS", "SS",
                 'S', new ItemStack(Blocks.end_stone));
         ModCraftingRecipes.recipeEndStoneBricks = BotaniaAPI.getLatestAddedRecipe();
+        GregtechPatches.addStairs(ModFluffBlocks.endStoneStairs, new ItemStack(ModBlocks.endStoneBrick, 1, Constants.ENDSTONE_META_BRICK_YELLOW));
 
         GameRegistry.addRecipe(new ItemStack(ModBlocks.endStoneBrick, 1, 1),
                 "S", "S",
@@ -1627,6 +1642,7 @@ public class CraftingPatches {
                 'B', new ItemStack(ModBlocks.endStoneBrick),
                 'P', new ItemStack(Items.ender_pearl));
         ModCraftingRecipes.recipeEnderBricks = BotaniaAPI.getLatestAddedRecipe();
+        GregtechPatches.addStairs(ModFluffBlocks.enderBrickStairs, new ItemStack(ModBlocks.endStoneBrick, 1, Constants.ENDSTONE_META_BRICK_PURPLE));
 
         GameRegistry.addRecipe(new ItemStack(ModBlocks.endStoneBrick, 2, 3),
                 "B", "B",
@@ -1638,8 +1654,68 @@ public class CraftingPatches {
         ModCraftingRecipes.recipeBifrost = BotaniaAPI.getLatestAddedRecipe();
         addShapelessOreDictRecipe(new ItemStack(ModBlocks.shimmerrock), LibOreDict.LIVING_ROCK, new ItemStack(ModBlocks.bifrostPerm));
         ModCraftingRecipes.recipeShimmerrock = BotaniaAPI.getLatestAddedRecipe();
+        GregtechPatches.addStairs(ModFluffBlocks.shimmerrockStairs, new ItemStack(ModBlocks.shimmerrock));
         addShapelessOreDictRecipe(new ItemStack(ModBlocks.shimmerwoodPlanks), new ItemStack(ModBlocks.dreamwood, 1, 1), new ItemStack(ModBlocks.bifrostPerm));
         ModCraftingRecipes.recipeShimmerwoodPlanks = BotaniaAPI.getLatestAddedRecipe();
+        GregtechPatches.addStairs(ModFluffBlocks.shimmerwoodPlankStairs, new ItemStack(ModBlocks.shimmerwoodPlanks));
+
+        // 1.8 Stone Recipes
+        ModCraftingRecipes.recipe18StonePolish = new ArrayList<>();
+        ModCraftingRecipes.recipe18StoneBrick = new ArrayList<>();
+        ModCraftingRecipes.recipe18StoneChisel = new ArrayList<>();
+        for(int i = 0; i < 4; i++) {
+            // block
+            GregtechPatches.addStairs(ModFluffBlocks.stoneStairs[i], LibOreDict.STONE_18_VARIANTS[i]);
+            addOreDictRecipe(new ItemStack(ModFluffBlocks.stone, 1, i),
+                    "Q", "Q",
+                    'Q', new ItemStack(ModFluffBlocks.stoneSlabs[i]));
+
+            // polished
+            addOreDictRecipe(new ItemStack(ModFluffBlocks.stone, 8, i + 4),
+                    "SSS", "SfS", "SSS",
+                    'S', LibOreDict.STONE_18_VARIANTS[i],
+                    'f', ToolDictNames.craftingToolFile.name());
+            ModCraftingRecipes.recipe18StonePolish.add(BotaniaAPI.getLatestAddedRecipe());
+
+            // brick
+            addOreDictRecipe(new ItemStack(ModFluffBlocks.stone, 4, i + 8),
+                    "SS", "SS",
+                    'S', LibOreDict.STONE_18_VARIANTS[i]);
+            ModCraftingRecipes.recipe18StoneBrick.add(BotaniaAPI.getLatestAddedRecipe());
+            GregtechPatches.addStairs(ModFluffBlocks.stoneStairs[i + 4], LibOreDict.STONE_18_VARIANTS[i + 8]);
+
+            // chiseled 2?
+            addOreDictRecipe(new ItemStack(ModFluffBlocks.stone, 1, i + 12),
+                    "S", "S",
+                    'S', new ItemStack(ModFluffBlocks.stoneSlabs[i + 4], 1, 0));
+            ModCraftingRecipes.recipe18StoneChisel.add(BotaniaAPI.getLatestAddedRecipe());
+
+            addWall(ModFluffBlocks.stoneWall, i, LibOreDict.STONE_18_VARIANTS[i]);
+        }
+
+        // Metamorphic blocks
+        for(int i = 0; i < 8; i++) {
+            GameRegistry.addSmelting(new ItemStack(ModFluffBlocks.biomeStoneA, 1, i + 8), new ItemStack(ModFluffBlocks.biomeStoneA, 1, i), 0.1F);
+            GameRegistry.addRecipe(new ItemStack(ModFluffBlocks.biomeStoneB, 4, i), "SS", "SS", 'S', new ItemStack(ModFluffBlocks.biomeStoneA, 1, i));
+            GameRegistry.addRecipe(new ItemStack(ModFluffBlocks.biomeStoneB, 1, i + 8), "S", "S", 'S', new ItemStack(ModFluffBlocks.biomeStoneSlabs[i + 16]));
+            GregtechPatches.addStairs(ModFluffBlocks.biomeStoneStairs[i],    new ItemStack(ModFluffBlocks.biomeStoneA, 1, i));
+            GregtechPatches.addStairs(ModFluffBlocks.biomeStoneStairs[i+8],  new ItemStack(ModFluffBlocks.biomeStoneA, 1, i + 8));
+            GregtechPatches.addStairs(ModFluffBlocks.biomeStoneStairs[i+16], new ItemStack(ModFluffBlocks.biomeStoneB, 1, i));
+            addWall(ModFluffBlocks.biomeStoneWall, i, new ItemStack(ModFluffBlocks.biomeStoneA, 1, i));
+        }
+
+        // Portugese Pavement Recipes
+        addShapelessOreDictRecipe(new ItemStack(ModFluffBlocks.pavement, 3, 0), LibOreDict.LIVING_ROCK, "cobblestone", "gravel");
+        addShapelessOreDictRecipe(new ItemStack(ModFluffBlocks.pavement, 3, 1), LibOreDict.LIVING_ROCK, "cobblestone", "gravel", new ItemStack(Items.coal));
+        addShapelessOreDictRecipe(new ItemStack(ModFluffBlocks.pavement, 3, 2), LibOreDict.LIVING_ROCK, "cobblestone", "gravel", new ItemStack(Items.dye, 1, 4));
+        addShapelessOreDictRecipe(new ItemStack(ModFluffBlocks.pavement, 3, 3), LibOreDict.LIVING_ROCK, "cobblestone", "gravel", new ItemStack(Items.redstone));
+        addShapelessOreDictRecipe(new ItemStack(ModFluffBlocks.pavement, 3, 4), LibOreDict.LIVING_ROCK, "cobblestone", "gravel", new ItemStack(Items.wheat));
+        addShapelessOreDictRecipe(new ItemStack(ModFluffBlocks.pavement, 3, 5), LibOreDict.LIVING_ROCK, "cobblestone", "gravel", new ItemStack(Items.slime_ball));
+        ModCraftingRecipes.recipesPavement = BotaniaAPI.getLatestAddedRecipes(6);
+
+        for(int i = 0; i < ModFluffBlocks.pavementStairs.length; i++)
+            GregtechPatches.addStairs(ModFluffBlocks.pavementStairs[i], new ItemStack(ModFluffBlocks.pavement, 1, i));
+
     }
 
     public static void addOreDictRecipe(ItemStack output, Object... recipe) {
@@ -1652,5 +1728,11 @@ public class CraftingPatches {
 
     public static void addShapelessRecipe(ItemStack output, ItemStack... recipe) {
         CraftingManager.getInstance().getRecipeList().add(new ShapelessRecipes(output, Arrays.asList(recipe)));
+    }
+
+    public static void addWall(Block output, int meta, Object input) {
+        addOreDictRecipe(new ItemStack(output, 6, meta),
+                "SSS", "SSS",
+                'S', input);
     }
 }

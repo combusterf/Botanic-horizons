@@ -91,6 +91,19 @@ public class GregtechPatches {
         addSlabRecipe(new ItemStack(ModFluffBlocks.snowBrickSlab, 2),   new ItemStack(ModBlocks.customBrick, 1, Constants.BRICK_META_FROST),1, 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.tileSlab, 2),        new ItemStack(ModBlocks.customBrick, 1, Constants.BRICK_META_ROOF), 1, 16, 80);
 
+        for (int i = 0; i < 4; i++) {
+            addSlabRecipe(new ItemStack(ModFluffBlocks.stoneSlabs[i + 0], 2), new ItemStack(ModFluffBlocks.stone, 1, i + 0), 1, 16, 80);
+            addSlabRecipe(new ItemStack(ModFluffBlocks.stoneSlabs[i + 4], 2), new ItemStack(ModFluffBlocks.stone, 1, i + 8), 1, 16, 80);
+        }
+        for(int i = 0; i < 8; i++) {
+            addSlabRecipe(new ItemStack(ModFluffBlocks.biomeStoneSlabs[i],    2), new ItemStack(ModFluffBlocks.biomeStoneA, 1, i), 1, 16, 80);
+            addSlabRecipe(new ItemStack(ModFluffBlocks.biomeStoneSlabs[i+8],  2), new ItemStack(ModFluffBlocks.biomeStoneA, 1, i + 8), 1, 16, 80);
+            addSlabRecipe(new ItemStack(ModFluffBlocks.biomeStoneSlabs[i+16], 2), new ItemStack(ModFluffBlocks.biomeStoneB, 1, i), 1, 16, 80);
+        }
+        for (int i = 0; i < ModFluffBlocks.pavementStairs.length; i++)
+            addSlabRecipe(new ItemStack(ModFluffBlocks.pavementSlabs[i], 2), new ItemStack(ModFluffBlocks.pavement, 1, i), 1, 16, 80);
+
+
         // Blocks to either planks or slabs
         ModCraftingRecipes.recipeLivingwoodDecor1 = addSlabRecipe(new ItemStack(ModBlocks.livingwood, 4, Constants.LIVINGWOOD_META_PLANK), new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_BLOCK), 2, 16, 200);
         addSlabRecipe(new ItemStack(ModBlocks.dreamwood,  4, Constants.LIVINGWOOD_META_PLANK), new ItemStack(ModBlocks.dreamwood, 1,  Constants.LIVINGWOOD_META_BLOCK), 2, 16, 200);
@@ -185,6 +198,11 @@ public class GregtechPatches {
             GT_ModHandler.addExtractionRecipe(new ItemStack(ModItems.cosmetic, 1, i), fabric);
         }
         ModCraftingRecipes.recipesCosmeticItems = BotaniaAPI.getLatestAddedRecipes(32);
+
+        // glass panes
+        addGlassPane(ModFluffBlocks.managlassPane, ModBlocks.manaGlass);
+        addGlassPane(ModFluffBlocks.alfglassPane, ModBlocks.elfGlass);
+        addGlassPane(ModFluffBlocks.bifrostPane, ModBlocks.bifrostPerm);
 
     }
 
@@ -312,9 +330,47 @@ public class GregtechPatches {
         }
     }
 
-    public static void addStairs(Block stairsBlock, Object baseBlock) {
-        GameRegistry.addRecipe(new ItemStack(stairsBlock, 4), "  Q", " QQ", "QQQ", 'Q', baseBlock);
-        GameRegistry.addRecipe(new ItemStack(stairsBlock, 4), "Q  ", "QQ ", "QQQ", 'Q', baseBlock);
+    public static void addGlassPane(Block paneBlock, Block inputBlock) {
+        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(
+                true,
+                new ItemStack[]{new ItemStack(inputBlock, 3)},
+                new ItemStack[]{new ItemStack(paneBlock, 8)},
+                null, null,
+                new FluidStack[]{Materials.Water.getFluid(4)},
+                null,
+                100, 7, 0
+        );
+        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(
+                true,
+                new ItemStack[]{new ItemStack(inputBlock, 3)},
+                new ItemStack[]{new ItemStack(paneBlock, 8)},
+                null, null,
+                new FluidStack[]{GT_ModHandler.getDistilledWater(3)},
+                null,
+                100, 7, 0
+        );
+        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(
+                true,
+                new ItemStack[]{new ItemStack(inputBlock, 3)},
+                new ItemStack[]{new ItemStack(paneBlock, 8)},
+                null, null,
+                new FluidStack[]{Materials.Lubricant.getFluid(1)},
+                null,
+                50, 7, 0
+        );
 
+        GT_ModHandler.addCraftingRecipe(
+                new ItemStack(paneBlock, 2),
+                new Object[]{
+                        "s", "G",
+                        'G', new ItemStack(inputBlock, 1),
+                        's', ToolDictNames.craftingToolSaw.name()
+                }
+        );
+    }
+
+    public static void addStairs(Block stairsBlock, Object baseBlock) {
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(stairsBlock, 4), "  Q", " QQ", "QQQ", 'Q', baseBlock));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(stairsBlock, 4), "Q  ", "QQ ", "QQQ", 'Q', baseBlock));
     }
 }
