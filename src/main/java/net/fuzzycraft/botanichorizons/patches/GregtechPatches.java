@@ -53,7 +53,10 @@ public class GregtechPatches {
 
         // Petals from flowers
         for(int i = 0; i < 16; i++) {
-            GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.petal, 1, i), new ItemStack(ModBlocks.petalBlock, 1, i));
+            GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.flower, 1, i), new ItemStack(ModItems.petal, 2, i));
+            for (ItemStack doubleFlowerPart : OreDictionary.getOres(LibOreDict.DOUBLE_FLOWER[i])) {
+                GT_ModHandler.addExtractionRecipe(doubleFlowerPart, new ItemStack(ModItems.petal, 4, i));
+            }
         }
 
         // Better floral fertiliser
