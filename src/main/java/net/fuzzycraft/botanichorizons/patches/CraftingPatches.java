@@ -18,6 +18,7 @@ import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.block.ModFluffBlocks;
 import vazkii.botania.common.block.tile.TileCraftCrate;
+import vazkii.botania.common.core.handler.ConfigHandler;
 import vazkii.botania.common.crafting.ModCraftingRecipes;
 import vazkii.botania.common.item.ItemSignalFlare;
 import vazkii.botania.common.item.ItemTwigWand;
@@ -926,6 +927,24 @@ public class CraftingPatches {
         addShapelessOreDictRecipe(new ItemStack(ModItems.magnetRingGreater), LibOreDict.TERRA_STEEL, new ItemStack(ModItems.magnetRing));
         ModCraftingRecipes.recipeGreaterMagnetRing = BotaniaAPI.getLatestAddedRecipe();
 
+        // Planestrider's Sash Recipe
+        addOreDictRecipe(new ItemStack(ModItems.speedUpBelt),
+                "sMs", "PBP", "sSs",
+                'M', new ItemStack(Items.filled_map, 1, Short.MAX_VALUE),
+                'P', new ItemStack(ModItems.grassSeeds),
+                'B', new ItemStack(ModItems.travelBelt),
+                'S', new ItemStack(Items.sugar),
+                's', "screwStainlessSteel");
+        ModCraftingRecipes.recipeSpeedUpBelt = BotaniaAPI.getLatestAddedRecipe();
+
+        // Bauble Case Recipe
+        addOreDictRecipe(new ItemStack(ModItems.baubleBox),
+                " M ", "MCG", " M ",
+                'M', LibOreDict.MANA_STEEL,
+                'C', new ItemStack(Blocks.chest),
+                'G', "plateGold");
+        ModCraftingRecipes.recipeBaubleCase = BotaniaAPI.getLatestAddedRecipe();
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Misc utility items
 
@@ -1167,6 +1186,28 @@ public class CraftingPatches {
                 'f', ToolDictNames.craftingToolFile.name());
         ModCraftingRecipes.recipeCacophonium = BotaniaAPI.getLatestAddedRecipe();
 
+        // Cellular Block Recipe
+        GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.cellBlock, 3), new ItemStack(Blocks.cactus), new ItemStack(Blocks.cactus), new ItemStack(Blocks.cactus), new ItemStack(Blocks.cactus), new ItemStack(Items.carrot), new ItemStack(Items.potato));
+        ModCraftingRecipes.recipeCellBlock = BotaniaAPI.getLatestAddedRecipe();
+
+        // Worldshaper's Sextant Recipe
+        addOreDictRecipe(new ItemStack(ModItems.sextant),
+                "hTI", "fTT", "III",
+                'T', LibOreDict.LIVINGWOOD_TWIG,
+                'I', LibOreDict.MANA_STEEL,
+                'h', ToolDictNames.craftingToolHardHammer.name(),
+                'f', ToolDictNames.craftingToolFile.name());
+        ModCraftingRecipes.recipeSextant = BotaniaAPI.getLatestAddedRecipe();
+
+        // Alternate Pasture Seed Recipes
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.grassSeeds, 1, 3), new ItemStack(ModItems.grassSeeds), new ItemStack(Blocks.deadbush));
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.grassSeeds, 1, 4), new ItemStack(ModItems.grassSeeds), new ItemStack(Items.wheat));
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.grassSeeds, 1, 5), new ItemStack(ModItems.grassSeeds), new ItemStack(Items.dye, 1, 2));
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.grassSeeds, 1, 6), new ItemStack(ModItems.grassSeeds), new ItemStack(Items.blaze_powder));
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.grassSeeds, 1, 7), new ItemStack(ModItems.grassSeeds), new ItemStack(ModItems.manaResource, 1, 10));
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.grassSeeds, 1, 8), new ItemStack(ModItems.grassSeeds), new ItemStack(Items.spider_eye));
+        ModCraftingRecipes.recipesAltGrassSeeds = BotaniaAPI.getLatestAddedRecipes(6);
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Misc functional blocks
 
@@ -1318,6 +1359,32 @@ public class CraftingPatches {
                 's', new ItemStack((Item)Item.itemRegistry.getObject("Thaumcraft:ItemResource"), 1, 14));
         ModCraftingRecipes.recipeFelPumpkin = BotaniaAPI.getLatestAddedRecipe();
 
+        // Teru Teru Bozu Recipe
+        addOreDictRecipe(new ItemStack(ModBlocks.teruTeruBozu),
+                " C ", "CRC", "CSC",
+                'C', LibOreDict.MANAWEAVE_CLOTH,
+                'R', LibOreDict.RUNE[4],
+                'S', new ItemStack(Blocks.double_plant));
+        ModCraftingRecipes.recipeTeruTeruBozu = BotaniaAPI.getLatestAddedRecipe();
+
+        // Livingwood Avatar Recipe
+        addOreDictRecipe(new ItemStack(ModBlocks.avatar),
+                " W ", "WCW", "WDW",
+                'W', LibOreDict.LIVING_WOOD,
+                'C', new ItemStack((Item)Item.itemRegistry.getObject("Thaumcraft:ItemGolemCore"), 1, 100),
+                'D', LibOreDict.MANA_DIAMOND);
+        ModCraftingRecipes.recipeAvatar = BotaniaAPI.getLatestAddedRecipe();
+
+        // Mana Fluxfield Recipe
+        if(ConfigHandler.fluxfieldEnabled) {
+            addOreDictRecipe(new ItemStack(ModBlocks.rfGenerator),
+                    "SRS", "RIR", "SRS",
+                    'S', LibOreDict.LIVING_ROCK,
+                    'I', LibOreDict.MANA_STEEL,
+                    'R', "plateRedAlloy");
+            ModCraftingRecipes.recipeRFGenerator = BotaniaAPI.getLatestAddedRecipe();
+        }
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Flower extras
 
@@ -1352,9 +1419,11 @@ public class CraftingPatches {
 
         // Crafty Crate Recipe
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.openCrate, 1, 1),
-                "WCW", "W W", "W W",
+                "WCW", "WSW", "WsW",
                 'C', "craftingTableWood",
-                'W', new ItemStack(ModBlocks.dreamwood, 1, 1)));
+                'W', new ItemStack(ModBlocks.dreamwood, 1, 1),
+                'S', "screwWood",
+                's', ToolDictNames.craftingToolScrewdriver.name()));
         ModCraftingRecipes.recipeCraftCrate = BotaniaAPI.getLatestAddedRecipe();
 
         // Crafting Placeholder Recipe
@@ -1541,6 +1610,13 @@ public class CraftingPatches {
         addWall(ModFluffBlocks.dreamwoodWall,  0, new ItemStack(ModBlocks.dreamwood, 1, 0));
         addWall(ModFluffBlocks.prismarineWall, 0, new ItemStack(ModBlocks.prismarine, 1, 0));
         GregtechPatches.addStairs(ModFluffBlocks.prismarineStairs, new ItemStack(ModBlocks.prismarine, 1, Constants.PRISMARINE_META_BLOCK));
+
+        // Glimmering
+        addOreDictRecipe(new ItemStack(ModBlocks.dreamwood, 4, Constants.LIVINGWOOD_META_GLIMMERING),
+                "LWL", "WGW", "LWL",
+                'L', "ingotSteeleaf",
+                'W', LibOreDict.DREAM_WOOD,
+                'G', "glowstone");
 
         // Prismarine Brick Recipe
         addOreDictRecipe(new ItemStack(ModBlocks.prismarine, 4, Constants.PRISMARINE_META_BRICK),
