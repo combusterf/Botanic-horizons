@@ -4,9 +4,11 @@ import net.fuzzycraft.botanichorizons.mod.ForgeMod;
 import net.fuzzycraft.botanichorizons.util.Constants;
 import net.fuzzycraft.botanichorizons.util.ResearchBuilder;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSkull;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
@@ -433,5 +435,31 @@ public class ThaumcraftPatches {
                     }
                 })
                 .commit();
+
+        // Necrodermal and Nullodermal Virus
+        new ResearchBuilder("VIRUS")
+                .setBookLocation(3, 6)
+                .setDifficulty(2)
+                .setResearchAspects(Aspect.EXCHANGE, Aspect.BEAST, Aspect.UNDEAD, Aspect.POISON)
+                .addSingleTextPage()
+                .addShapelessCraftingRecipe(
+                        new ItemStack(ModItems.virus, 1, Constants.VIRUS_METADATA_NECRO),
+                        new AspectList().add(Aspect.WATER, 25).add(Aspect.ENTROPY, 25),
+                        new ItemStack(Items.skull, 1, 2),
+                        new ItemStack(ModItems.vineBall),
+                        "resourceTaint", LibOreDict.MANA_PEARL,
+                        new ItemStack(Items.magma_cream), new ItemStack(Items.fermented_spider_eye)
+
+                )
+                .addShapelessCraftingRecipe(
+                        new ItemStack(ModItems.virus, 1, Constants.VIRUS_METADATA_NULL),
+                        new AspectList().add(Aspect.FIRE, 25).add(Aspect.ENTROPY, 25),
+                        new ItemStack(Items.skull, 1, 0),
+                        new ItemStack(ModItems.vineBall),
+                        "resourceTaint", LibOreDict.MANA_PEARL,
+                        new ItemStack(Items.magma_cream), new ItemStack(Items.fermented_spider_eye)
+                )
+                .commit();
+
     }
 }

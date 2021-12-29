@@ -9,6 +9,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
+import thaumcraft.api.crafting.ShapelessArcaneRecipe;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
@@ -72,6 +73,12 @@ public class ResearchBuilder {
 
     public ResearchBuilder addCraftingRecipe(ItemStack out, AspectList aspects, Object... craftingRecipe) {
         ShapedArcaneRecipe recipe = ThaumcraftApi.addArcaneCraftingRecipe(key, out, aspects, craftingRecipe);
+        content.add(new ResearchPage(recipe));
+        return this;
+    }
+
+    public ResearchBuilder addShapelessCraftingRecipe(ItemStack out, AspectList aspects, Object... craftingRecipe) {
+        ShapelessArcaneRecipe recipe = ThaumcraftApi.addShapelessArcaneCraftingRecipe(key, out, aspects, craftingRecipe);
         content.add(new ResearchPage(recipe));
         return this;
     }

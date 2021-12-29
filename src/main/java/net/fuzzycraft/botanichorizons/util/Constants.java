@@ -24,11 +24,13 @@ public final class Constants {
     public static final int MANARESOURCE_META_GAIA_SPIRIT = 5;
     public static final int MANARESOURCE_META_ROOT = 6;
     public static final int MANARESOURCE_META_ELEMENTIUM = 7;
-    public static final int MANARESOURCE_META_PIXIE_DUST = 6;
+    public static final int MANARESOURCE_META_PIXIE_DUST = 8;
     public static final int MANARESOURCE_META_DRAGONSTONE = 9;
     public static final int MANARESOURCE_META_PRISMARINE = 10;
+    public static final int MANARESOURCE_META_CRAFT = 11;
     public static final int MANARESOURCE_META_TWIG_DREAM = 13;
     public static final int MANARESOURCE_META_GAIA_INGOT = 14;
+    public static final int MANARESOURCE_META_STRING = 16;
     public static final int MANARESOURCE_META_CLOTH = 22;
     public static final int MANARESOURCE_META_MANAPOWDER = 23;
 
@@ -75,6 +77,21 @@ public final class Constants {
     public static final int QUARTZ_META_RED = 4;
     public static final int QUARTZ_META_ELVEN = 5;
     public static final int QUARTZ_META_SUNNY = 6;
+
+    public static final int VIRUS_METADATA_NECRO = 0;
+    public static final int VIRUS_METADATA_NULL = 1;
+
+    public static final int PRISMARINE_META_BLOCK = 0;
+    public static final int PRISMARINE_META_BRICK = 1;
+    public static final int PRISMARINE_META_DARK = 2;
+
+    public static final int BRICK_META_HELL = 0;
+    public static final int BRICK_META_SOUL = 1;
+    public static final int BRICK_META_FROST = 2;
+    public static final int BRICK_META_ROOF = 3;
+
+    public static final int ENDSTONE_META_BRICK_YELLOW = 0;
+    public static final int ENDSTONE_META_BRICK_PURPLE = 2;
 
     public static final String THAUMCRAFT_METAL_DEVICE = "Thaumcraft:blockMetalDevice";
     public static final String THAUMCRAFT_STONE_DEVICE = "Thaumcraft:blockStoneDevice";

@@ -67,29 +67,26 @@ public class GregtechPatches {
         }
 
         // Slabs
-        addSlabRecipe(new ItemStack(ModFluffBlocks.blazeQuartzSlab, 2),       new ItemStack(ModFluffBlocks.blazeQuartz, 1),     1, 16, 80);
-        //addSlabRecipe(new ItemStack(ModFluffBlocks.darkPrismarineSlab, 2), new ItemStack(??, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.darkQuartzSlab, 2),        new ItemStack(ModFluffBlocks.darkQuartz, 1),      1, 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.dirtPathSlab, 2),          new ItemStack(ModBlocks.dirtPath, 1),             1, 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.elfQuartzSlab, 2),         new ItemStack(ModFluffBlocks.elfQuartz, 1),       1, 16, 80);
-        //addSlabRecipe(new ItemStack(ModFluffBlocks.enderBrickSlab, 2), new ItemStack(??, 1), 16, 80);
-        //addSlabRecipe(new ItemStack(ModFluffBlocks.endStoneSlab, 2), new ItemStack(??, 1), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.lavenderQuartzSlab, 2),    new ItemStack(ModFluffBlocks.lavenderQuartz, 1),  1, 16, 80);
-        //addSlabRecipe(new ItemStack(ModFluffBlocks.livingrockBrickSlab, 2), new ItemStack(??, 1), 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.livingrockSlab, 2),        new ItemStack(ModBlocks.livingrock, 1),           1, 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.manaQuartzSlab, 2),        new ItemStack(ModFluffBlocks.manaQuartz, 1),      1, 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.netherBrickSlab, 2),       new ItemStack(Blocks.nether_brick, 1),            1, 16, 80);
-        //addSlabRecipe(new ItemStack(ModFluffBlocks.prismarineBrickSlab, 2), new ItemStack(??, 1), 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.prismarineSlab, 2),        new ItemStack(ModBlocks.prismarine, 1),           1, 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.redQuartzSlab, 2),         new ItemStack(ModFluffBlocks.redQuartz, 1),       1, 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.reedSlab, 2),              new ItemStack(ModBlocks.reedBlock, 1),            1, 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.shimmerrockSlab, 2),       new ItemStack(ModBlocks.shimmerrock, 1),          1, 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.shimmerwoodPlankSlab, 2),  new ItemStack(ModBlocks.shimmerwoodPlanks, 1),    1, 16, 80);
-        //addSlabRecipe(new ItemStack(ModFluffBlocks.soulBrickSlab, 2), new ItemStack(??, 1), 16, 80);
-        //addSlabRecipe(new ItemStack(ModFluffBlocks.snowBrickSlab, 2), new ItemStack(??, 2), 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.sunnyQuartzSlab, 2),       new ItemStack(ModFluffBlocks.sunnyQuartz, 1),     1, 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.thatchSlab, 2),            new ItemStack(ModBlocks.thatch, 1),               1, 16, 80);
-        //addSlabRecipe(new ItemStack(ModFluffBlocks.tileSlab, 2), new ItemStack(??, 1), 16, 80);
+
+        addSlabRecipe(new ItemStack(ModFluffBlocks.livingrockSlab, 2),      new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_BLOCK), 1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.livingrockBrickSlab, 2), new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_BRICK), 1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.prismarineSlab, 2),      new ItemStack(ModBlocks.prismarine, 1, Constants.PRISMARINE_META_BLOCK),  1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.prismarineBrickSlab, 2), new ItemStack(ModBlocks.prismarine, 1, Constants.PRISMARINE_META_BRICK),  1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.darkPrismarineSlab, 2),  new ItemStack(ModBlocks.prismarine, 1, Constants.PRISMARINE_META_DARK),   1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.endStoneSlab, 2),        new ItemStack(ModBlocks.endStoneBrick, 1, Constants.ENDSTONE_META_BRICK_YELLOW), 1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.enderBrickSlab, 2),      new ItemStack(ModBlocks.endStoneBrick, 1, Constants.ENDSTONE_META_BRICK_PURPLE), 1, 16, 80);
+
+        addSlabRecipe(new ItemStack(ModFluffBlocks.netherBrickSlab, 2), new ItemStack(ModBlocks.customBrick, 1, Constants.BRICK_META_HELL), 1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.soulBrickSlab, 2),   new ItemStack(ModBlocks.customBrick, 1, Constants.BRICK_META_SOUL), 1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.snowBrickSlab, 2),   new ItemStack(ModBlocks.customBrick, 1, Constants.BRICK_META_FROST),1, 16, 80);
+        addSlabRecipe(new ItemStack(ModFluffBlocks.tileSlab, 2),        new ItemStack(ModBlocks.customBrick, 1, Constants.BRICK_META_ROOF), 1, 16, 80);
 
         // Blocks to either planks or slabs
         ModCraftingRecipes.recipeLivingwoodDecor1 = addSlabRecipe(new ItemStack(ModBlocks.livingwood, 4, Constants.LIVINGWOOD_META_PLANK), new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_BLOCK), 2, 16, 200);
@@ -106,6 +103,7 @@ public class GregtechPatches {
         addStairs(ModFluffBlocks.livingwoodPlankStairs, new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_PLANK));
         addStairs(ModFluffBlocks.dreamwoodStairs, new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_BLOCK));
         addStairs(ModFluffBlocks.dreamwoodPlankStairs, new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_PLANK));
+        addSlabRecipe(new ItemStack(ModFluffBlocks.dreamwoodPlankSlab, 2), new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_PLANK),   1, 16, 80);
 
         // Cracked blocks
         ModCraftingRecipes.recipeLivingrockDecor3 = addHammerRecipe(new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_CRACKED), new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_BRICK));
@@ -134,6 +132,36 @@ public class GregtechPatches {
 
         GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_PRISMARINE), new ItemStack(ModBlocks.prismarine));
         GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.prismarine), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_PRISMARINE));
+
+        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.reedBlock), new ItemStack(Items.reeds, 8));
+        GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.addRecipe(true,
+                new ItemStack[]{new ItemStack(Items.reeds, 8), GT_Utility.getIntegratedCircuit(16)},
+                new ItemStack[]{new ItemStack(ModBlocks.reedBlock)},
+                null, null, null,
+                80, 24, 0
+        );
+
+        // Livingwood and Crystal Bows
+        GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.addRecipe(true,
+                new ItemStack[]{
+                        new ItemStack(ModItems.manaResource, 3, Constants.MANARESOURCE_META_TWIG_WOOD),
+                        new ItemStack(ModItems.manaResource, 3, Constants.MANARESOURCE_META_STRING),
+                        GT_Utility.getIntegratedCircuit(1)
+                },
+                new ItemStack[]{new ItemStack(ModItems.livingwoodBow)},
+                null, null, null,
+                80, 24, 0
+        );
+        GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.addRecipe(true,
+                new ItemStack[]{
+                        new ItemStack(ModItems.manaResource, 3, Constants.MANARESOURCE_META_TWIG_DREAM),
+                        new ItemStack(ModItems.manaResource, 3, Constants.MANARESOURCE_META_STRING),
+                        new ItemStack(ModItems.manaResource, 2, Constants.MANARESOURCE_META_DRAGONSTONE),
+                },
+                new ItemStack[]{new ItemStack(ModItems.crystalBow)},
+                null, null, null,
+                80, 24, 0
+        );
 
         // Decorative baubles
         for(int i = 0; i < 32; i++) {
