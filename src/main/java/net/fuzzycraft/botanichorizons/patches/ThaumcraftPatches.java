@@ -12,9 +12,11 @@ import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
+import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.common.block.ModBlocks;
@@ -34,13 +36,13 @@ public class ThaumcraftPatches {
         ResearchCategories.registerCategory(
                 ResearchBuilder.category,
                 new ResourceLocation("botania", "textures/items/grassSeeds0.png"),
-                new ResourceLocation(ForgeMod.MOD_ID, "textures/tc_bg.png")
+                new ResourceLocation(ForgeMod.MOD_ID, "textures/tc_bg.png") // from NASA, in the public domain
         );
 
         // MV method of upgrading shrooms into flowers
         new ResearchBuilder("FLOWERS")
                 .setBookLocation(0,3)
-                .setResearchIconItem("botania", "grassSeeds0.png")
+                .setResearchIconItem("botania", "lexicon.png")
                 .setResearchAspects(Aspect.PLANT, Aspect.EXCHANGE, Aspect.MAGIC)
                 .setDifficulty(1)
                 .addSingleTextPage()
@@ -56,10 +58,11 @@ public class ThaumcraftPatches {
 
         // MV method of duplicating flowers
         new ResearchBuilder("FLOWERDUPE")
-            .setBookLocation(-2,3)
-            .setResearchIconItem("botania", "grassSeeds1.png")
+            .setBookLocation(-3,3)
+            .setResearchIconBlock("botania", "flower4Tall0.png")
             .setResearchAspects(Aspect.PLANT, Aspect.SENSES, Aspect.MAGIC)
             .setDifficulty(1)
+            .setDependencies("FLOWERS")
             .addSingleTextPage()
             .apply(builder -> {
                 for (int i = 0; i < 16; i++) {
@@ -73,9 +76,11 @@ public class ThaumcraftPatches {
 
         // HV method of mutating flowers
         new ResearchBuilder("FLOWERCOLOUR")
-            .setBookLocation(2,3)
+            .setBookLocation(3,3)
+            .setResearchIconBlock("botania", "spectrolus.png")
             .setResearchAspects(Aspect.PLANT, Aspect.EXCHANGE, Aspect.SENSES, Aspect.CRAFT)
             .setDifficulty(2)
+            .setDependencies("FLOWERS")
             .addSingleTextPage()
             .apply(builder -> {
                 for (int i = 0; i < 16; i++) {
@@ -93,27 +98,32 @@ public class ThaumcraftPatches {
 
         // flowers back into mushrooms
         new ResearchBuilder("MUSHROOMS")
-                .setBookLocation(-3,6)
-                .setResearchIconItem("botania", "grassSeeds0.png")
-                .setResearchAspects(Aspect.PLANT, Aspect.EXCHANGE, Aspect.DARKNESS)
-                .setDifficulty(1)
-                .addSingleTextPage()
-                .apply(builder -> {
-                    for (int i = 0; i < 16; i++) {
-                        builder.addCrucibleRecipe(
-                                new AspectList().add(Aspect.DARKNESS, 4),
-                                new ItemStack(ModBlocks.mushroom, 1, i),
-                                new ItemStack(ModBlocks.shinyFlower, 1, i)
-                        );
-                    }
-                }).commit();
+            .setBookLocation(-2,6)
+            .setResearchIconBlock("botania", "mushroom5.png")
+            .setResearchAspects(Aspect.PLANT, Aspect.EXCHANGE, Aspect.DARKNESS)
+            .setDifficulty(1)
+            .addSingleTextPage()
+            .setDependencies("FLOWERS")
+            .apply(builder -> {
+                for (int i = 0; i < 16; i++) {
+                    builder.addCrucibleRecipe(
+                            new AspectList().add(Aspect.DARKNESS, 4),
+                            new ItemStack(ModBlocks.mushroom, 1, i),
+                            new ItemStack(ModBlocks.shinyFlower, 1, i)
+                    );
+                }
+            }).commit();
 
         // Runic altar
         new ResearchBuilder("ALTAR")
-            .setBookLocation(0, -1)
+            .setBookLocation(-1, -1)
+            .setResearchIconItem("botania", "rune8.png")
             .setDifficulty(3)
             .setResearchAspects(Aspect.PLANT, Aspect.EXCHANGE, Aspect.MAGIC, Aspect.AURA, Aspect.ELDRITCH, Aspect.MECHANISM)
             .addSingleTextPage()
+            .setDependencies("ALCHEMY_CATALYST")
+            .setExternalDependencies("INFUSION")
+            .setMainlineResearch()
             .apply( builder -> {
                 ItemStack block = new ItemStack(ModBlocks.livingrock);
                 ItemStack pearl = OreDictionary.getOres(LibOreDict.MANA_PEARL).get(0);
@@ -130,10 +140,13 @@ public class ThaumcraftPatches {
 
         // Agglomeration Plate
         new ResearchBuilder("TERRASTEEL")
-                .setBookLocation(0, -3)
+                .setBookLocation(-1, -3)
+                .setResearchIconItem("botania", "terrasteel.png")
                 .setDifficulty(3)
                 .setResearchAspects(Aspect.EARTH, Aspect.GREED, Aspect.MAGIC, Aspect.AURA, Aspect.METAL, Aspect.TOOL)
                 .addSingleTextPage()
+                .setDependencies("ALTAR")
+                .setMainlineResearch()
                 .apply( builder -> {
                     List<ItemStack> ingredients = new LinkedList<>();
                     for (String oredict: LibOreDict.RUNE) {
@@ -162,9 +175,12 @@ public class ThaumcraftPatches {
 
         new ResearchBuilder("ALFHEIM")
             .setBookLocation(0, -6)
+            .setResearchIconItem("botania", "quartz5.png")
             .setDifficulty(3)
             .setResearchAspects(Aspect.EARTH, Aspect.PLANT, Aspect.ELDRITCH, Aspect.AURA, Aspect.TRAVEL, Aspect.SENSES)
             .addTextPages(0,1)
+            .setDependencies("TERRASTEEL")
+            .setMainlineResearch()
             .addCraftingRecipe(
                     new ItemStack(ModBlocks.livingwood,4, Constants.LIVINGWOOD_META_GLIMMERING),
                     new AspectList().add(Aspect.EARTH, 50).add(Aspect.WATER, 50).add(Aspect.AIR, 25),
@@ -193,9 +209,12 @@ public class ThaumcraftPatches {
 
         // Catalysts
         new ResearchBuilder("ALCHEMY_CATALYST")
-                .setBookLocation(0, 1)
+                .setBookLocation(-1, 1)
+                .setResearchIconBlock("botania", "alchemyCatalyst3.png")
                 .setDifficulty(1)
                 .setResearchAspects(Aspect.WATER, Aspect.EXCHANGE, Aspect.MAGIC)
+                .setDependencies("FLOWERS")
+                .setMainlineResearch()
                 .addSingleTextPage()
                 .addCraftingRecipe(
                         new ItemStack(ModBlocks.alchemyCatalyst),
@@ -210,10 +229,13 @@ public class ThaumcraftPatches {
                 .commit();
 
         new ResearchBuilder("CONJURATION_CATALYST")
-            .setBookLocation(2, -6)
-            .setDifficulty(1)
-            .setResearchAspects(Aspect.WATER, Aspect.EXCHANGE, Aspect.MAGIC)
+            .setBookLocation(2, -5)
+            .setResearchIconBlock("botania", "conjurationCatalyst3.png")
+            .setDifficulty(3)
+            .setResearchAspects(Aspect.WATER, Aspect.EXCHANGE, Aspect.MAGIC, Aspect.GREED, Aspect.CRAFT, Aspect.VOID)
             .addSingleTextPage()
+            .setDependencies("ALFHEIM")
+            .setExternalDependencies(ResearchBuilder.prefix + "ALFHEIM")
             .addCraftingRecipe(
                     new ItemStack(ModBlocks.conjurationCatalyst),
                     new AspectList().add(Aspect.FIRE, 50).add(Aspect.ORDER, 150).add(Aspect.WATER, 50),
@@ -227,10 +249,12 @@ public class ThaumcraftPatches {
 
         // Pylons
         new ResearchBuilder("MANA_PYLON")
-            .setBookLocation(2, 0)
+            .setBookLocation(1, 1)
+            .setResearchIconItemStack(new ItemStack(ModBlocks.pylon, 1, Constants.PYLON_META_MANA))
             .setDifficulty(2)
             .setResearchAspects(Aspect.CRYSTAL, Aspect.GREED, Aspect.MIND)
             .addSingleTextPage()
+            .setDependencies("FLOWERS")
             .addCraftingRecipe(
                     new ItemStack(ModBlocks.pylon, 1, Constants.PYLON_META_MANA),
                     new AspectList().add(Aspect.WATER, 20).add(Aspect.ORDER, 20).add(Aspect.AIR, 20),
@@ -243,10 +267,13 @@ public class ThaumcraftPatches {
             .commit();
 
         new ResearchBuilder("NATURA_PYLON")
-            .setBookLocation(4, -1)
+            .setBookLocation(3, 0)
+            .setResearchIconItemStack(new ItemStack(ModBlocks.pylon, 1, Constants.PYLON_META_NATURA))
             .setDifficulty(2)
             .setResearchAspects(Aspect.CRYSTAL, Aspect.GREED, Aspect.MIND, Aspect.TRAVEL, Aspect.PLANT)
             .addSingleTextPage()
+            .setDependencies("MANA_PYLON")
+            .setExternalDependencies(ResearchBuilder.prefix + "TERRASTEEL")
             .addCraftingRecipe(
                     new ItemStack(ModBlocks.pylon, 1, Constants.PYLON_META_NATURA),
                     new AspectList().add(Aspect.EARTH, 50).add(Aspect.ORDER, 100).add(Aspect.AIR, 50),
@@ -259,10 +286,14 @@ public class ThaumcraftPatches {
             .commit();
 
         new ResearchBuilder("GAIA_PYLON")
-            .setBookLocation(6, -2)
+            .setBookLocation(2, -7)
+            .setResearchIconItemStack(new ItemStack(ModBlocks.pylon, 1, Constants.PYLON_META_GAIA))
             .setDifficulty(3)
+            .setWarp(5)
             .setResearchAspects(Aspect.ELDRITCH, Aspect.GREED, Aspect.MIND, Aspect.CRYSTAL, Aspect.DARKNESS, Aspect.TRAP)
             .addSingleTextPage()
+            .setDependencies("ALFHEIM")
+            .setExternalDependencies("ELDRITCHMINOR")
             .apply(builder -> {
                 ItemStack pinkGem = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_DRAGONSTONE);
                 ItemStack blackPlate = OreDictionary.getOres("plateNaquadah").get(0);
@@ -277,13 +308,17 @@ public class ThaumcraftPatches {
                 );
             })
             .commit();
+        ThaumcraftApi.addWarpToItem(new ItemStack(ModBlocks.pylon, 1, Constants.PYLON_META_GAIA), 2);
 
         // Brewery
         new ResearchBuilder("BREWERY")
-                .setBookLocation(-2, 0)
+                .setBookLocation(0, 6)
+                .setResearchIconItem("botania", "vial0.png")
                 .setDifficulty(2)
                 .setResearchAspects(Aspect.MAN, Aspect.MAGIC, Aspect.CRYSTAL, Aspect.MECHANISM)
                 .addSingleTextPage()
+                .setDependencies("FLOWERS")
+                .setExternalDependencies("INFUSION")
                 .apply(builder -> {
                     ItemStack glass = new ItemStack(ModBlocks.manaGlass);
                     ItemStack slab = new ItemStack(ModFluffBlocks.livingrockSlab);
@@ -299,10 +334,13 @@ public class ThaumcraftPatches {
                 .commit();
 
         new ResearchBuilder("ALFGLASS_FLASK")
-                .setBookLocation(-4, -1)
+                .setBookLocation(0, 9)
+                .setResearchIconItem("botania", "flask0.png")
                 .setDifficulty(2)
                 .setResearchAspects(Aspect.CRYSTAL, Aspect.VOID, Aspect.TRAP, Aspect.MAGIC, Aspect.SLIME)
                 .addSingleTextPage()
+                .setDependencies("BREWERY")
+                .setExternalDependencies(ResearchBuilder.prefix + "ALFHEIM")
                 .addCraftingRecipe(
                         new ItemStack(ModItems.vial, 1, Constants.VIAL_META_ALFGLASS),
                         new AspectList().add(Aspect.WATER, 25),
@@ -314,9 +352,12 @@ public class ThaumcraftPatches {
 
         // Terrasteel tool recipes
         new ResearchBuilder("TERRASTEEL_SWORD")
-                .setBookLocation(-2, -3)
+                .setBookLocation(-3, -5)
+                .setResearchIconItem("botania", "terraSword.png")
                 .setDifficulty(2)
                 .setResearchAspects(Aspect.EARTH, Aspect.MAGIC, Aspect.WEAPON, Aspect.MAN, Aspect.BEAST)
+                .setDependencies("TERRASTEEL")
+                .setExternalDependencies("ELEMENTALSWORD")
                 .addSingleTextPage()
                 .apply(builder -> {
                     ItemStack twig = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_TWIG_WOOD);
@@ -335,9 +376,12 @@ public class ThaumcraftPatches {
                 .commit();
 
         new ResearchBuilder("TERRASTEEL_PICK")
-                .setBookLocation(-3, -3)
+                .setBookLocation(-4, -5)
+                .setResearchIconItem("botania", "terraPick2.png")
                 .setDifficulty(2)
                 .setResearchAspects(Aspect.EARTH, Aspect.MAGIC, Aspect.TOOL, Aspect.MAN, Aspect.MINE)
+                .setDependencies("TERRASTEEL")
+                .setExternalDependencies("ELEMENTALPICK")
                 .addSingleTextPage()
                 .apply(builder -> {
                     ItemStack twig = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_TWIG_WOOD);
@@ -356,9 +400,12 @@ public class ThaumcraftPatches {
                 .commit();
 
         new ResearchBuilder("TERRASTEEL_AXE")
-                .setBookLocation(-3, -2)
+                .setBookLocation(-4, -4)
+                .setResearchIconItem("botania", "terraAxe0.png")
                 .setDifficulty(2)
                 .setResearchAspects(Aspect.EARTH, Aspect.MAGIC, Aspect.TOOL, Aspect.MAN, Aspect.TREE)
+                .setDependencies("TERRASTEEL")
+                .setExternalDependencies("ELEMENTALAXE")
                 .addSingleTextPage()
                 .apply(builder -> {
                     ItemStack twig = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_TWIG_WOOD);
@@ -379,8 +426,11 @@ public class ThaumcraftPatches {
         // Laputa; Lower levels are LuV, Chad value increases per level until late UHV
         new ResearchBuilder("LAPUTA")
                 .setBookLocation(-2, -7)
+                .setResearchIconItem("botania", "laputaShard.png")
                 .setDifficulty(3)
                 .setResearchAspects(Aspect.WEATHER, Aspect.AIR, Aspect.EARTH, Aspect.FLIGHT, Aspect.TRAVEL)
+                .setDependencies("ALFHEIM")
+                .setExternalDependencies("ELDRITCHMAJOR")
                 .addTextPages(0, 1)
                 .apply(builder -> {
                     ItemStack gaia = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_GAIA_INGOT);
@@ -438,9 +488,12 @@ public class ThaumcraftPatches {
 
         // Necrodermal and Nullodermal Virus
         new ResearchBuilder("VIRUS")
-                .setBookLocation(3, 6)
+                .setBookLocation(2, 6)
+                .setResearchIconItem("botania", "virus1.png")
                 .setDifficulty(2)
+                .setWarp(2)
                 .setResearchAspects(Aspect.EXCHANGE, Aspect.BEAST, Aspect.UNDEAD, Aspect.POISON)
+                .setDependencies("FLOWERS")
                 .addSingleTextPage()
                 .addShapelessCraftingRecipe(
                         new ItemStack(ModItems.virus, 1, Constants.VIRUS_METADATA_NECRO),
@@ -460,6 +513,8 @@ public class ThaumcraftPatches {
                         new ItemStack(Items.magma_cream), new ItemStack(Items.fermented_spider_eye)
                 )
                 .commit();
+        ThaumcraftApi.addWarpToItem(new ItemStack(ModItems.virus, 1, Constants.VIRUS_METADATA_NECRO), 1);
+        ThaumcraftApi.addWarpToItem(new ItemStack(ModItems.virus, 1, Constants.VIRUS_METADATA_NULL), 1);
 
     }
 }

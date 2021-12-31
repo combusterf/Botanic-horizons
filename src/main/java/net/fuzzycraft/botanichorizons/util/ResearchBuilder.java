@@ -25,9 +25,14 @@ public class ResearchBuilder {
     public int row = 0;
     public int col = 0;
     public int researchDifficulty = 1;
+    public int warp = 0;
+    public boolean mainline = false;
+    public String[] dependencies = new String[0];
+    public String[] hiddenDependencies = new String[0];
     public AspectList researchAspects;
     public LinkedList<ResearchPage> content = new LinkedList<>();
     public ResourceLocation researchIcon = new ResourceLocation("botania", "textures/items/grassSeeds0.png");
+    public ItemStack researchItemIcon = null;
 
     public ResearchBuilder(String key) {
         this.key = prefix + key;
@@ -56,6 +61,16 @@ public class ResearchBuilder {
 
     public ResearchBuilder setResearchIconItem(String mod, String filename) {
         this.researchIcon = new ResourceLocation(mod, "textures/items/" + filename);
+        return this;
+    }
+
+    public ResearchBuilder setResearchIconBlock(String mod, String filename) {
+        this.researchIcon = new ResourceLocation(mod, "textures/blocks/" + filename);
+        return this;
+    }
+
+    public ResearchBuilder setResearchIconItemStack(ItemStack render) {
+        this.researchItemIcon = render;
         return this;
     }
 
@@ -95,19 +110,61 @@ public class ResearchBuilder {
         return this;
     }
 
+    public ResearchBuilder setWarp(int warp) {
+        this.warp = warp;
+        return this;
+    }
+
+    public ResearchBuilder setMainlineResearch() {
+        this.mainline = true;
+        return this;
+    }
+
+    public ResearchBuilder setDependencies(String... dependencies) {
+        this.dependencies = dependencies;
+        for (int i = 0; i < this.dependencies.length; i++) {
+            this.dependencies[i] = prefix + this.dependencies[i];
+        }
+        return this;
+    }
+
+    public ResearchBuilder setExternalDependencies(String... dependencies) {
+        this.hiddenDependencies = dependencies;
+        return this;
+    }
+
     public ResearchBuilder apply(WithResearchBuilder lambda) {
         lambda.apply(this);
         return this;
     }
 
     public void commit() {
-        ResearchItem research = new ResearchItem(
-            key, category, researchAspects,
-            col, row, researchDifficulty,
-            researchIcon
-        );
+        ResearchItem research;
+        if (researchItemIcon != null) {
+            research = new ResearchItem(
+                    key, category, researchAspects,
+                    col, row, researchDifficulty,
+                    researchItemIcon
+            );
+        } else {
+            research = new ResearchItem(
+                    key, category, researchAspects,
+                    col, row, researchDifficulty,
+                    researchIcon
+            );
+        }
         research.setPages(content.toArray(new ResearchPage[0]));
+        research.parents = dependencies;
+        research.parentsHidden = hiddenDependencies;
+        research.setConcealed();
+        if (mainline) {
+            research.setSpecial();
+        }
+
         ResearchCategories.addResearch(research);
+        if (warp > 0) {
+            ThaumcraftApi.addWarpToResearch(key, warp);
+        }
     }
 
     public interface WithResearchBuilder {
