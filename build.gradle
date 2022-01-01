@@ -1,17 +1,24 @@
 buildscript {
     repositories {
-        mavenCentral()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://maven.minecraftforge.net"
         }
         maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+        maven {
+            name = "Scala CI dependencies"
+            url = "https://repo1.maven.org/maven2/"
+        }
+        maven {
+            name = "jitpack"
+            url = "https://jitpack.io"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.4'
     }
 }
 
@@ -19,6 +26,9 @@ repositories {
     maven {
         name = "chickenbones"
         url = "http://chickenbones.net/maven/"
+    }
+	    maven {
+        url = "https://jitpack.io"
     }
 }
 
@@ -53,27 +63,15 @@ compileJava {
     options.encoding = "UTF-8"
 }
 
-//This here is for SCP
-//repositories {
-//    mavenCentral()
-//}
-//configurations {
-//    sshAntTask
-//}
-//End of the SCP config
 
 dependencies {
-    
-    // should contain a Botania-deobf.jar
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    
-    //compile "codechicken:CodeChickenLib:1.7.10-1.1.1.109:dev"
-    //compile "codechicken:CodeChickenCore:1.7.10-1.0.2.9:dev"
-    //compile "codechicken:NotEnoughItems:1.7.10-1.0.2.15:dev"
-    //compile "codechicken:ForgeMultipart:1.7.10-1.1.1.320:dev"
+	compile("com.github.GTNewHorizons:Botania:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev") {
+        transitive = false
+    }
 
-    //and a bit more for SCP
-    //sshAntTask "org.apache.ant:ant-jsch:1.7.1", "jsch:jsch:0.1.29"
 }
 
 processResources {
