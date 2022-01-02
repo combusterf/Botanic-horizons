@@ -1,5 +1,6 @@
 package net.fuzzycraft.botanichorizons.patches;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GT_Utility;
@@ -300,13 +301,15 @@ public class CraftingPatches {
         addShapelessOreDictRecipe(new ItemStack(ModItems.lens, 1, 6), new ItemStack(ModItems.lens), "blockObsidian", "compressedCobblestone1x");
         ModCraftingRecipes.recipeLensGravity = BotaniaAPI.getLatestAddedRecipe();
 
-        addOreDictRecipe(new ItemStack(ModItems.lens, 1, 7),
-                " P ", "ALA", " R ",
-                'P', Item.itemRegistry.getObject("dreamcraft:item.DiamondDrillTip"),
-                'R', "dustRedstone",
-                'A', "gemLapis",
-                'L', new ItemStack(ModItems.lens));
-        ModCraftingRecipes.recipeLensBore = BotaniaAPI.getLatestAddedRecipe();
+        if(Loader.isModLoaded("dreamcraft")) {
+            addOreDictRecipe(new ItemStack(ModItems.lens, 1, 7),
+                    " P ", "ALA", " R ",
+                    'P', Item.itemRegistry.getObject("dreamcraft:item.DiamondDrillTip"),
+                    'R', "dustRedstone",
+                    'A', "gemLapis",
+                    'L', new ItemStack(ModItems.lens));
+            ModCraftingRecipes.recipeLensBore = BotaniaAPI.getLatestAddedRecipe();
+        }
 
         addShapelessOreDictRecipe(new ItemStack(ModItems.lens, 1, 8), new ItemStack(ModItems.lens), new ItemStack(Items.diamond_sword));
         ModCraftingRecipes.recipeLensDamaging = BotaniaAPI.getLatestAddedRecipe();
