@@ -26,7 +26,7 @@ public class OredictPatches {
                 "flowerPoppy", "flowerBlueOrchid", "flowerAllium",  "flowerAzureBluet", "flowerTulipRed", "flowerTulipOrange", "flowerTulipWhite", "flowerTulipPink", "flowerOxeyeDaisy");
 
         oredictThirdPartyBlocks("BiomesOPlenty:flowers",
-                "flowerClover", "flowerSwamp",  "flowerDeathbloom", "flowerGlowflower", "flowerHydrangeaBlue",  "flowerCosmosOrange",   "flowerDaffodil",   "flowerWildflower", "flowerViolet", "flowerAnemone",    "flowerWaterlily", "flowerEnderlotus",  "flowerBromeliad",  "flowerEyebulb","flowerDandelionPuff");
+                "flowerClover", "flowerSwamp",  "flowerDeathbloom", "flowerGlowflower", "flowerHydrangeaBlue",  "flowerCosmosOrange",   "flowerDaffodil",   "flowerWildflower", "flowerViolet", "flowerAnemoneWhite",    "flowerWaterlily", "flowerEnderlotus",  "flowerBromeliad",  "flowerEyebulb","flowerDandelionPuff");
         oredictThirdPartyBlocks("BiomesOPlenty:flowers",
                 "flowerWhite",  "flowerCyan",   "flowerGray",       "flowerWhite",      "flowerLightBlue",      "flowerOrange",         "flowerPink",       "flowerPurple",     "flowerPurple", "flowerWhite",      "flowerLightGray", "flowerBlack",       "flowerOrange",     "flowerBrown",  "flowerLightGray");
         oredictThirdPartyBlocks("BiomesOPlenty:flowers2",
