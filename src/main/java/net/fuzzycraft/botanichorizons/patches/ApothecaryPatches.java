@@ -59,7 +59,7 @@ public class ApothecaryPatches {
         ModPetalRecipes.gourmaryllisRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_GOURMARYLLIS),
                 lightGray, lightGray, yellow, yellow, red, runeFire, runeSummer, "flowerOrange");
         ModPetalRecipes.narslimmusRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_NARSLIMMUS),
-                lime, lime, green, green, black, runeSummer, runeWater, "flowerGreen");
+                lime, lime, green, green, black, runeSummer, runeWater, "flowerLilyValley");
         ModPetalRecipes.spectrolusRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_SPECTROLUS),
                 red, red, green, green, blue, blue, white, white, runeWinter, runeAir, ModPetalRecipes.pixieDust, "flowerGray");
         ModPetalRecipes.rafflowsiaRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_RAFFLOWSIA),
