@@ -25,7 +25,7 @@ public class ManaInfusionPatches {
         // Stone age -- diluted pool, max 10K
         ModManaInfusionRecipes.manasteelRecipes = new ArrayList<>();
         ModManaInfusionRecipes.manasteelRecipes.add(BotaniaAPI.registerManaInfusionRecipe(new ItemStack(ModItems.manaResource, 1, MANARESOURCE_META_MANASTEEL), "ingotSteel", 3000));
-        ModManaInfusionRecipes.manasteelRecipes.add(BotaniaAPI.registerManaInfusionRecipe(new ItemStack(ModItems.manaResource, 1, MANARESOURCE_META_MANASTEEL), "ingotThaumiun", 1500));
+        ModManaInfusionRecipes.manasteelRecipes.add(BotaniaAPI.registerManaInfusionRecipe(new ItemStack(ModItems.manaResource, 1, MANARESOURCE_META_MANASTEEL), "ingotThaumium", 1500));
         ModManaInfusionRecipes.manasteelRecipes.add(BotaniaAPI.registerManaInfusionRecipe(new ItemStack(ModBlocks.storage, 1, STORAGE_META_MANASTEELBLOCK), "blockSteel", 9 * 3000));
         ModManaInfusionRecipes.manasteelRecipes.add(BotaniaAPI.registerManaInfusionRecipe(new ItemStack(ModBlocks.storage, 1, STORAGE_META_MANASTEELBLOCK), "blockThaumium", 9 * 1500));
 
