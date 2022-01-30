@@ -9,9 +9,8 @@ import net.fuzzycraft.botanichorizons.patches.*;
 public class ForgeMod {
     public static final String MOD_ID = "botanichorizons";
     public static final String MOD_NAME = MOD_ID;
-    public static final String BUILD = "GRADLE:BUILD";
-    public static final String VERSION = "GRADLE:VERSION-" + BUILD;
-    public static final String DEPENDENCIES = "required-after:Baubles;required-after:Thaumcraft;required-after:Botania;required-after:gregtech;after:witchery;after:BiomesOPlenty;required-after:dreamcraft;required-after:TConstruct";
+    public static final String VERSION = "GRADLETOKEN_VERSION";
+    public static final String DEPENDENCIES = "required-after:Baubles;required-after:Thaumcraft;required-after:Botania;required-after:gregtech;after:witchery;after:BiomesOPlenty;after:dreamcraft;required-after:TConstruct";
 
     @Mod.Instance(MOD_ID)
     public static ForgeMod instance;
