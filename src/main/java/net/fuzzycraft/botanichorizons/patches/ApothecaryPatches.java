@@ -59,7 +59,7 @@ public class ApothecaryPatches {
         ModPetalRecipes.gourmaryllisRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_GOURMARYLLIS),
                 lightGray, lightGray, yellow, yellow, red, runeFire, runeSummer, "flowerOrange");
         ModPetalRecipes.narslimmusRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_NARSLIMMUS),
-                lime, lime, green, green, black, runeSummer, runeWater);
+                lime, lime, green, green, black, runeSummer, runeWater, "flowerLilyValley");
         ModPetalRecipes.spectrolusRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_SPECTROLUS),
                 red, red, green, green, blue, blue, white, white, runeWinter, runeAir, ModPetalRecipes.pixieDust, "flowerGray");
         ModPetalRecipes.rafflowsiaRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_RAFFLOWSIA),
@@ -94,7 +94,7 @@ public class ApothecaryPatches {
         ModPetalRecipes.tangleberrieRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_TANGLEBERRIE),
                 cyan, cyan, gray, lightGray, runeAir, runeEarth, "flowerGray");
         ModPetalRecipes.jiyuuliaRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_JIYUULIA),
-                pink, pink, purple, lightGray, runeWater, runeAir, "flowerAnemone");
+                pink, pink, purple, lightGray, runeWater, runeAir, "flowerAnemoneWhite");
         ModPetalRecipes.rannuncarpusRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_RANNUNCARPUS),
                 orange, orange, yellow, runeEarth, ModPetalRecipes.redstoneRoot, "flowerOrange");
         ModPetalRecipes.hyacidusRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_HYACIDUS),
