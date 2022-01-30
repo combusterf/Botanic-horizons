@@ -14,6 +14,8 @@ import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class ResearchBuilder {
@@ -105,8 +107,17 @@ public class ResearchBuilder {
     }
 
     public ResearchBuilder addInfusionRecipe(AspectList aspects, ItemStack out, int instability, ItemStack centerItem, ItemStack... inputs) {
-        InfusionRecipe recipe = ThaumcraftApi.addInfusionCraftingRecipe(key,out, instability, aspects, centerItem, inputs);
-        content.add(new ResearchPage(recipe));
+        NonFuzzyInfusionRecipe patchedRecipe = new NonFuzzyInfusionRecipe(key,out, instability, aspects, centerItem, inputs);
+        try {
+            Field reflectionTarget = ThaumcraftApi.class.getDeclaredField("craftingRecipes");
+            reflectionTarget.setAccessible(true);
+            ArrayList<Object> craftingArray = (ArrayList<Object>) reflectionTarget.get(ThaumcraftApi.class);
+            craftingArray.add(patchedRecipe);
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot apply better infusion pattern", e);
+        }
+
+        content.add(new ResearchPage(patchedRecipe));
         return this;
     }
 
