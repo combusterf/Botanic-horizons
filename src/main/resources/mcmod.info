@@ -1,17 +1,19 @@
-[
 {
-  "modid": "${modId}",
-  "name": "${modName}",
-  "description": "",
-  "version": "${modVersion}",
-  "mcversion": "${minecraftVersion}",
-  "logoFile": "",
-  "url": "",
-  "updateUrl": "",
-  "authorList": [],
-  "credits": "",
-  "parent": "",
-  "screenshots": [],
-  "dependencies": []
+  "modListVersion": 2,
+  "modList": [{
+    "modid": "${modId}",
+    "name": "${modName}",
+    "description": "Expert-style recipes for use with GTNewHorizons",
+    "version": "${modVersion}",
+    "mcversion": "${minecraftVersion}",
+    "logoFile": "",
+    "url": "https://github.com/combusterf/Botanic-horizons",
+    "updateUrl": "",
+    "authorList": ["Combuster"],
+    "credits": "",
+    "parent": "",
+    "screenshots": [],
+    "requiredMods": ["Thaumcraft", "Baubles", "Botania", "gregtech", "TConstruct"],
+    "dependencies": ["Thaumcraft", "Baubles", "Botania", "gregtech", "TConstruct", "witchery", "BiomesOPlenty", "dreamcraft"]
+  }]
 }
-]
