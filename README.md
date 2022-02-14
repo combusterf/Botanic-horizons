@@ -2,13 +2,11 @@ Botanic Horizons is an expert-style modpack integration for GT: New Horizons
 
 # Dependencies
 
-This mod depends on other mods that are part of the modpack. Deobfuscated APIs for the following jars need to be added to the `libs/` folder:
-- Botania (i.e. libs/botania-deobf.jar from https://github.com/combusterf/Botania-expert)
-- Gregtech 5U (i.e. libs/gregtech-deobf.jar from https://github.com/GTNewHorizons/GT5-Unofficial)
+This mod depends on other mods that are part of the modpack. The `gradlew` scripts should handle getting them for you.
 
 This project needs a Java 8 installation. Set `JAVA_HOME` to the appropriate value if this jdk is not available on `PATH`
 
-The project can then be build with `./gradlew`, which will put the mod files in `output/` 
+The project can then be build with `./gradlew`, which will put the mod files in `build/libs`.
 
 # Legal
 
