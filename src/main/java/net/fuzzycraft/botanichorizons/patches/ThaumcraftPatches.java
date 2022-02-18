@@ -297,7 +297,7 @@ public class ThaumcraftPatches {
             .apply(builder -> {
                 ItemStack pinkGem = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_DRAGONSTONE);
                 ItemStack blackPlate = OreDictionary.getOres("plateNaquadah").get(0);
-                ItemStack voidCap = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:item.ChargedVoidWandCap"));
+                ItemStack voidCap = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:WandCap"), 1, 7);
                 ItemStack pinkChip = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:item.EngravedManyullynCrystalChip"));
                 builder.addInfusionRecipe(
                     new AspectList().add(Aspect.ELDRITCH, 64).add(Aspect.TRAP, 64).add(Aspect.MAGIC, 64).add(Aspect.DARKNESS, 32).add(Aspect.CRYSTAL, 32),
