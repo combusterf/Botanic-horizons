@@ -26,11 +26,15 @@ public class ApothecaryPatches {
     public static void applyPatches() {
         // Add handlers for things that can go in the apothecary
         CustomBotaniaAPI.extraFlowerComponents.put(Item.getItemFromBlock(ModBlocks.mushroom), alwaysAllowHandler);
-        CustomBotaniaAPI.extraFlowerComponents.put(Item.getItemFromBlock(Block.getBlockFromName("BiomesOPlenty:flowers")), alwaysAllowHandler);
-        CustomBotaniaAPI.extraFlowerComponents.put(Item.getItemFromBlock(Block.getBlockFromName("BiomesOPlenty:flowers2")), alwaysAllowHandler);
+        whitelistBlockIfExists("BiomesOPlenty:flowers");
+        whitelistBlockIfExists("BiomesOPlenty:flowers2");
         CustomBotaniaAPI.extraFlowerComponents.put(Item.getItemFromBlock(Blocks.red_flower), alwaysAllowHandler);
         CustomBotaniaAPI.extraFlowerComponents.put(Item.getItemFromBlock(Blocks.yellow_flower), alwaysAllowHandler);
 
+        // Whitelists for use with MineTweaker scripts
+        whitelistItemIfExists("MagicBees:wax");
+        whitelistItemIfExists("MagicBees:propolis");
+        whitelistItemIfExists("MagicBees:miscResources");
 
         // Apothecary recipes
         ModPetalRecipes.pureDaisyRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_PUREDAISY),
@@ -139,4 +143,18 @@ public class ApothecaryPatches {
             return 0;
         }
     };
+
+    private static void whitelistBlockIfExists(final String name) {
+        final Block block = Block.getBlockFromName(name);
+        if (block == null) return;
+
+        CustomBotaniaAPI.extraFlowerComponents.put(Item.getItemFromBlock(block), alwaysAllowHandler);
+    }
+
+    private static void whitelistItemIfExists(final String name) {
+        final Item item = (Item) Item.itemRegistry.getObject(name);
+        if (item == null) return;
+
+        CustomBotaniaAPI.extraFlowerComponents.put(item, alwaysAllowHandler);
+    }
 }
