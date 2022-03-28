@@ -370,7 +370,10 @@ public class GregtechPatches {
     }
 
     public static void addStairs(Block stairsBlock, Object baseBlock) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(stairsBlock, 4), "  Q", " QQ", "QQQ", 'Q', baseBlock));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(stairsBlock, 4), "Q  ", "QQ ", "QQQ", 'Q', baseBlock));
+        addStairs(stairsBlock, baseBlock, 3);
+    }
+    public static void addStairs(Block stairsBlock, Object baseBlock, int flags) {
+        if ((flags & 1) > 0) GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(stairsBlock, 4), "  Q", " QQ", "QQQ", 'Q', baseBlock).setMirrored(false));
+        if ((flags & 2) > 0) GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(stairsBlock, 4), "Q  ", "QQ ", "QQQ", 'Q', baseBlock).setMirrored(false));
     }
 }
