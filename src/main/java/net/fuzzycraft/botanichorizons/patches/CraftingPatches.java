@@ -1743,8 +1743,14 @@ public class CraftingPatches {
         ModCraftingRecipes.recipe18StoneBrick = new ArrayList<>();
         ModCraftingRecipes.recipe18StoneChisel = new ArrayList<>();
         for(int i = 0; i < 4; i++) {
+            int stairsSelected = 3;
+            if (i == 1) {
+                // Basalt conflicts with RC stairs, register only one half of the mirror version
+                stairsSelected = 1;
+            }
+
             // block
-            GregtechPatches.addStairs(ModFluffBlocks.stoneStairs[i], LibOreDict.STONE_18_VARIANTS[i]);
+            GregtechPatches.addStairs(ModFluffBlocks.stoneStairs[i], LibOreDict.STONE_18_VARIANTS[i], stairsSelected);
             addOreDictRecipe(new ItemStack(ModFluffBlocks.stone, 1, i),
                     "Q", "Q",
                     'Q', new ItemStack(ModFluffBlocks.stoneSlabs[i]));
