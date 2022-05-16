@@ -2,8 +2,10 @@ package net.fuzzycraft.botanichorizons.patches;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.fuzzycraft.botanichorizons.util.Constants;
@@ -320,10 +322,16 @@ public class GregtechPatches {
         }
 
         if (ingredient != null) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.quartz, 8, quartzMeta),
-                    "QQQ", "QCQ", "QQQ",
-                    'Q', "gemQuartz",
-                    'C', ingredient));
+            if (quartzMeta != Constants.QUARTZ_META_DARK) {
+                GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.quartz, 8, quartzMeta),
+                        "QQQ", "QCQ", "QQQ",
+                        'Q', "gemQuartz",
+                        'C', ingredient));
+            } else {
+                // Smokey Quartz - deduplicate with Thaumic Tinkerer
+                GT_ModHandler.addAlloySmelterRecipe(new ItemStack(Items.quartz, 8), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1), new ItemStack(ModItems.quartz, 8), 400, 16, false);
+                GT_ModHandler.addAlloySmelterRecipe(new ItemStack(Items.quartz, 8), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Charcoal, 1), new ItemStack(ModItems.quartz, 8), 400, 16, false);
+            }
             return BotaniaAPI.getLatestAddedRecipe();
         } else {
             return null;
