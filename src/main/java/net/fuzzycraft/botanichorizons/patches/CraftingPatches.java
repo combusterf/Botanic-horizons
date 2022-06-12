@@ -21,6 +21,7 @@ import vazkii.botania.common.block.ModFluffBlocks;
 import vazkii.botania.common.block.tile.TileCraftCrate;
 import vazkii.botania.common.core.handler.ConfigHandler;
 import vazkii.botania.common.crafting.ModCraftingRecipes;
+import vazkii.botania.common.item.ItemManaTablet;
 import vazkii.botania.common.item.ItemSignalFlare;
 import vazkii.botania.common.item.ItemTwigWand;
 import vazkii.botania.common.item.ModItems;
@@ -207,15 +208,25 @@ public class CraftingPatches {
         ModCraftingRecipes.recipeManaMirror = BotaniaAPI.getLatestAddedRecipe();
 
         // Mana Tablet Recipe
-        addOreDictRecipe(new ItemStack(ModItems.manaTablet, 1, 10000),
+        addOreDictRecipe(new ItemStack(ModItems.manaTablet, 1, Constants.MANA_TABLET_MAGIC_META),
                 "SSS", "SPS", "SSS",
                 'S', LibOreDict.LIVING_ROCK,
                 'P', LibOreDict.MANA_PEARL);
-        addOreDictRecipe(new ItemStack(ModItems.manaTablet, 1, 10000),
+        addOreDictRecipe(new ItemStack(ModItems.manaTablet, 1, Constants.MANA_TABLET_MAGIC_META),
                 "SSS", "SDS", "SSS",
                 'S', LibOreDict.LIVING_ROCK,
                 'D', LibOreDict.MANA_DIAMOND);
         ModCraftingRecipes.recipesManaTablet = BotaniaAPI.getLatestAddedRecipes(2);
+
+        // Creative tablet
+        ItemStack creativeTablet = new ItemStack(ModItems.manaTablet, 1, 500000);
+        ItemManaTablet.setMana(creativeTablet, 500000);
+        ItemManaTablet.setStackCreative(creativeTablet);
+        addOreDictRecipe(creativeTablet,
+                "III", "ITI", "III",
+                'I', "plateInfinity",
+                'T', new ItemStack(ModBlocks.pool, 1, Constants.POOL_META_CREATIVE)
+        );
 
         // Mana Pump Recipe
         addOreDictRecipe(new ItemStack(ModBlocks.pump),
