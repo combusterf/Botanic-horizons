@@ -196,7 +196,7 @@ public class ThaumcraftPatches {
                 ItemStack glow = new ItemStack(Blocks.glowstone);
                 ItemStack gemIV = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:item.EngravedEnergyChip"));
                 ItemStack construct = Constants.thaumcraftConstruct();
-                ItemStack terra = OreDictionary.getOres("plateTerrasteel").get(0);
+                ItemStack terra = OreDict.preference("plateTerrasteel", LibOreDict.TERRA_STEEL);
 
                 builder.addInfusionRecipe(
                     new AspectList().add(Aspect.TRAVEL, 64).add(Aspect.MAGIC, 64).add(Aspect.PLANT, 64).add(Aspect.ELDRITCH, 64).add(Aspect.VOID, 32),
@@ -362,7 +362,7 @@ public class ThaumcraftPatches {
                 .addSingleTextPage()
                 .apply(builder -> {
                     ItemStack twig = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_TWIG_WOOD);
-                    ItemStack terra = OreDictionary.getOres("plateTerrasteel").get(0);
+                    ItemStack terra = OreDict.preference("plateTerrasteel", LibOreDict.TERRA_STEEL);
                     ItemStack crystal = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:blockCrystal"), 1, 3);
                     ItemStack gem1 = OreDictionary.getOres("gemFlawlessGreenSapphire").get(0);
                     ItemStack gem2 = OreDictionary.getOres("gemFlawlessOlivine").get(0);
@@ -386,7 +386,7 @@ public class ThaumcraftPatches {
                 .addSingleTextPage()
                 .apply(builder -> {
                     ItemStack twig = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_TWIG_WOOD);
-                    ItemStack terra = OreDictionary.getOres("plateTerrasteel").get(0);
+                    ItemStack terra = OreDict.preference("plateTerrasteel", LibOreDict.TERRA_STEEL);
                     ItemStack crystal = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:blockCrystal"), 1, 3);
                     ItemStack gem1 = OreDictionary.getOres("gemFlawlessGreenSapphire").get(0);
                     ItemStack gem2 = OreDictionary.getOres("gemFlawlessOlivine").get(0);
@@ -410,7 +410,7 @@ public class ThaumcraftPatches {
                 .addSingleTextPage()
                 .apply(builder -> {
                     ItemStack twig = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_TWIG_WOOD);
-                    ItemStack terra = OreDictionary.getOres("plateTerrasteel").get(0);
+                    ItemStack terra = OreDict.preference("plateTerrasteel", LibOreDict.TERRA_STEEL);
                     ItemStack crystal = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:blockCrystal"), 1, 3);
                     ItemStack gem1 = OreDictionary.getOres("gemFlawlessGreenSapphire").get(0);
                     ItemStack gem2 = OreDictionary.getOres("gemFlawlessOlivine").get(0);
