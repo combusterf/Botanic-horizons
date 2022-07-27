@@ -22,4 +22,9 @@ public class OreDict {
     public static final String MUSHROOM = "listMagicMushroom";
 
     public static final String FLOWER_NONMAGICAL = "flowerNonmagical";
+
+    // GT Material references
+    public static final String MANA_STEEL_PLATE = "plateManasteel";
+    public static final String TERRA_STEEL_PLATE = "plateTerrasteel";
+    public static final String ELEMENTIUM_PLATE = "plateElvenElementium";
 }
