@@ -1,6 +1,7 @@
 package net.fuzzycraft.botanichorizons.patches;
 
 import net.fuzzycraft.botanichorizons.util.Constants;
+import net.fuzzycraft.botanichorizons.util.OreDict;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -18,9 +19,9 @@ public class RunicAltarPatches {
     public static final int COST_T2 = Constants.POOL_MAX_MANA_DILUTED * 3 / 2;
     public static final int COST_T3 = Constants.POOL_MAX_MANA_DILUTED * 3;
 
-    public static final String ingredient_T1 = "ingotStainlessSteel";
-    public static final String ingredient_T2 = "ingotSterlingSilver";
-    public static final String ingredient_T3 = "ingotTitanium";
+    public static final String ingredient_T1 = "plateStainlessSteel";
+    public static final String ingredient_T2 = "plateSterlingSilver";
+    public static final String ingredient_T3 = "plateTitanium";
 
     public static void applyPatches() {
 
@@ -51,7 +52,7 @@ public class RunicAltarPatches {
             ModRuneRecipes.recipesWinterRune.add(BotaniaAPI.registerRuneAltarRecipe(new ItemStack(ModItems.rune, 1, 7), COST_T2, ingredient_T2, LibOreDict.RUNE[0], LibOreDict.RUNE[2], new ItemStack(Blocks.snow), new ItemStack(Blocks.snow), new ItemStack(Blocks.wool, 1, i), new ItemStack(Items.cake)));
         }
 
-        ModRuneRecipes.recipeManaRune = BotaniaAPI.registerRuneAltarRecipe(new ItemStack(ModItems.rune, 1, 8), COST_T2, LibOreDict.MANA_STEEL, LibOreDict.MANA_STEEL, ingredient_T2, ingredient_T2, "ingotThaumium", "ingotThaumium", LibOreDict.MANA_PEARL);
+        ModRuneRecipes.recipeManaRune = BotaniaAPI.registerRuneAltarRecipe(new ItemStack(ModItems.rune, 1, 8), COST_T2, OreDict.MANA_STEEL_PLATE, OreDict.MANA_STEEL_PLATE, ingredient_T2, ingredient_T2, "plateThaumium", "plateThaumium", LibOreDict.MANA_PEARL);
 
         // Tier 3 runes
 
