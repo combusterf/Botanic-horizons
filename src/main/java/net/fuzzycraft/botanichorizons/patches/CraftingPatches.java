@@ -21,6 +21,7 @@ import vazkii.botania.common.block.ModFluffBlocks;
 import vazkii.botania.common.block.tile.TileCraftCrate;
 import vazkii.botania.common.core.handler.ConfigHandler;
 import vazkii.botania.common.crafting.ModCraftingRecipes;
+import vazkii.botania.common.item.ItemManaTablet;
 import vazkii.botania.common.item.ItemSignalFlare;
 import vazkii.botania.common.item.ItemTwigWand;
 import vazkii.botania.common.item.ModItems;
@@ -112,15 +113,6 @@ public class CraftingPatches {
 
         // There is no elven mana pool in this version?
 
-        // Creative pool
-        addOreDictRecipe(new ItemStack(ModBlocks.pool, 1, Constants.POOL_META_CREATIVE),
-                "RIR", "RCR", "RRR",
-                'R', "plateInfinity",
-                'I', LibOreDict.GAIA_INGOT,
-                'C', new ItemStack(ModBlocks.pool, 1, Constants.POOL_META_REGULAR_FABULOUS)
-        );
-        ModCraftingRecipes.recipePoolFabulous = BotaniaAPI.getLatestAddedRecipe();
-
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // regular spreader
@@ -207,11 +199,11 @@ public class CraftingPatches {
         ModCraftingRecipes.recipeManaMirror = BotaniaAPI.getLatestAddedRecipe();
 
         // Mana Tablet Recipe
-        addOreDictRecipe(new ItemStack(ModItems.manaTablet, 1, 10000),
+        addOreDictRecipe(new ItemStack(ModItems.manaTablet, 1, Constants.MANA_TABLET_MAGIC_META),
                 "SSS", "SPS", "SSS",
                 'S', LibOreDict.LIVING_ROCK,
                 'P', LibOreDict.MANA_PEARL);
-        addOreDictRecipe(new ItemStack(ModItems.manaTablet, 1, 10000),
+        addOreDictRecipe(new ItemStack(ModItems.manaTablet, 1, Constants.MANA_TABLET_MAGIC_META),
                 "SSS", "SDS", "SSS",
                 'S', LibOreDict.LIVING_ROCK,
                 'D', LibOreDict.MANA_DIAMOND);
