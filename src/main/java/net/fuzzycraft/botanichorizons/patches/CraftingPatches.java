@@ -113,15 +113,6 @@ public class CraftingPatches {
 
         // There is no elven mana pool in this version?
 
-        // Creative pool
-        addOreDictRecipe(new ItemStack(ModBlocks.pool, 1, Constants.POOL_META_CREATIVE),
-                "RIR", "RCR", "RRR",
-                'R', "plateInfinity",
-                'I', LibOreDict.GAIA_INGOT,
-                'C', new ItemStack(ModBlocks.pool, 1, Constants.POOL_META_REGULAR_FABULOUS)
-        );
-        ModCraftingRecipes.recipePoolFabulous = BotaniaAPI.getLatestAddedRecipe();
-
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // regular spreader
@@ -217,16 +208,6 @@ public class CraftingPatches {
                 'S', LibOreDict.LIVING_ROCK,
                 'D', LibOreDict.MANA_DIAMOND);
         ModCraftingRecipes.recipesManaTablet = BotaniaAPI.getLatestAddedRecipes(2);
-
-        // Creative tablet
-        ItemStack creativeTablet = new ItemStack(ModItems.manaTablet, 1, 500000);
-        ItemManaTablet.setMana(creativeTablet, 500000);
-        ItemManaTablet.setStackCreative(creativeTablet);
-        addOreDictRecipe(creativeTablet,
-                "III", "ITI", "III",
-                'I', "plateInfinity",
-                'T', new ItemStack(ModBlocks.pool, 1, Constants.POOL_META_CREATIVE)
-        );
 
         // Mana Pump Recipe
         addOreDictRecipe(new ItemStack(ModBlocks.pump),
