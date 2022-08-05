@@ -1,6 +1,11 @@
 package net.fuzzycraft.botanichorizons.util;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import vazkii.botania.common.lib.LibOreDict;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class OreDict {
     public static final String[] FLOWER_INGREDIENT = new String[] {
@@ -22,4 +27,17 @@ public class OreDict {
     public static final String MUSHROOM = "listMagicMushroom";
 
     public static final String FLOWER_NONMAGICAL = "flowerNonmagical";
+
+    // GT Material references
+    public static final String MANA_STEEL_PLATE = "plateManasteel";
+    public static final String TERRA_STEEL_PLATE = "plateTerrasteel";
+    public static final String ELEMENTIUM_PLATE = "plateElvenElementium";
+
+    public static final ItemStack preference(String... oredictKeys) {
+        for (String key: oredictKeys) {
+            List<ItemStack> ores = OreDictionary.getOres(key);
+            if (ores != null && ores.size() > 0) return ores.get(0);
+        }
+        throw new IllegalArgumentException("Can't find any oreDictionary entry among " + Arrays.toString(oredictKeys));
+    }
 }

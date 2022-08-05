@@ -12,5 +12,4 @@ dependencies {
 
     compile("com.github.GTNewHorizons:Chisel:2.10.8-GTNH:dev") {transitive = false}
     compile("com.github.GTNewHorizons:Avaritia:1.22:dev") {transitive = false}
-    
 }
