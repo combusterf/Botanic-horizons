@@ -64,7 +64,16 @@ public class CraftingPatches {
                     'U', new ItemStack(Items.cauldron),
                     'C', "stone",
                     'T', "blockThaumium");
-        
+        // Petal Apothecary Recipes if you hate Thaumcraft
+        for(int i = 0; i < 16; i++)
+            addOreDictRecipe(new ItemStack(ModBlocks.altar),
+                    "SPS", " U ", "CTC",
+                    'S', "plateSteel",
+                    'P', OreDict.FLOWER_INGREDIENT[i],
+                    'U', new ItemStack(Items.cauldron),
+                    'C', "stone",
+                    'T', "blockLead");
+
         ModCraftingRecipes.recipesApothecary = BotaniaAPI.getLatestAddedRecipes(16);
 
         // Metamorphic Petal Apothecary Recipes
