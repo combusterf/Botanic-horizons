@@ -58,12 +58,13 @@ public class CraftingPatches {
         // Petal Apothecary Recipes
         for(int i = 0; i < 16; i++)
             addOreDictRecipe(new ItemStack(ModBlocks.altar),
-                    "SPS", " U ", "CTC",
+                    "SPS", "XUX", "CTC",
                     'S', "plateSteel",
                     'P', OreDict.FLOWER_INGREDIENT[i],
                     'U', new ItemStack(Items.cauldron),
                     'C', "stone",
-                    'T', "blockSilver");
+                    'T', "blockSilver",
+                    'X', "screwSteel");
 
         ModCraftingRecipes.recipesApothecary = BotaniaAPI.getLatestAddedRecipes(16);
 
