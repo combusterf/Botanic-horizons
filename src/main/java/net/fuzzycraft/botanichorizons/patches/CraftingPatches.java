@@ -88,8 +88,9 @@ public class CraftingPatches {
 
         // Dilute pool
         addOreDictRecipe(new ItemStack(ModBlocks.pool, 1, Constants.POOL_META_DILUTE),
-                "R R", "RRR",
-                'R', new ItemStack(ModFluffBlocks.livingrockSlab)
+                "P P", "RRR",
+                'R', new ItemStack(ModFluffBlocks.livingrockSlab),
+                'P', "plateLivingrock"
         );
         ModCraftingRecipes.recipePoolDiluted = BotaniaAPI.getLatestAddedRecipe();
 
@@ -106,7 +107,7 @@ public class CraftingPatches {
         addOreDictRecipe(new ItemStack(ModBlocks.pool, 1, Constants.POOL_META_REGULAR_FABULOUS),
                 "RIR", "RCR", "RRR",
                 'R', new ItemStack(ModFluffBlocks.shimmerrockSlab),
-                'I', OreDict.MANA_STEEL_PLATE,
+                'I', OreDict.DENSE_MANA_STEEL_PLATE,
                 'C', Constants.thaumcraftCrucible()
         );
         ModCraftingRecipes.recipePoolFabulous = BotaniaAPI.getLatestAddedRecipe();
