@@ -30,8 +30,11 @@ public class OreDict {
 
     // GT Material references
     public static final String MANA_STEEL_PLATE = "plateManasteel";
+    public static final String DENSE_MANA_STEEL_PLATE = "plateDenseManasteel";
     public static final String TERRA_STEEL_PLATE = "plateTerrasteel";
+    public static final String DENSE_TERRA_STEEL_PLATE = "plateDenseTerrasteel";
     public static final String ELEMENTIUM_PLATE = "plateElvenElementium";
+    public static final String DENSE_ELEMENTIUM_STEEL_PLATE = "plateDenseElvenElementium";
 
     public static final ItemStack preference(String... oredictKeys) {
         for (String key: oredictKeys) {
