@@ -28,8 +28,12 @@ public class ApothecaryPatches {
         CustomBotaniaAPI.extraFlowerComponents.put(Item.getItemFromBlock(ModBlocks.mushroom), alwaysAllowHandler);
         whitelistBlockIfExists("BiomesOPlenty:flowers");
         whitelistBlockIfExists("BiomesOPlenty:flowers2");
+        whitelistBlockIfExists("BiomesOPlenty:ivy");
+        whitelistBlockIfExists("BiomesOPlenty:flowerVine");
+        whitelistBlockIfExists("Natura:Thornvines");
         CustomBotaniaAPI.extraFlowerComponents.put(Item.getItemFromBlock(Blocks.red_flower), alwaysAllowHandler);
         CustomBotaniaAPI.extraFlowerComponents.put(Item.getItemFromBlock(Blocks.yellow_flower), alwaysAllowHandler);
+        CustomBotaniaAPI.extraFlowerComponents.put(Item.getItemFromBlock(Blocks.vine), alwaysAllowHandler);
 
         // Whitelists for use with MineTweaker scripts
         whitelistItemIfExists("MagicBees:wax");
