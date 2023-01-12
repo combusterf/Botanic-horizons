@@ -1238,6 +1238,13 @@ public class CraftingPatches {
                 'P', ModItems.tinyPlanet);
         ModCraftingRecipes.recipeTinyPlanetBlock = BotaniaAPI.getLatestAddedRecipe();
 
+        // Alternate non-magic Tiny Planet Block Recipe
+        addOreDictRecipe(new ItemStack(ModBlocks.tinyPlanet),
+                "SSS", "SPS", "SSS",
+                'S', "stone",
+                'P', new ItemStack((Item)Item.itemRegistry.getObject("gregtech:gt.metaitem.01"), 1, 32674));
+        ModCraftingRecipes.recipeTinyPlanetBlock = BotaniaAPI.getLatestAddedRecipe();
+
         // Drum of the Wild Recipe
         addOreDictRecipe(new ItemStack(ModBlocks.forestDrum),
                 "WLW", "WHW", "WLW",
