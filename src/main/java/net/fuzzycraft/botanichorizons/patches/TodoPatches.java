@@ -1,6 +1,9 @@
 package net.fuzzycraft.botanichorizons.patches;
 
-public class TodoPatches {}
+public class TodoPatches
+{
+
+}
 
 /*
 tile.botania:altar0.name=Petal Apothecary
