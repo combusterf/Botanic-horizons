@@ -1,11 +1,15 @@
 package net.fuzzycraft.botanichorizons.patches;
 
+import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import fox.spiteful.avaritia.crafting.ExtremeCraftingManager;
+import fox.spiteful.avaritia.items.LudicrousItems;
 import net.fuzzycraft.botanichorizons.util.Constants;
 import net.minecraft.item.ItemStack;
 import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.item.ItemManaTablet;
 import vazkii.botania.common.item.ModItems;
+import vazkii.botania.common.item.block.ItemBlockSpecialFlower;
+import vazkii.botania.common.lib.LibBlockNames;
 import vazkii.botania.common.lib.LibOreDict;
 
 public class AvaritiaPatches {
@@ -80,5 +84,40 @@ public class AvaritiaPatches {
                 '8', LibOreDict.RUNE[7]
         );
 
+        ItemStack creativeFlower = new ItemStack(ItemBlockSpecialFlower.ofType("Asgardandelion"));
+        ExtremeCraftingManager.getInstance().addExtremeShapedOreRecipe(
+                creativeFlower,
+                //"SSSSSSSSS","IIIIIIIII","iiiiiiiii","iiiiiiiii","iiiiiiiii","iiiiiiiii","iiiiiiiii","iiiiiiiii","iiiiiiiii",
+                "R0D0B0E0M",
+                "000iii000",
+                "d0iIIIi0n",
+                "00iIFIi00",
+                "T0iIIIi0r",
+                "010iii010",
+                "t1102011H",
+                "001121100",
+                "e0K131S0m",
+                'R', new ItemStack(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_ARCANE_ROSE)),
+                'D', new ItemStack(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_DANDELIFEON)),
+                'B', new ItemStack(ItemBlockSpecialFlower.ofType("Beegonia")),
+                'E', new ItemStack(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_ENTROPINNYUM)),
+                'M', new ItemStack(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_MUNCHDEW)),
+                'd', new ItemStack(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_DAYBLOOM)),
+                'n', new ItemStack(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_NIGHTSHADE)),
+                'T', new ItemStack(ItemBlockSpecialFlower.ofType("Tainthistle")), 
+                'r', new ItemStack(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_RAFFLOWSIA)),
+                't', new ItemStack(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_THERMALILY)),
+                'H', new ItemStack(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_HYDROANGEAS)),
+                'e', new ItemStack(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_ENDOFLAME)),
+                'K', new ItemStack(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_KEKIMURUS)),
+                '3', new ItemStack(ItemBlockSpecialFlower.ofType("Soarleander")), 
+                'S', new ItemStack(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_SPECTROLUS)),
+                'm', new ItemStack(ItemBlockSpecialFlower.ofType(LibBlockNames.SUBTILE_NARSLIMMUS)),
+                'F', new ItemStack(LudicrousBlocks.infinitato),
+                '1', new ItemStack(LudicrousItems.resource, 1, 3), //Neutronium nugget
+                '2', "blockCosmicNeutronium",
+                'i', "plateInfinity",
+                'I', "plateDenseInfinity" 
+        );
     }
 }
