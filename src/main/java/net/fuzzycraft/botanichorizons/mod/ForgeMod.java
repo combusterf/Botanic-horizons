@@ -4,6 +4,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import net.fuzzycraft.botanichorizons.addons.Blocks;
 import net.fuzzycraft.botanichorizons.patches.*;
 
 @Mod(modid = ForgeMod.MOD_ID, name = ForgeMod.MOD_NAME, version = ForgeMod.VERSION, dependencies = ForgeMod.DEPENDENCIES)
@@ -18,7 +19,7 @@ public class ForgeMod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        System.out.println("Initializer called");
+        Blocks.initBlocks();
 
         OredictPatches.applyPatches();
 
