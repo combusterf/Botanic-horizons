@@ -5,6 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.recipe.RecipeElvenTrade;
 import vazkii.botania.common.block.tile.TileAlfPortal;
@@ -73,12 +74,21 @@ public class TileAdvancedAlfPortal extends TileAlfPortal implements IInventory {
         if (index >= INPUT_SIZE || index < 0) return false; // do not allow inserts into output slots
         if (stack == null || stack.getItem() == null) return false;
 
-        Item itemToCheck = stack.getItem();
         for(RecipeElvenTrade recipe : BotaniaAPI.elvenTradeRecipes) {
             final List<Object> inputs = recipe.getInputs();
             for (Object input: inputs) {
                 if (input instanceof String) {
-
+                    int[] oreIds = OreDictionary.getOreIDs(stack);
+                    for (int oreId: oreIds) {
+                        if (OreDictionary.getOreName(oreId).equals(input)) {
+                            return true;
+                        }
+                    }
+                } else if (input instanceof ItemStack) {
+                    ItemStack compare = (ItemStack) input;
+                    if (compare.isItemEqual(stack)) {
+                        return true;
+                    }
                 }
             }
         }
