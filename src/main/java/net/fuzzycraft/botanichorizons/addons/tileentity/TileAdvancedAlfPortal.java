@@ -7,17 +7,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import vazkii.botania.api.BotaniaAPI;
+import vazkii.botania.api.mana.IManaReceiver;
 import vazkii.botania.api.recipe.RecipeElvenTrade;
 import vazkii.botania.common.block.tile.TileAlfPortal;
 
 import java.util.List;
 
-public class TileAdvancedAlfPortal extends TileAlfPortal implements IInventory {
+public class TileAdvancedAlfPortal extends TileAlfPortal implements IInventory, IManaReceiver {
 
     static final int INPUT_SIZE = 2;
     static final int OUTPUT_SIZE = 2;
 
     public final InventoryBasic inventoryHandler;
+
+    protected int storedMana = 0;
 
     public TileAdvancedAlfPortal() {
         inventoryHandler = new InventoryBasic("name", false, INPUT_SIZE + OUTPUT_SIZE);
@@ -94,5 +97,30 @@ public class TileAdvancedAlfPortal extends TileAlfPortal implements IInventory {
         }
 
         return false; // item not found
+    }
+
+    private boolean canCraft() {
+        return false;
+    }
+
+
+    @Override
+    public boolean isFull() {
+        return false;
+    }
+
+    @Override
+    public void recieveMana(int i) {
+        storedMana += i;
+    }
+
+    @Override
+    public boolean canRecieveManaFromBursts() {
+        return false;
+    }
+
+    @Override
+    public int getCurrentMana() {
+        return 0;
     }
 }
