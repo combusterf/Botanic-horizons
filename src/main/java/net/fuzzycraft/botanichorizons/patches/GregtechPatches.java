@@ -81,8 +81,6 @@ public class GregtechPatches {
 
         // Slabs
         addSlabRecipe(new ItemStack(ModFluffBlocks.dirtPathSlab, 2),          new ItemStack(ModBlocks.dirtPath, 1),             1, 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.livingrockSlab, 2),        new ItemStack(ModBlocks.livingrock, 1),           1, 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.prismarineSlab, 2),        new ItemStack(ModBlocks.prismarine, 1),           1, 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.reedSlab, 2),              new ItemStack(ModBlocks.reedBlock, 1),            1, 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.shimmerrockSlab, 2),       new ItemStack(ModBlocks.shimmerrock, 1),          1, 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.shimmerwoodPlankSlab, 2),  new ItemStack(ModBlocks.shimmerwoodPlanks, 1),    1, 16, 80);
@@ -113,7 +111,6 @@ public class GregtechPatches {
         for (int i = 0; i < ModFluffBlocks.pavementStairs.length; i++)
             addSlabRecipe(new ItemStack(ModFluffBlocks.pavementSlabs[i], 2), new ItemStack(ModFluffBlocks.pavement, 1, i), 1, 16, 80);
 
-
         // Blocks to either planks or slabs
         ModCraftingRecipes.recipeLivingwoodDecor1 = addSlabRecipe(new ItemStack(ModBlocks.livingwood, 4, Constants.LIVINGWOOD_META_PLANK), new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_BLOCK), 2, 16, 200);
         addSlabRecipe(new ItemStack(ModBlocks.dreamwood,  4, Constants.LIVINGWOOD_META_PLANK), new ItemStack(ModBlocks.dreamwood, 1,  Constants.LIVINGWOOD_META_BLOCK), 2, 16, 200);
@@ -129,7 +126,6 @@ public class GregtechPatches {
         addStairs(ModFluffBlocks.livingwoodPlankStairs, new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_PLANK));
         addStairs(ModFluffBlocks.dreamwoodStairs, new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_BLOCK));
         addStairs(ModFluffBlocks.dreamwoodPlankStairs, new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_PLANK));
-        addSlabRecipe(new ItemStack(ModFluffBlocks.dreamwoodPlankSlab, 2), new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_PLANK),   1, 16, 80);
 
         // Cracked blocks
         ModCraftingRecipes.recipeLivingrockDecor3 = addHammerRecipe(new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_CRACKED), new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_BRICK));
@@ -142,7 +138,6 @@ public class GregtechPatches {
         ModCraftingRecipes.recipeRedQuartz = addQuartzRecipes(Constants.QUARTZ_META_RED, "dustRedstone", ModFluffBlocks.redQuartz, ModFluffBlocks.redQuartzStairs, ModFluffBlocks.redQuartzSlab);
         addQuartzRecipes(Constants.QUARTZ_META_ELVEN, null, ModFluffBlocks.elfQuartz, ModFluffBlocks.elfQuartzStairs, ModFluffBlocks.elfQuartzSlab);
         ModCraftingRecipes.recipeSunnyQuartz = addQuartzRecipes(Constants.QUARTZ_META_SUNNY, new ItemStack(Blocks.double_plant, 1, 0), ModFluffBlocks.sunnyQuartz, ModFluffBlocks.sunnyQuartzStairs, ModFluffBlocks.sunnyQuartzSlab);
-
 
         // Ingots into blocks. Wouldn't be surprised if this becomes unnecessary when GT provides its own ingots
         compressAndExtract(
