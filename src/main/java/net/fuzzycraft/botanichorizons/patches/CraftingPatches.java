@@ -1,10 +1,8 @@
 package net.fuzzycraft.botanichorizons.patches;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.util.GT_Utility;
 import net.fuzzycraft.botanichorizons.util.OreDict;
 import net.fuzzycraft.botanichorizons.util.Constants;
 import net.minecraft.block.Block;
@@ -22,7 +20,6 @@ import vazkii.botania.common.block.ModFluffBlocks;
 import vazkii.botania.common.block.tile.TileCraftCrate;
 import vazkii.botania.common.core.handler.ConfigHandler;
 import vazkii.botania.common.crafting.ModCraftingRecipes;
-import vazkii.botania.common.item.ItemManaTablet;
 import vazkii.botania.common.item.ItemSignalFlare;
 import vazkii.botania.common.item.ItemTwigWand;
 import vazkii.botania.common.item.ModItems;
@@ -31,6 +28,8 @@ import vazkii.botania.common.lib.LibOreDict;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 public class CraftingPatches {
     public static void applyPatches() {
@@ -299,7 +298,7 @@ public class CraftingPatches {
         addShapelessOreDictRecipe(new ItemStack(ModItems.lens, 1, 6), new ItemStack(ModItems.lens), "blockObsidian", "compressedCobblestone1x");
         ModCraftingRecipes.recipeLensGravity = BotaniaAPI.getLatestAddedRecipe();
 
-        if(Loader.isModLoaded("dreamcraft")) {
+        if(NewHorizonsCoreMod.isModLoaded()) {
             addOreDictRecipe(new ItemStack(ModItems.lens, 1, 7),
                     " P ", "ALA", " R ",
                     'P', Item.itemRegistry.getObject("dreamcraft:item.DiamondDrillTip"),
@@ -1414,11 +1413,20 @@ public class CraftingPatches {
         ModCraftingRecipes.recipesMiniIsland = BotaniaAPI.getLatestAddedRecipes(16);
 
         // Flower Pouch Recipe
-        GameRegistry.addShapedRecipe(new ItemStack(ModItems.flowerBag),
-                "WPW", "W W", " W ",
+        addOreDictRecipe(new ItemStack(ModItems.flowerBag),
+                "CSC", "CPC", " C ",
                 'P', new ItemStack(ModItems.petal, 1, Short.MAX_VALUE),
-                'W', new ItemStack(Blocks.wool, 1, Short.MAX_VALUE));
+                'C', new ItemStack((Item)Item.itemRegistry.getObject("Thaumcraft:ItemResource"), 1, 7),
+                'S', LibOreDict.MANA_STRING);
         ModCraftingRecipes.recipeFlowerBag = BotaniaAPI.getLatestAddedRecipe();
+
+        // Mushroom Pouch Recipe
+        addOreDictRecipe(new ItemStack(ModItems.shroomBag),
+                "CSC", "CMC", " C ",
+                'M', new ItemStack(ModBlocks.mushroom, 1, Short.MAX_VALUE),
+                'C', new ItemStack((Item)Item.itemRegistry.getObject("Thaumcraft:ItemResource"), 1, 7),
+                'S', LibOreDict.MANA_STRING);
+        ModCraftingRecipes.recipeShroomBag = BotaniaAPI.getLatestAddedRecipe();
 
         // Double Petal Recipes
         for(int i = 0; i < 16; i++)

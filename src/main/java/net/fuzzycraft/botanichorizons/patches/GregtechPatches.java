@@ -1,13 +1,15 @@
 package net.fuzzycraft.botanichorizons.patches;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.GTUtility;
 import net.fuzzycraft.botanichorizons.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -29,6 +31,12 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
+
+
 public class GregtechPatches {
     public static void applyPatches() {
 
@@ -39,25 +47,25 @@ public class GregtechPatches {
             ItemStack powder = new ItemStack(ModItems.dye, 1, i);
 
             // petals
-            GT_ModHandler.addShapelessCraftingRecipe(powder, GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ToolDictNames.craftingToolMortar, petal});
-            GT_ModHandler.addPulverisationRecipe(petal, powder);
+            GTModHandler.addShapelessCraftingRecipe(powder, GTModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ToolDictNames.craftingToolMortar, petal});
+            addIC2MacerationRecipe(powder, petal);
 
             // flowers
-            GT_ModHandler.addShapelessCraftingRecipe(powder, GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ToolDictNames.craftingToolMortar, flower});
-            GT_ModHandler.addPulverisationRecipe(flower, powder);
+            GTModHandler.addShapelessCraftingRecipe(powder, GTModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ToolDictNames.craftingToolMortar, flower});
+            addIC2MacerationRecipe(powder, flower);
         }
 
         // Petal Block from 9x in compressor + reverse in extractor
         for(int i = 0; i < 16; i++) {
-            GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.petal, 9, i), new ItemStack(ModBlocks.petalBlock, 1, i));
-            GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.petalBlock, 1, i), new ItemStack(ModItems.petal, 9, i));
+            compressAndExtract(new ItemStack(ModItems.petal, 9, i), new ItemStack(ModBlocks.petalBlock, 1, i));
         }
 
         // Petals from flowers
         for(int i = 0; i < 16; i++) {
-            GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.flower, 1, i), new ItemStack(ModItems.petal, 2, i));
+            addIC2ExtractorRecipe(new ItemStack(ModItems.petal, 2, i), new ItemStack(ModBlocks.flower, 1, i));
+
             for (ItemStack doubleFlowerPart : OreDictionary.getOres(LibOreDict.DOUBLE_FLOWER[i])) {
-                GT_ModHandler.addExtractionRecipe(doubleFlowerPart, new ItemStack(ModItems.petal, 4, i));
+                addIC2ExtractorRecipe(new ItemStack(ModItems.petal, 4, i), doubleFlowerPart);
             }
         }
 
@@ -73,8 +81,6 @@ public class GregtechPatches {
 
         // Slabs
         addSlabRecipe(new ItemStack(ModFluffBlocks.dirtPathSlab, 2),          new ItemStack(ModBlocks.dirtPath, 1),             1, 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.livingrockSlab, 2),        new ItemStack(ModBlocks.livingrock, 1),           1, 16, 80);
-        addSlabRecipe(new ItemStack(ModFluffBlocks.prismarineSlab, 2),        new ItemStack(ModBlocks.prismarine, 1),           1, 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.reedSlab, 2),              new ItemStack(ModBlocks.reedBlock, 1),            1, 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.shimmerrockSlab, 2),       new ItemStack(ModBlocks.shimmerrock, 1),          1, 16, 80);
         addSlabRecipe(new ItemStack(ModFluffBlocks.shimmerwoodPlankSlab, 2),  new ItemStack(ModBlocks.shimmerwoodPlanks, 1),    1, 16, 80);
@@ -105,7 +111,6 @@ public class GregtechPatches {
         for (int i = 0; i < ModFluffBlocks.pavementStairs.length; i++)
             addSlabRecipe(new ItemStack(ModFluffBlocks.pavementSlabs[i], 2), new ItemStack(ModFluffBlocks.pavement, 1, i), 1, 16, 80);
 
-
         // Blocks to either planks or slabs
         ModCraftingRecipes.recipeLivingwoodDecor1 = addSlabRecipe(new ItemStack(ModBlocks.livingwood, 4, Constants.LIVINGWOOD_META_PLANK), new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_BLOCK), 2, 16, 200);
         addSlabRecipe(new ItemStack(ModBlocks.dreamwood,  4, Constants.LIVINGWOOD_META_PLANK), new ItemStack(ModBlocks.dreamwood, 1,  Constants.LIVINGWOOD_META_BLOCK), 2, 16, 200);
@@ -121,7 +126,6 @@ public class GregtechPatches {
         addStairs(ModFluffBlocks.livingwoodPlankStairs, new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_PLANK));
         addStairs(ModFluffBlocks.dreamwoodStairs, new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_BLOCK));
         addStairs(ModFluffBlocks.dreamwoodPlankStairs, new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_PLANK));
-        addSlabRecipe(new ItemStack(ModFluffBlocks.dreamwoodPlankSlab, 2), new ItemStack(ModBlocks.dreamwood, 1, Constants.LIVINGWOOD_META_PLANK),   1, 16, 80);
 
         // Cracked blocks
         ModCraftingRecipes.recipeLivingrockDecor3 = addHammerRecipe(new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_CRACKED), new ItemStack(ModBlocks.livingrock, 1, Constants.LIVINGSTONE_META_BRICK));
@@ -135,51 +139,37 @@ public class GregtechPatches {
         addQuartzRecipes(Constants.QUARTZ_META_ELVEN, null, ModFluffBlocks.elfQuartz, ModFluffBlocks.elfQuartzStairs, ModFluffBlocks.elfQuartzSlab);
         ModCraftingRecipes.recipeSunnyQuartz = addQuartzRecipes(Constants.QUARTZ_META_SUNNY, new ItemStack(Blocks.double_plant, 1, 0), ModFluffBlocks.sunnyQuartz, ModFluffBlocks.sunnyQuartzStairs, ModFluffBlocks.sunnyQuartzSlab);
 
-
-        // Ingots into blocks. Wouldn't be surprised if this becomes unnecessary when GT provides its own ingots
-        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_MANASTEEL), new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_MANASTEELBLOCK));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_MANASTEELBLOCK), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_MANASTEEL));
-        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_TERRASTEEL), new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_TERRASTEELBLOCK));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_TERRASTEELBLOCK), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_TERRASTEEL));
-        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_ELEMENTIUM), new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_ELEMENTIUMBLOCK));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_ELEMENTIUMBLOCK), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_ELEMENTIUM));
-        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_DRAGONSTONE), new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_DRAGONSTONEBLOCK));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_DRAGONSTONEBLOCK), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_DRAGONSTONE));
-        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_DIAMOND), new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_DIAMONDBLOCK));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.storage, 1, Constants.STORAGE_META_DIAMONDBLOCK), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_DIAMOND));
-
-        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_PRISMARINE), new ItemStack(ModBlocks.prismarine));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.prismarine), new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_PRISMARINE));
-
-        GT_ModHandler.addExtractionRecipe(new ItemStack(ModBlocks.reedBlock), new ItemStack(Items.reeds, 8));
-        GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.addRecipe(true,
-                new ItemStack[]{new ItemStack(Items.reeds, 8), GT_Utility.getIntegratedCircuit(16)},
-                new ItemStack[]{new ItemStack(ModBlocks.reedBlock)},
-                null, null, null,
-                80, 24, 0
+        compressAndExtract(
+                new ItemStack(ModItems.manaResource, 9, Constants.MANARESOURCE_META_PRISMARINE),
+                new ItemStack(ModBlocks.prismarine)
         );
+
+        // Reeds compress to plantballs by default
+        GTValues.RA.stdBuilder()
+                .itemInputs(new ItemStack(Items.reeds, 8), GTUtility.getIntegratedCircuit(16))
+                .itemOutputs(new ItemStack(ModBlocks.reedBlock))
+                .duration(4*SECONDS)
+                .eut(24)
+                .addTo(assemblerRecipes);
 
         // Livingwood and Crystal Bows
-        GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.addRecipe(true,
-                new ItemStack[]{
-                        new ItemStack(ModItems.manaResource, 3, Constants.MANARESOURCE_META_TWIG_WOOD),
+        GTValues.RA.stdBuilder()
+                .itemInputs(new ItemStack(ModItems.manaResource, 3, Constants.MANARESOURCE_META_TWIG_WOOD),
                         new ItemStack(ModItems.manaResource, 3, Constants.MANARESOURCE_META_STRING),
-                        GT_Utility.getIntegratedCircuit(1)
-                },
-                new ItemStack[]{new ItemStack(ModItems.livingwoodBow)},
-                null, null, null,
-                80, 24, 0
-        );
-        GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.addRecipe(true,
-                new ItemStack[]{
-                        new ItemStack(ModItems.manaResource, 3, Constants.MANARESOURCE_META_TWIG_DREAM),
+                        GTUtility.getIntegratedCircuit(1))
+                .itemOutputs(new ItemStack(ModItems.livingwoodBow))
+                .duration(4*SECONDS)
+                .eut(24)
+                .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+                .itemInputs(new ItemStack(ModItems.manaResource, 3, Constants.MANARESOURCE_META_TWIG_DREAM),
                         new ItemStack(ModItems.manaResource, 3, Constants.MANARESOURCE_META_STRING),
-                        new ItemStack(ModItems.manaResource, 2, Constants.MANARESOURCE_META_DRAGONSTONE),
-                },
-                new ItemStack[]{new ItemStack(ModItems.crystalBow)},
-                null, null, null,
-                80, 24, 0
-        );
+                        new ItemStack(ModItems.manaResource, 2, Constants.MANARESOURCE_META_DRAGONSTONE))
+                .itemOutputs(new ItemStack(ModItems.crystalBow))
+                .duration(4*SECONDS)
+                .eut(24)
+                .addTo(assemblerRecipes);
 
         // Decorative baubles
         for(int i = 0; i < 32; i++) {
@@ -191,13 +181,14 @@ public class GregtechPatches {
                     'P', new ItemStack(choice, 1, i % 16),
                     'S', LibOreDict.MANAWEAVE_CLOTH
             );
-            GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.addRecipe(true,
-                    new ItemStack[]{fabric, new ItemStack(choice, 2, i % 16), GT_Utility.getIntegratedCircuit(4)},
-                    new ItemStack[]{output},
-                    null, null, null,
-                    120, 80, 0
-            );
-            GT_ModHandler.addExtractionRecipe(new ItemStack(ModItems.cosmetic, 1, i), fabric);
+            GTValues.RA.stdBuilder()
+                    .itemInputs(fabric, new ItemStack(choice, 2, i % 16), GTUtility.getIntegratedCircuit(4))
+                    .itemOutputs(output)
+                    .duration(6*SECONDS)
+                    .eut(80)
+                    .addTo(assemblerRecipes);
+
+            addIC2ExtractorRecipe(fabric, new ItemStack(ModItems.cosmetic, 1, i));
         }
         ModCraftingRecipes.recipesCosmeticItems = BotaniaAPI.getLatestAddedRecipes(32);
 
@@ -209,14 +200,44 @@ public class GregtechPatches {
     }
 
     private static void addMixerRecipe(ItemStack output, int volt, int ticks, ItemStack... input) {
-        GT_Recipe.GT_Recipe_Map.sMixerRecipes.addRecipe(
-                true,
-                input,
-                new ItemStack[]{output},
-                null, null, null, null,
-                ticks, volt,
-                0
-        );
+        GTValues.RA.stdBuilder()
+                .itemInputs(input)
+                .itemOutputs(output)
+                .duration(ticks)
+                .eut(volt)
+                .addTo(RecipeMaps.mixerRecipes);
+    }
+
+    private static void addIC2MacerationRecipe(ItemStack output, ItemStack input) {
+        GTValues.RA.stdBuilder()
+                .itemInputs(input)
+                .itemOutputs(output)
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(RecipeMaps.maceratorRecipes);
+    }
+
+    private static void addIC2ExtractorRecipe(ItemStack output, ItemStack input) {
+        GTValues.RA.stdBuilder()
+                .itemInputs(input)
+                .itemOutputs(output)
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(RecipeMaps.extractorRecipes);
+    }
+
+    private static void addIC2CompressorRecipe(ItemStack output, ItemStack input) {
+        GTValues.RA.stdBuilder()
+                .itemInputs(input)
+                .itemOutputs(output)
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(RecipeMaps.compressorRecipes);
+    }
+
+    private static void compressAndExtract(ItemStack uncompressed, ItemStack compressed) {
+        addIC2ExtractorRecipe(uncompressed, compressed);
+        addIC2CompressorRecipe(compressed, uncompressed);
     }
 
     @Nullable
@@ -225,41 +246,21 @@ public class GregtechPatches {
         if (circuit == 0) {
             inputs = new ItemStack[]{input};
         } else {
-            ItemStack circuitStack = GT_Utility.getIntegratedCircuit(circuit);
+            ItemStack circuitStack = GTUtility.getIntegratedCircuit(circuit);
             inputs = new ItemStack[]{input, circuitStack};
         }
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(
-                true,
-                inputs,
-                new ItemStack[]{output},
-                null, null,
-                new FluidStack[]{Materials.Water.getFluid(4)},
-                null,
-                ticks, volt, 0
-        );
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(
-                true,
-                inputs,
-                new ItemStack[]{output},
-                null, null,
-                new FluidStack[]{GT_ModHandler.getDistilledWater(3)},
-                null,
-                ticks, volt, 0
-        );
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(
-                true,
-                inputs,
-                new ItemStack[]{output},
-                null, null,
-                new FluidStack[]{Materials.Lubricant.getFluid(1)},
-                null,
-                ticks / 2, volt, 0
-        );
+        GTValues.RA.stdBuilder()
+                        .itemInputs(inputs)
+                        .itemOutputs(output)
+                        .duration(ticks)
+                        .eut(volt)
+                        .addTo(cutterRecipes);
+
         if (volt < 32 && (output.stackSize % 2) == 0) {
             ItemStack half_output = new ItemStack(output.getItem(), output.stackSize / 2, output.getItemDamage());
             String r1 = (circuit <= 1) ? "sR" : "s ";
             String r2 = (circuit <= 1) ? "  " : "R ";
-            GT_ModHandler.addCraftingRecipe(
+            GTModHandler.addCraftingRecipe(
                     half_output,
                     new Object[]{
                             r1, r2,
@@ -276,14 +277,14 @@ public class GregtechPatches {
     }
 
     public static IRecipe addHammerRecipe(ItemStack output, ItemStack input) {
-        GT_Recipe.GT_Recipe_Map.sHammerRecipes.addRecipe(
-                true,
-                new ItemStack[]{input},
-                new ItemStack[]{output},
-                null, null, null,null,
-                32, 4, 0
-        );
-        GT_ModHandler.addCraftingRecipe(
+        GTValues.RA.stdBuilder()
+                .itemInputs(input)
+                .itemOutputs(output)
+                .duration(32 * GTRecipeBuilder.TICKS)
+                .eut(4)
+                .addTo(RecipeMaps.hammerRecipes);
+
+        GTModHandler.addCraftingRecipe(
                 output,
                 new Object[]{
                         "h", "R",
@@ -300,9 +301,9 @@ public class GregtechPatches {
     public static IRecipe addQuartzRecipes(int quartzMeta, @Nullable Object ingredient, Block block, Block stairs, Block slab) {
 
         // quartz-to-block and vice versa
-        GT_ModHandler.addCompressionRecipe(new ItemStack(ModItems.quartz, 4, quartzMeta), new ItemStack(block));
+        addIC2CompressorRecipe(new ItemStack(block), new ItemStack(ModItems.quartz, 4, quartzMeta));
         for (int i = 0; i < 3; i++) {
-            GT_ModHandler.addExtractionRecipe(new ItemStack(block, 1, i), new ItemStack(ModItems.quartz, 4, quartzMeta));
+            addIC2ExtractorRecipe(new ItemStack(ModItems.quartz, 4, quartzMeta), new ItemStack(block, 1, i));
         }
 
         addSlabRecipe(new ItemStack(slab, 2, 0), new ItemStack(block, 1, 0), 1, 16, 80);
@@ -329,9 +330,19 @@ public class GregtechPatches {
                         'C', ingredient));
             } else {
                 // Smokey Quartz - deduplicate with Thaumic Tinkerer
-                GT_ModHandler.addAlloySmelterRecipe(new ItemStack(Items.quartz, 8), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1), new ItemStack(ModItems.quartz, 8), 400, 16, false);
-                GT_ModHandler.addAlloySmelterRecipe(new ItemStack(Items.quartz, 8), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Charcoal, 1), new ItemStack(ModItems.quartz, 8), 400, 16, false);
-            }
+                GTValues.RA.stdBuilder()
+                        .itemInputs(new ItemStack(Items.quartz, 8), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1))
+                        .itemOutputs(new ItemStack(ModItems.quartz, 8))
+                        .duration(20 * SECONDS)
+                        .eut(16)
+                        .addTo(RecipeMaps.alloySmelterRecipes);
+                GTValues.RA.stdBuilder()
+                        .itemInputs(new ItemStack(Items.quartz, 8), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Charcoal, 1))
+                        .itemOutputs(new ItemStack(ModItems.quartz, 8))
+                        .duration(20 * SECONDS)
+                        .eut(16)
+                        .addTo(RecipeMaps.alloySmelterRecipes);
+               }
             return BotaniaAPI.getLatestAddedRecipe();
         } else {
             return null;
@@ -339,35 +350,14 @@ public class GregtechPatches {
     }
 
     public static void addGlassPane(Block paneBlock, Block inputBlock) {
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(
-                true,
-                new ItemStack[]{new ItemStack(inputBlock, 3)},
-                new ItemStack[]{new ItemStack(paneBlock, 8)},
-                null, null,
-                new FluidStack[]{Materials.Water.getFluid(4)},
-                null,
-                100, 7, 0
-        );
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(
-                true,
-                new ItemStack[]{new ItemStack(inputBlock, 3)},
-                new ItemStack[]{new ItemStack(paneBlock, 8)},
-                null, null,
-                new FluidStack[]{GT_ModHandler.getDistilledWater(3)},
-                null,
-                100, 7, 0
-        );
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(
-                true,
-                new ItemStack[]{new ItemStack(inputBlock, 3)},
-                new ItemStack[]{new ItemStack(paneBlock, 8)},
-                null, null,
-                new FluidStack[]{Materials.Lubricant.getFluid(1)},
-                null,
-                50, 7, 0
-        );
+        GTValues.RA.stdBuilder()
+                .itemInputs(new ItemStack(inputBlock, 3))
+                .itemOutputs(new ItemStack(paneBlock, 8))
+                .duration(2*SECONDS+10*TICKS)
+                .eut(7)
+                .addTo(cutterRecipes);
 
-        GT_ModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
                 new ItemStack(paneBlock, 2),
                 new Object[]{
                         "s", "G",
