@@ -1,29 +1,225 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
+import net.fuzzycraft.botanichorizons.util.InventoryHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInvBasic;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.oredict.OreDictionary;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.mana.IManaReceiver;
+import vazkii.botania.api.mana.spark.ISparkAttachable;
+import vazkii.botania.api.mana.spark.ISparkEntity;
 import vazkii.botania.api.recipe.RecipeElvenTrade;
 import vazkii.botania.common.block.tile.TileAlfPortal;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileAdvancedAlfPortal extends TileAlfPortal implements IInventory, IManaReceiver {
+public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IInvBasic, IManaReceiver, ISparkAttachable {
 
+    // Tile entity state
+    public final InventoryBasic inventoryHandler;
+    protected int storedMana = 5000; // can be > MANA_CAPACITY to avoid losses
+    protected int cycleRemaining = 0;
+    protected boolean isOnline = true;
+
+    // Definitions
     static final int INPUT_SIZE = 2;
     static final int OUTPUT_SIZE = 2;
 
-    public final InventoryBasic inventoryHandler;
-
-    protected int storedMana = 0;
+    public final int MANA_CAPACITY = 10000;
+    public final int CYCLE_TICKS = 20;
+    public final int CYCLE_UPKEEP = 20;
+    public final int RECIPE_MANA = 50;
+    public final int ACTIVATE_MANA = 2000;
 
     public TileAdvancedAlfPortal() {
         inventoryHandler = new InventoryBasic("name", false, INPUT_SIZE + OUTPUT_SIZE);
+
+        // Listen to change events so we can mark the chunk dirty on interactions
+        inventoryHandler.func_110134_a(this);
+    }
+
+    // Business logic
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+
+        if (!isOnline || worldObj.isRemote) {
+            return;
+        } else if (cycleRemaining > 0) {
+            cycleRemaining--;
+        } else if (storedMana < CYCLE_UPKEEP) {
+            isOnline = false;
+            // TODO: visual stuff
+        } else {
+            cycleRemaining = CYCLE_TICKS;
+            storedMana -= CYCLE_UPKEEP;
+
+            handleCrafts();
+            handleOutputs();
+            cleanupInventory(0, INPUT_SIZE);
+            cleanupInventory(INPUT_SIZE, INPUT_SIZE + OUTPUT_SIZE);
+            markDirty();
+        }
+    }
+
+    public boolean onWanded() {
+        if (!isOnline && storedMana > ACTIVATE_MANA) {
+            storedMana -= ACTIVATE_MANA;
+            cycleRemaining = CYCLE_TICKS;
+            isOnline = true;
+            markDirty();
+            return true;
+        }
+
+        return false;
+    }
+
+    // process recipes
+    private void handleCrafts() {
+        int parallel = 64;
+
+        // check energy capacity
+        final int max_mana_parallel = (storedMana - CYCLE_UPKEEP) / RECIPE_MANA;
+        parallel = Math.min(parallel, max_mana_parallel);
+        if (parallel <= 0) return;
+
+        // check if last output slot is empty, i.e. we can safely dump the output
+        final ItemStack currentLastSlot = inventoryHandler.getStackInSlot(INPUT_SIZE + OUTPUT_SIZE - 1);
+        if (currentLastSlot != null && currentLastSlot.stackSize > 0) return;
+
+        // check available inputs
+        final ItemStack craftStack = inventoryHandler.getStackInSlot(0);
+        if (craftStack == null || craftStack.getItem() == null) return;
+        final int max_input_parallel = craftStack.stackSize;
+        parallel = Math.min(parallel, max_input_parallel);
+        if (parallel <= 0) return;
+
+        // get recipe
+        RecipeElvenTrade recipe = findMatchingRecipe(craftStack);
+        if (recipe == null || recipe.getInputs().size() != 1) {
+            // Recipe is bugged or went missing, dump the input to the output so we don't lose it.
+            inventoryHandler.setInventorySlotContents(INPUT_SIZE + OUTPUT_SIZE - 1, craftStack.copy());
+            inventoryHandler.setInventorySlotContents(0, null);
+            return;
+        }
+
+        final ItemStack output_instance = recipe.getOutput();
+        final int max_output_parallel = 64 / output_instance.stackSize;
+        parallel = Math.min(parallel, max_output_parallel); // will be > 0
+
+        // perform recipe in batch
+        ItemStack output = output_instance.copy();
+        output.stackSize = output.stackSize * parallel;
+
+        // commit to inventory
+        inventoryHandler.setInventorySlotContents(INPUT_SIZE + OUTPUT_SIZE - 1, output);
+        inventoryHandler.decrStackSize(0, parallel);
+    }
+
+    // Dump output downward
+    private void handleOutputs() {
+        if (yCoord < 1) return;
+
+        for (int slot = INPUT_SIZE; slot < INPUT_SIZE + OUTPUT_SIZE; slot++) {
+            final ItemStack stack = inventoryHandler.getStackInSlot(slot);
+            if (stack == null || stack.getItem() == null || stack.stackSize == 0) continue;
+
+            TileEntity outputEntity = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+            if (outputEntity instanceof IInventory) {
+                IInventory outputInventory = (IInventory) outputEntity;
+                ItemStack remainingItems = InventoryHelper.pushToInventory(outputInventory, stack);
+                inventoryHandler.setInventorySlotContents(slot, remainingItems);
+            } else if (worldObj.isAirBlock(xCoord, yCoord - 1, zCoord)) {
+                // TODO: drop items in world
+            }
+        }
+    }
+
+    // pushes stacks left to try and make free space.
+    private void cleanupInventory(int start, int end) {
+        for (int checkSlot = start + 1; checkSlot < end; checkSlot++) {
+            ItemStack sourceStack = inventoryHandler.getStackInSlot(checkSlot);
+            if (sourceStack != null) {
+                boolean done = false;
+                for (int refSlot = start; refSlot < checkSlot && !done; refSlot++) {
+                    ItemStack destinationStack = inventoryHandler.getStackInSlot(refSlot);
+                    if (destinationStack == null) {
+                        inventoryHandler.setInventorySlotContents(refSlot, sourceStack);
+                        inventoryHandler.setInventorySlotContents(checkSlot, null);
+                        done = true;
+                    } else {
+                        final int itemsToMove = InventoryHelper.itemsToMove(destinationStack, sourceStack);
+                        if (itemsToMove > 0) {
+                            final ItemStack newDestinationStack = destinationStack.copy();
+                            final ItemStack newSourceStack = sourceStack.copy();
+                            newDestinationStack.stackSize += itemsToMove;
+                            newSourceStack.stackSize -= itemsToMove;
+                            inventoryHandler.setInventorySlotContents(refSlot, newDestinationStack);
+                            if (newSourceStack.stackSize == 0) {
+                                inventoryHandler.setInventorySlotContents(checkSlot, null);
+                                done = true;
+                            } else {
+                                inventoryHandler.setInventorySlotContents(checkSlot, newSourceStack);
+                                sourceStack = newSourceStack;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Nullable
+    public static RecipeElvenTrade findMatchingRecipe(@Nonnull ItemStack stack) {
+        for(RecipeElvenTrade recipe : BotaniaAPI.elvenTradeRecipes) {
+            final List<Object> inputs = recipe.getInputs();
+            for (Object input: inputs) {
+                if (input instanceof String) {
+                    int[] oreIds = OreDictionary.getOreIDs(stack);
+                    for (int oreId: oreIds) {
+                        if (OreDictionary.getOreName(oreId).equals(input)) {
+                            return recipe;
+                        }
+                    }
+                } else if (input instanceof ItemStack) {
+                    ItemStack compare = (ItemStack) input;
+                    if (compare.isItemEqual(stack)) {
+                        return recipe;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    // Persistence
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound nbttagcompound = new NBTTagCompound();
+        writeCustomNBT(nbttagcompound);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, -999, nbttagcompound);
+    }
+
+    public void writeCustomNBT(NBTTagCompound compound) {
+        compound.setTag("inv", InventoryHelper.saveInventoryToNBT(inventoryHandler));
+    }
+
+    public void readCustomNBT(NBTTagCompound compound) {
+        InventoryHelper.readInventoryFromNBT(inventoryHandler, compound.getCompoundTag("inv"));
     }
 
     // IInventory
@@ -38,6 +234,7 @@ public class TileAdvancedAlfPortal extends TileAlfPortal implements IInventory, 
     }
     @Override
     public ItemStack decrStackSize(int index, int count) {
+        if (index < INPUT_SIZE && count > 0) return null;
         return inventoryHandler.decrStackSize(index, count);
     }
     @Override
@@ -77,36 +274,21 @@ public class TileAdvancedAlfPortal extends TileAlfPortal implements IInventory, 
         if (index >= INPUT_SIZE || index < 0) return false; // do not allow inserts into output slots
         if (stack == null || stack.getItem() == null) return false;
 
-        for(RecipeElvenTrade recipe : BotaniaAPI.elvenTradeRecipes) {
-            final List<Object> inputs = recipe.getInputs();
-            for (Object input: inputs) {
-                if (input instanceof String) {
-                    int[] oreIds = OreDictionary.getOreIDs(stack);
-                    for (int oreId: oreIds) {
-                        if (OreDictionary.getOreName(oreId).equals(input)) {
-                            return true;
-                        }
-                    }
-                } else if (input instanceof ItemStack) {
-                    ItemStack compare = (ItemStack) input;
-                    if (compare.isItemEqual(stack)) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false; // item not found
+        return findMatchingRecipe(stack) != null; // item not found
     }
 
-    private boolean canCraft() {
-        return false;
+    // IInvBasic
+    @Override
+    public void onInventoryChanged(InventoryBasic p_76316_1_) {
+        markDirty();
     }
 
+
+    // IManaReceiver
 
     @Override
     public boolean isFull() {
-        return false;
+        return storedMana > MANA_CAPACITY;
     }
 
     @Override
@@ -116,11 +298,44 @@ public class TileAdvancedAlfPortal extends TileAlfPortal implements IInventory, 
 
     @Override
     public boolean canRecieveManaFromBursts() {
-        return false;
+        return true;
     }
 
     @Override
     public int getCurrentMana() {
-        return 0;
+        return storedMana;
+    }
+
+    // ISparkAttachable
+
+    @Override
+    public boolean canAttachSpark(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public void attachSpark(ISparkEntity entity) {
+        // no-op
+    }
+
+    @Override
+    public int getAvailableSpaceForMana() {
+        return Math.max(0, MANA_CAPACITY - storedMana);
+    }
+
+    @Override
+    public ISparkEntity getAttachedSpark() {
+        List<ISparkEntity> sparks = worldObj.getEntitiesWithinAABB(ISparkEntity.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord + 1, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+        if(sparks.size() == 1) {
+            Entity e = (Entity) sparks.get(0);
+            return (ISparkEntity) e;
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean areIncomingTranfersDone() {
+        return storedMana >= MANA_CAPACITY;
     }
 }

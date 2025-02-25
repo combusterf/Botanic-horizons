@@ -53,7 +53,7 @@ public class BlockAdvancedAlfPortal extends BlockModContainer implements IWandab
     }
 
     public boolean onUsedByWand(EntityPlayer player, ItemStack stack, World world, int x, int y, int z, int side) {
-        boolean did = ((TileAlfPortal)world.getTileEntity(x, y, z)).onWanded();
+        boolean did = ((TileAdvancedAlfPortal)world.getTileEntity(x, y, z)).onWanded();
         if (did && player != null) {
             player.addStat(ModAchievements.elfPortalOpen, 1);
         }
