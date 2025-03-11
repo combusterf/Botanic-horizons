@@ -1,6 +1,8 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
+import cpw.mods.fml.common.FMLLog;
 import net.fuzzycraft.botanichorizons.util.InventoryHelper;
+import net.fuzzycraft.botanichorizons.util.SparkHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInvBasic;
@@ -9,6 +11,7 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -29,19 +32,26 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
 
     // Tile entity state
     public final InventoryBasic inventoryHandler;
-    protected int storedMana = 5000; // can be > MANA_CAPACITY to avoid losses
+    protected int storedMana = 0; // can be > MANA_CAPACITY to avoid losses
     protected int cycleRemaining = 0;
+    protected int sparkCycleRemaining = 0;
     protected boolean isOnline = true;
+    protected boolean clientSparkTransfer = false;
 
     // Definitions
     static final int INPUT_SIZE = 2;
     static final int OUTPUT_SIZE = 2;
 
-    public final int MANA_CAPACITY = 10000;
+    public final int MANA_CAPACITY = 200000;
     public final int CYCLE_TICKS = 20;
+    public final int SPARK_CYCLE_TICKS = 100;
     public final int CYCLE_UPKEEP = 20;
-    public final int RECIPE_MANA = 50;
-    public final int ACTIVATE_MANA = 2000;
+    public final int RECIPE_MANA = 100;
+    public final int ACTIVATE_MANA = 95000;
+    public final int SPARK_BUFFER_MANA = 500;
+
+    // Debug stats
+    protected boolean requestedSparkTransfer = false;
 
     public TileAdvancedAlfPortal() {
         inventoryHandler = new InventoryBasic("name", false, INPUT_SIZE + OUTPUT_SIZE);
@@ -55,8 +65,19 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
     @Override
     public void updateEntity() {
         super.updateEntity();
+        if (worldObj.isRemote) {
+            if (clientSparkTransfer) {
+                SparkHelper.requestSparkTransfers(worldObj, xCoord, yCoord, zCoord, getAttachedSpark());
+                clientSparkTransfer = false;
+            }
+        } else {
+            updateEntityCrafting();
+            updateEntitySparks();
+        }
+    }
 
-        if (!isOnline || worldObj.isRemote) {
+    private void updateEntityCrafting() {
+        if (!isOnline) {
             return;
         } else if (cycleRemaining > 0) {
             cycleRemaining--;
@@ -75,11 +96,37 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
         }
     }
 
+    private void updateEntitySparks() {
+        if (sparkCycleRemaining > 0) {
+            sparkCycleRemaining--;
+        } else {
+            sparkCycleRemaining = SPARK_CYCLE_TICKS;
+            if (areIncomingTranfersDone()) {
+                return;
+            }
+
+            if (
+                ((!isOnline) && (storedMana < ACTIVATE_MANA + SPARK_BUFFER_MANA)) ||
+                 (isOnline && (storedMana < MANA_CAPACITY - SPARK_BUFFER_MANA))
+            ) {
+                requestedSparkTransfer = true;
+                SparkHelper.requestSparkTransfers(worldObj, xCoord, yCoord, zCoord, getAttachedSpark());
+                markDirty();
+            } else {
+                requestedSparkTransfer = false;
+            }
+        }
+    }
+
     public boolean onWanded() {
         if (!isOnline && storedMana > ACTIVATE_MANA) {
             storedMana -= ACTIVATE_MANA;
             cycleRemaining = CYCLE_TICKS;
             isOnline = true;
+            markDirty();
+            return true;
+        } else if (isOnline) {
+            isOnline = false;
             markDirty();
             return true;
         }
@@ -207,20 +254,51 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
 
     // Persistence
 
+    private static final String KEY_INVENTORY = "inv";
+    private static final String KEY_MANA = "mana";
+    private static final String KEY_ONLINE = "enabled";
+    private static final String KEY_SPARK_TRANSFER = "st";
+
     @Override
     public Packet getDescriptionPacket() {
+        FMLLog.warning("AAP: packet out");
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         writeCustomNBT(nbttagcompound);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, -999, nbttagcompound);
     }
 
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+        FMLLog.warning("AAP: packet in");
+        readCustomNBT(packet.func_148857_g());
+    }
+
     public void writeCustomNBT(NBTTagCompound compound) {
-        compound.setTag("inv", InventoryHelper.saveInventoryToNBT(inventoryHandler));
+        compound.setTag(KEY_INVENTORY, InventoryHelper.saveInventoryToNBT(inventoryHandler));
+        compound.setBoolean(KEY_ONLINE, isOnline);
+        compound.setInteger(KEY_MANA, storedMana);
+        compound.setBoolean(KEY_SPARK_TRANSFER, requestedSparkTransfer);
     }
 
     public void readCustomNBT(NBTTagCompound compound) {
-        InventoryHelper.readInventoryFromNBT(inventoryHandler, compound.getCompoundTag("inv"));
+        InventoryHelper.readInventoryFromNBT(inventoryHandler, compound.getCompoundTag(KEY_INVENTORY));
+        isOnline = compound.getBoolean(KEY_ONLINE);
+        storedMana = compound.getInteger(KEY_MANA);
+        clientSparkTransfer = compound.getBoolean(KEY_SPARK_TRANSFER);
     }
+
+    @Override
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        writeCustomNBT(compound);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        readCustomNBT(compound);
+    }
+
 
     // IInventory
 
@@ -288,7 +366,7 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
 
     @Override
     public boolean isFull() {
-        return storedMana > MANA_CAPACITY;
+        return storedMana >= MANA_CAPACITY;
     }
 
     @Override
@@ -315,7 +393,7 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
 
     @Override
     public void attachSpark(ISparkEntity entity) {
-        // no-op
+        sparkCycleRemaining = 0;
     }
 
     @Override
@@ -336,6 +414,6 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
 
     @Override
     public boolean areIncomingTranfersDone() {
-        return storedMana >= MANA_CAPACITY;
+        return storedMana >= (isOnline ? MANA_CAPACITY : ACTIVATE_MANA + SPARK_BUFFER_MANA);
     }
 }
