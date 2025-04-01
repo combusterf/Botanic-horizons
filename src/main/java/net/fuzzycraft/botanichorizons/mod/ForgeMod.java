@@ -6,6 +6,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 import net.fuzzycraft.botanichorizons.addons.Blocks;
 
+import net.fuzzycraft.botanichorizons.addons.Multiblocks;
 import net.fuzzycraft.botanichorizons.patches.AlfheimPatches;
 import net.fuzzycraft.botanichorizons.patches.ApothecaryPatches;
 import net.fuzzycraft.botanichorizons.patches.AvaritiaPatches;
@@ -55,6 +56,8 @@ public class ForgeMod {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        Multiblocks.init();
+
         if (!isPackMode()) return;
 
         ThaumcraftAspects.registerAspects();

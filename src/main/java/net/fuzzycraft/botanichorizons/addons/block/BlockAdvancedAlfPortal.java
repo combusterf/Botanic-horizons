@@ -1,11 +1,16 @@
 package net.fuzzycraft.botanichorizons.addons.block;
 
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAlfPortal;
+import net.fuzzycraft.botanichorizons.util.Facing2D;
+import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockStructure;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -51,6 +56,16 @@ public class BlockAdvancedAlfPortal extends BlockModContainer implements IWandab
     public LexiconEntry getEntry(World world, int x, int y, int z, EntityPlayer player, ItemStack lexicon) {
         return LexiconData.alfhomancyIntro;
     }
+
+    public void onBlockPlacedBy(World worldIn, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn) {
+        Facing2D facing = Facing2D.facingPlayer(placer);
+        if (placer instanceof EntityPlayerMP) {
+            EntityPlayerMP player = (EntityPlayerMP) placer;
+            player.addChatMessage(new ChatComponentText("Facing index: " + facing.index + ": " + facing.name()));
+        }
+        worldIn.setBlockMetadataWithNotify(x, y, z, facing.index, 3);
+    }
+
 
     public boolean onUsedByWand(EntityPlayer player, ItemStack stack, World world, int x, int y, int z, int side) {
         boolean did = ((TileAdvancedAlfPortal)world.getTileEntity(x, y, z)).onWanded();

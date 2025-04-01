@@ -1,6 +1,7 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
 import cpw.mods.fml.common.FMLLog;
+import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.fuzzycraft.botanichorizons.util.InventoryHelper;
 import net.fuzzycraft.botanichorizons.util.SparkHelper;
 import net.minecraft.entity.Entity;
@@ -35,6 +36,7 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
     protected int storedMana = 0; // can be > MANA_CAPACITY to avoid losses
     protected int cycleRemaining = 0;
     protected int sparkCycleRemaining = 0;
+    protected Facing2D facing = Facing2D.NORTH;
     protected boolean isOnline = true;
     protected boolean clientSparkTransfer = false;
 
@@ -119,6 +121,8 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
     }
 
     public boolean onWanded() {
+        this.facing = Facing2D.fromIndex(worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & 3);
+
         if (!isOnline && storedMana > ACTIVATE_MANA) {
             storedMana -= ACTIVATE_MANA;
             cycleRemaining = CYCLE_TICKS;
@@ -258,6 +262,7 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
     private static final String KEY_MANA = "mana";
     private static final String KEY_ONLINE = "enabled";
     private static final String KEY_SPARK_TRANSFER = "st";
+    private static final String KEY_FACING = "face";
 
     @Override
     public Packet getDescriptionPacket() {
@@ -278,6 +283,7 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
         compound.setBoolean(KEY_ONLINE, isOnline);
         compound.setInteger(KEY_MANA, storedMana);
         compound.setBoolean(KEY_SPARK_TRANSFER, requestedSparkTransfer);
+        compound.setByte(KEY_FACING, (byte)facing.index);
     }
 
     public void readCustomNBT(NBTTagCompound compound) {
@@ -285,6 +291,7 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
         isOnline = compound.getBoolean(KEY_ONLINE);
         storedMana = compound.getInteger(KEY_MANA);
         clientSparkTransfer = compound.getBoolean(KEY_SPARK_TRANSFER);
+        facing = Facing2D.fromIndex(compound.getByte(KEY_FACING));
     }
 
     @Override
