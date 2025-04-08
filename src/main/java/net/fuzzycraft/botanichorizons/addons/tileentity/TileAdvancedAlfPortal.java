@@ -29,6 +29,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_SEND_TO_CLIENT;
+import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_UPDATE;
+
 public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IInvBasic, IManaReceiver, ISparkAttachable {
 
     // Tile entity state
@@ -37,7 +40,7 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
     protected int cycleRemaining = 0;
     protected int sparkCycleRemaining = 0;
     protected Facing2D facing = Facing2D.NORTH;
-    protected boolean isOnline = true;
+    protected boolean isOnline = false;
     protected boolean clientSparkTransfer = false;
 
     // Definitions
@@ -85,7 +88,8 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
             cycleRemaining--;
         } else if (storedMana < CYCLE_UPKEEP) {
             isOnline = false;
-            // TODO: visual stuff
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
+            // TODO: more visual stuff
         } else {
             cycleRemaining = CYCLE_TICKS;
             storedMana -= CYCLE_UPKEEP;
@@ -127,10 +131,12 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
             storedMana -= ACTIVATE_MANA;
             cycleRemaining = CYCLE_TICKS;
             isOnline = true;
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
             markDirty();
             return true;
         } else if (isOnline) {
             isOnline = false;
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
             markDirty();
             return true;
         }

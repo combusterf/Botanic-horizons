@@ -1,5 +1,7 @@
 package net.fuzzycraft.botanichorizons.addons.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAlfPortal;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockStructure;
@@ -43,12 +45,15 @@ public class BlockAdvancedAlfPortal extends BlockModContainer implements IWandab
     IIcon iconOn;
     public static IIcon portalTex;
 
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.iconOff = IconHelper.forBlock(par1IconRegister, this, 0);
-        this.iconOn = IconHelper.forBlock(par1IconRegister, this, 1);
-        portalTex = IconHelper.forBlock(par1IconRegister, this, "Inside");
+    @SideOnly(Side.CLIENT) @Override
+    public void registerBlockIcons(IIconRegister register) {
+        // Using Botania's IconHelper to get access to their assets
+        this.iconOff = IconHelper.forName(register, "alfheimPortal0");
+        this.iconOn = IconHelper.forName(register, "alfheimPortal1");
+        portalTex = IconHelper.forName(register, "alfheimPortalInside");
     }
 
+    @SideOnly(Side.CLIENT) @Override
     public IIcon getIcon(int side, int meta) {
         return meta == 0 ? this.iconOff : this.iconOn;
     }
