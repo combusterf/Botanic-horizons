@@ -29,7 +29,7 @@ public class MultiblockHelper {
         }
     }
 
-    public boolean checkEntireStructure(@Nonnull World world, int rootX, int rootY, int rootZ, @Nonnull Facing2D orientation, int index) {
+    public Exception checkEntireStructure(@Nonnull World world, int rootX, int rootY, int rootZ, @Nonnull Facing2D orientation) {
         for(MultiblockStructure part : blocks) {
             int checkX = transformedX(rootX, orientation, part);
             int checkY = transformedY(rootY, part);
@@ -37,25 +37,32 @@ public class MultiblockHelper {
             if (world.checkChunksExist(checkX, checkY, checkZ, checkX, checkY, checkZ)) {
                 Block block = world.getBlock(checkX, checkY, checkZ);
                 if (!part.check.check(block, world, checkX, checkY, checkZ)) {
-                    return false;
+                    String message = String.format("x: (%d + %d * %d~%d), z: (%d + %d * %d~%d), b: %s",
+                            rootX, part.dx, orientation.dx, orientation.cw_dx,
+                            rootZ, part.dz, orientation.dz, orientation.cw_dz,
+                            part.toString()
+                    );
+                    return new WrongBlockException(checkX, checkY, checkZ, message);
                 }
             } else {
                 // Can't validate structure if it's unloaded
-                return false;
+                return new UnloadedBlockException(checkX, checkY, checkZ);
             }
         }
-        return false;
+        return null;
     }
 
+    // Pos + dz * dir - dx * dir.cw
+
     private int transformedX(int rootX, @Nonnull Facing2D orientation, @Nonnull MultiblockStructure item) {
-        return rootX + orientation.dx * item.dx + orientation.cw_dx * item.dz;
+        return rootX + item.dz * orientation.dx - item.dx * orientation.cw_dx;
     }
 
     private int transformedY(int rootY, @Nonnull MultiblockStructure item) {
-        return rootY + item.dy;
+        return rootY - item.dy;
     }
 
     private int transformedZ(int rootZ, @Nonnull Facing2D orientation, @Nonnull MultiblockStructure item) {
-        return rootZ + orientation.dz * item.dz + orientation.cw_dz * item.dx;
+        return rootZ + item.dz * orientation.dz - item.dx * orientation.cw_dz;
     }
 }

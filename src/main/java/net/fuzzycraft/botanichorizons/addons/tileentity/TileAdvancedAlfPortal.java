@@ -1,6 +1,7 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
 import cpw.mods.fml.common.FMLLog;
+import net.fuzzycraft.botanichorizons.addons.Multiblocks;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.fuzzycraft.botanichorizons.util.InventoryHelper;
 import net.fuzzycraft.botanichorizons.util.SparkHelper;
@@ -17,6 +18,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.oredict.OreDictionary;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.mana.IManaReceiver;
@@ -124,19 +126,30 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
         }
     }
 
-    public boolean onWanded() {
-        this.facing = Facing2D.fromIndex(worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & 3);
+    public boolean onWanded(EntityPlayer wandUser) {
+        this.facing = Facing2D.fromIndex((worldObj.getBlockMetadata(xCoord, yCoord, zCoord) >> 1) & 3);
 
         if (!isOnline && storedMana > ACTIVATE_MANA) {
+            Exception error = Multiblocks.alfPortal.checkEntireStructure(worldObj, xCoord, yCoord, zCoord, this.facing);
+            if (error != null) {
+                if (wandUser != null) {
+                    wandUser.addChatComponentMessage(new ChatComponentText(error.getMessage()));
+                    wandUser.addChatComponentMessage(new ChatComponentText(
+                        String.format("Facing: (%d + %d, %d, %d + %d)", xCoord, facing.dx, yCoord, zCoord, facing.dz)
+                    ));
+                }
+                return false;
+            }
+
             storedMana -= ACTIVATE_MANA;
             cycleRemaining = CYCLE_TICKS;
             isOnline = true;
-            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1 + facing.index * 2, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
             markDirty();
             return true;
         } else if (isOnline) {
             isOnline = false;
-            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, facing.index * 2, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
             markDirty();
             return true;
         }

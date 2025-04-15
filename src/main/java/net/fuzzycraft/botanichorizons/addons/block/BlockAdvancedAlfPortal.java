@@ -55,7 +55,7 @@ public class BlockAdvancedAlfPortal extends BlockModContainer implements IWandab
 
     @SideOnly(Side.CLIENT) @Override
     public IIcon getIcon(int side, int meta) {
-        return meta == 0 ? this.iconOff : this.iconOn;
+        return (meta & 1) == 0 ? this.iconOff : this.iconOn;
     }
 
     public LexiconEntry getEntry(World world, int x, int y, int z, EntityPlayer player, ItemStack lexicon) {
@@ -68,12 +68,12 @@ public class BlockAdvancedAlfPortal extends BlockModContainer implements IWandab
             EntityPlayerMP player = (EntityPlayerMP) placer;
             player.addChatMessage(new ChatComponentText("Facing index: " + facing.index + ": " + facing.name()));
         }
-        worldIn.setBlockMetadataWithNotify(x, y, z, facing.index, 3);
+        worldIn.setBlockMetadataWithNotify(x, y, z, facing.index * 2, 3);
     }
 
 
     public boolean onUsedByWand(EntityPlayer player, ItemStack stack, World world, int x, int y, int z, int side) {
-        boolean did = ((TileAdvancedAlfPortal)world.getTileEntity(x, y, z)).onWanded();
+        boolean did = ((TileAdvancedAlfPortal)world.getTileEntity(x, y, z)).onWanded(player);
         if (did && player != null) {
             player.addStat(ModAchievements.elfPortalOpen, 1);
         }
