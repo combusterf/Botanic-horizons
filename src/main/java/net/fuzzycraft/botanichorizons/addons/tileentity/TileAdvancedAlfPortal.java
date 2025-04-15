@@ -41,6 +41,7 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
     protected int storedMana = 0; // can be > MANA_CAPACITY to avoid losses
     protected int cycleRemaining = 0;
     protected int sparkCycleRemaining = 0;
+    protected int structureCycle = 0;
     protected Facing2D facing = Facing2D.NORTH;
     protected boolean isOnline = false;
     protected boolean clientSparkTransfer = false;
@@ -92,7 +93,7 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
             isOnline = false;
             worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
             // TODO: more visual stuff
-        } else {
+        } else if (partialStructureValidation()) {
             cycleRemaining = CYCLE_TICKS;
             storedMana -= CYCLE_UPKEEP;
 
@@ -101,6 +102,9 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
             cleanupInventory(0, INPUT_SIZE);
             cleanupInventory(INPUT_SIZE, INPUT_SIZE + OUTPUT_SIZE);
             markDirty();
+        } else {
+            isOnline = false;
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
         }
     }
 
@@ -155,6 +159,14 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
         }
 
         return false;
+    }
+
+    private boolean partialStructureValidation() {
+        structureCycle++;
+        if (structureCycle >= Multiblocks.alfPortal.blocks.length) {
+            structureCycle = 0;
+        }
+        return Multiblocks.alfPortal.checkStructurePart(worldObj, xCoord, yCoord, zCoord, facing, structureCycle);
     }
 
     // process recipes
