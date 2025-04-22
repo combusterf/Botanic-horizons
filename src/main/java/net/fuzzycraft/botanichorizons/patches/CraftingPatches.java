@@ -3,6 +3,7 @@ package net.fuzzycraft.botanichorizons.patches;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.ToolDictNames;
+import net.fuzzycraft.botanichorizons.addons.BHBlocks;
 import net.fuzzycraft.botanichorizons.util.OreDict;
 import net.fuzzycraft.botanichorizons.util.Constants;
 import net.minecraft.block.Block;
@@ -1817,6 +1818,12 @@ public class CraftingPatches {
         for(int i = 0; i < ModFluffBlocks.pavementStairs.length; i++)
             GregtechPatches.addStairs(ModFluffBlocks.pavementStairs[i], new ItemStack(ModFluffBlocks.pavement, 1, i));
 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Multiblocks
+
+        // Placeholder recipe
+        addShapelessRecipe(new ItemStack(BHBlocks.autoPortal), new ItemStack(ModBlocks.alfPortal));
+        addShapelessRecipe(new ItemStack(ModBlocks.alfPortal), new ItemStack(BHBlocks.autoPortal));
     }
 
     public static void addOreDictRecipe(ItemStack output, Object... recipe) {
