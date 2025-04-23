@@ -20,13 +20,11 @@ public final class BHLexicon {
     }
 
     public static void init() {
-        LexiconEntry gatewayEntry = new BLexiconEntry("botanichorizons.lexicon.gateway", multiblockCategory);
-        gatewayEntry.addPage(new PageMultiblock("botanichorizons.lexicon.gateway.preview",
+        LexiconEntry gatewayEntry = new BHLexiconEntry("automatedAlfPortal", multiblockCategory);
+        gatewayEntry.addPage(new PageMultiblock("botanichorizons.lexicon.preview.automatedAlfPortal",
                 Multiblocks.alfPortal.lexiconMultiblock(
                         0, 1, -2,
                         BHBlocks.autoPortal, 0
                 )));
     }
-
-
 }
