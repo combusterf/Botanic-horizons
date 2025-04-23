@@ -2,14 +2,19 @@ package net.fuzzycraft.botanichorizons.util.multiblock;
 
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+import vazkii.botania.api.lexicon.multiblock.Multiblock;
+import vazkii.botania.api.lexicon.multiblock.MultiblockSet;
+import vazkii.botania.api.lexicon.multiblock.component.MultiblockComponent;
 
 import javax.annotation.Nonnull;
 
 public class MultiblockHelper {
     public final MultiblockStructure[] blocks;
 
-    public MultiblockHelper(MultiblockStructure[] blocks) {
+    public MultiblockHelper(@Nonnull MultiblockStructure[] blocks) {
         this.blocks = blocks;
     }
 
@@ -64,5 +69,24 @@ public class MultiblockHelper {
 
     private int transformedZ(int rootZ, @Nonnull Facing2D orientation, @Nonnull MultiblockStructure item) {
         return rootZ + item.dz * orientation.dz - item.dx * orientation.cw_dz;
+    }
+
+    @Nonnull
+    public MultiblockSet lexiconMultiblock(int xOffset, int yOffset, int zOffset, Block rootBlock, int rootMeta) {
+        Multiblock export = new Multiblock();
+        for (MultiblockStructure block : blocks) {
+            MultiblockComponent component = block.check.getLexiconRenderer(block, xOffset, yOffset, zOffset);
+            if (component != null) {
+                export.addComponent(component);
+            }
+        }
+        export.addComponent(new MultiblockComponent(
+                new ChunkCoordinates(xOffset, yOffset, zOffset),
+                rootBlock,
+                rootMeta,
+                true
+        ));
+
+        return export.makeSet();
     }
 }

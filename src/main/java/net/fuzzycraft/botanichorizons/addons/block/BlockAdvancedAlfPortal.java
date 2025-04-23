@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAlfPortal;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
-import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockStructure;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,11 +20,9 @@ import vazkii.botania.api.lexicon.LexiconEntry;
 import vazkii.botania.api.wand.IWandable;
 import vazkii.botania.client.core.helper.IconHelper;
 import vazkii.botania.common.achievement.ModAchievements;
-import vazkii.botania.common.block.BlockModContainer;
-import vazkii.botania.common.block.tile.TileAlfPortal;
 import vazkii.botania.common.lexicon.LexiconData;
 
-public class BlockAdvancedAlfPortal extends BlockModContainer implements IWandable, ILexiconable {
+public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPortal> implements IWandable, ILexiconable {
 
     public static final String NAME = "automatedAlfPortal";
 
@@ -37,7 +34,7 @@ public class BlockAdvancedAlfPortal extends BlockModContainer implements IWandab
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public TileAdvancedAlfPortal createNewTileEntity(World world, int meta) {
         return new TileAdvancedAlfPortal();
     }
 
