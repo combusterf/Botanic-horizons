@@ -5,6 +5,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAlfPortal;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,12 +19,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import vazkii.botania.api.lexicon.ILexiconable;
 import vazkii.botania.api.lexicon.LexiconEntry;
+import vazkii.botania.api.wand.IWandHUD;
 import vazkii.botania.api.wand.IWandable;
 import vazkii.botania.client.core.helper.IconHelper;
 import vazkii.botania.common.achievement.ModAchievements;
+import vazkii.botania.common.block.tile.mana.TilePool;
 import vazkii.botania.common.lexicon.LexiconData;
 
-public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPortal> implements IWandable, ILexiconable {
+public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPortal> implements IWandHUD, IWandable, ILexiconable {
 
     public static final String NAME = "automatedAlfPortal";
 
@@ -53,6 +57,11 @@ public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPor
     @SideOnly(Side.CLIENT) @Override
     public IIcon getIcon(int side, int meta) {
         return (meta & 1) == 0 ? this.iconOff : this.iconOn;
+    }
+
+    @SideOnly(Side.CLIENT) @Override
+    public void renderHUD(Minecraft mc, ScaledResolution res, World world, int x, int y, int z) {
+        ((TileAdvancedAlfPortal) world.getTileEntity(x, y, z)).renderHUD(mc, res);
     }
 
     public LexiconEntry getEntry(World world, int x, int y, int z, EntityPlayer player, ItemStack lexicon) {

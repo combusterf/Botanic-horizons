@@ -62,6 +62,9 @@ botanichorizons.BH_LAPUTA.body_1=Since the amount of energy needed increases per
 botanichorizons.BH_VIRUS.body=You've ventured into an odd corner of carnivorous plants and created something nastier. At least animal test subjects seem not to be a moral issue for you.
 
 tile.botanichorizons.automatedAlfPortal.name=Synthetic Elven Gateway
+tile.botanichorizons.automatedAlfPortal.hud.empty=Synthetic Elven Gateway (needs mana)
+tile.botanichorizons.automatedAlfPortal.hud.idle=Synthetic Elven Gateway (offline)
+tile.botanichorizons.automatedAlfPortal.hud.active=Synthetic Elven Gateway (online)
 
 botanichorizons.lexicon.category.multiblock=Mechanised botany
 botanichorizons.lexicon.entry.automatedAlfPortal=Synthetic Gateway

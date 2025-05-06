@@ -1,10 +1,16 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.fuzzycraft.botanichorizons.addons.BHBlocks;
 import net.fuzzycraft.botanichorizons.addons.Multiblocks;
+import net.fuzzycraft.botanichorizons.util.ChargeState;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.fuzzycraft.botanichorizons.util.InventoryHelper;
 import net.fuzzycraft.botanichorizons.util.SparkHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInvBasic;
@@ -19,12 +25,16 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.mana.IManaReceiver;
 import vazkii.botania.api.mana.spark.ISparkAttachable;
 import vazkii.botania.api.mana.spark.ISparkEntity;
 import vazkii.botania.api.recipe.RecipeElvenTrade;
+import vazkii.botania.client.core.handler.HUDHandler;
+import vazkii.botania.client.lib.LibResources;
+import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.block.tile.TileAlfPortal;
 
 import javax.annotation.Nonnull;
@@ -420,6 +430,15 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
     @Override
     public int getCurrentMana() {
         return storedMana;
+    }
+
+    // Mana HUD
+
+    @SideOnly(Side.CLIENT)
+    public void renderHUD(Minecraft mc, ScaledResolution res) {
+        ChargeState state = ChargeState.genState(isOnline, storedMana, ACTIVATE_MANA);
+        String tooltip = state.getLocalisedHudString(BHBlocks.autoPortal);
+        HUDHandler.drawSimpleManaHUD(state.color, storedMana, MANA_CAPACITY, tooltip, res);
     }
 
     // ISparkAttachable
