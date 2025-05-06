@@ -2,7 +2,9 @@ package net.fuzzycraft.botanichorizons.util.multiblock;
 
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import vazkii.botania.api.lexicon.multiblock.Multiblock;
@@ -10,9 +12,11 @@ import vazkii.botania.api.lexicon.multiblock.MultiblockSet;
 import vazkii.botania.api.lexicon.multiblock.component.MultiblockComponent;
 
 import javax.annotation.Nonnull;
+import java.util.Random;
 
 public class MultiblockHelper {
     public final MultiblockStructure[] blocks;
+    private static final Random particleRandomiser = new Random();
 
     public MultiblockHelper(@Nonnull MultiblockStructure[] blocks) {
         this.blocks = blocks;
@@ -88,5 +92,33 @@ public class MultiblockHelper {
         ));
 
         return export.makeSet();
+    }
+
+    /**
+     * Tries to do UI for the given error.
+     * @param world the world object.
+     * @param player the player object triggering the check
+     * @param error the Exception generated from the multiblock check
+     * @return Returns true if something was done to help the player.
+     */
+    public static boolean handleFailedStructure(World world, EntityPlayer player, Exception error) {
+        if (error instanceof IMultiblockErrorLocation) {
+            ChunkCoordinates errorLocation = ((IMultiblockErrorLocation) error).getErrorLocation();
+            for (int i = 0; i < 10; i++) {
+                world.spawnParticle("fireworksSpark",
+                        errorLocation.posX + 0.5, errorLocation.posY + 0.5, errorLocation.posZ + 0.5,
+                        MultiblockHelper.genParticleVelocity(), MultiblockHelper.genParticleVelocity(), MultiblockHelper.genParticleVelocity());
+            }
+            return true;
+        } else if (player != null) {
+            player.addChatComponentMessage(new ChatComponentText(error.getMessage()));
+            return true;
+        }
+
+        return false;
+    }
+
+    private static float genParticleVelocity() {
+        return (particleRandomiser.nextFloat() - 0.5f) / 3;
     }
 }

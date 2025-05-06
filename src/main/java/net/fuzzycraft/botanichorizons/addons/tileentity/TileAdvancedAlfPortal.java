@@ -9,6 +9,7 @@ import net.fuzzycraft.botanichorizons.util.ChargeState;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.fuzzycraft.botanichorizons.util.InventoryHelper;
 import net.fuzzycraft.botanichorizons.util.SparkHelper;
+import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
@@ -142,37 +143,6 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
         }
     }
 
-    public boolean onWanded(EntityPlayer wandUser) {
-        this.facing = Facing2D.fromIndex((worldObj.getBlockMetadata(xCoord, yCoord, zCoord) >> 1) & 3);
-
-        if (!isOnline && storedMana > ACTIVATE_MANA) {
-            Exception error = Multiblocks.alfPortal.checkEntireStructure(worldObj, xCoord, yCoord, zCoord, this.facing);
-            if (error != null) {
-                if (wandUser != null) {
-                    wandUser.addChatComponentMessage(new ChatComponentText(error.getMessage()));
-                    wandUser.addChatComponentMessage(new ChatComponentText(
-                        String.format("Facing: (%d + %d, %d, %d + %d)", xCoord, facing.dx, yCoord, zCoord, facing.dz)
-                    ));
-                }
-                return false;
-            }
-
-            storedMana -= ACTIVATE_MANA;
-            cycleRemaining = CYCLE_TICKS;
-            isOnline = true;
-            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1 + facing.index * 2, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
-            markDirty();
-            return true;
-        } else if (isOnline) {
-            isOnline = false;
-            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, facing.index * 2, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
-            markDirty();
-            return true;
-        }
-
-        return false;
-    }
-
     private boolean partialStructureValidation() {
         structureCycle++;
         if (structureCycle >= Multiblocks.alfPortal.blocks.length) {
@@ -297,6 +267,34 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
             }
         }
         return null;
+    }
+
+    // IWandable delegate
+
+    public boolean onWanded(EntityPlayer wandUser) {
+        this.facing = Facing2D.fromIndex((worldObj.getBlockMetadata(xCoord, yCoord, zCoord) >> 1) & 3);
+
+        if (!isOnline && storedMana > ACTIVATE_MANA) {
+            Exception error = Multiblocks.alfPortal.checkEntireStructure(worldObj, xCoord, yCoord, zCoord, this.facing);
+            if (error != null) {
+                boolean handled = MultiblockHelper.handleFailedStructure(worldObj, wandUser, error);
+                return false;
+            }
+
+            storedMana -= ACTIVATE_MANA;
+            cycleRemaining = CYCLE_TICKS;
+            isOnline = true;
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1 + facing.index * 2, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
+            markDirty();
+            return true;
+        } else if (isOnline) {
+            isOnline = false;
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, facing.index * 2, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
+            markDirty();
+            return true;
+        }
+
+        return false;
     }
 
     // Persistence
