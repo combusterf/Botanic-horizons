@@ -46,6 +46,16 @@ import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_UPDATE;
 
 public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IInvBasic, IManaReceiver, ISparkAttachable {
 
+    // Balance
+    public final int MANA_CAPACITY = 200000;
+    public final int CYCLE_TICKS = 20;
+    public final int SPARK_CYCLE_TICKS = 100;
+    public final int CYCLE_UPKEEP = 20;
+    public final int RECIPE_MANA = 100;
+    public final int ACTIVATE_MANA = 95000;
+    public final int SPARK_BUFFER_MANA = 500;
+    public final int MAX_PARALLELS = 64;
+
     // Tile entity state
     public final InventoryBasic inventoryHandler;
     protected int storedMana = 0; // can be > MANA_CAPACITY to avoid losses
@@ -59,14 +69,6 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
     // Definitions
     static final int INPUT_SIZE = 2;
     static final int OUTPUT_SIZE = 2;
-
-    public final int MANA_CAPACITY = 200000;
-    public final int CYCLE_TICKS = 20;
-    public final int SPARK_CYCLE_TICKS = 100;
-    public final int CYCLE_UPKEEP = 20;
-    public final int RECIPE_MANA = 100;
-    public final int ACTIVATE_MANA = 95000;
-    public final int SPARK_BUFFER_MANA = 500;
 
     // Debug stats
     protected boolean requestedSparkTransfer = false;
@@ -181,7 +183,7 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
 
     // process recipes
     private void handleCrafts() {
-        int parallel = 64;
+        int parallel = MAX_PARALLELS;
 
         // check energy capacity
         final int max_mana_parallel = (storedMana - CYCLE_UPKEEP) / RECIPE_MANA;
@@ -307,7 +309,6 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
 
     @Override
     public Packet getDescriptionPacket() {
-        FMLLog.warning("AAP: packet out");
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         writeCustomNBT(nbttagcompound);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, -999, nbttagcompound);
@@ -315,7 +316,6 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
-        FMLLog.warning("AAP: packet in");
         readCustomNBT(packet.func_148857_g());
     }
 
