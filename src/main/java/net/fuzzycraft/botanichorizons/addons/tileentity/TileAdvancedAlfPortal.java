@@ -275,10 +275,14 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
     public boolean onWanded(EntityPlayer wandUser) {
         this.facing = Facing2D.fromIndex((worldObj.getBlockMetadata(xCoord, yCoord, zCoord) >> 1) & 3);
 
-        if (!isOnline && storedMana > ACTIVATE_MANA) {
+        if (!isOnline) {
             Exception error = Multiblocks.alfPortal.checkEntireStructure(worldObj, xCoord, yCoord, zCoord, this.facing);
             if (error != null) {
                 boolean handled = MultiblockHelper.handleFailedStructure(worldObj, wandUser, error);
+                return false;
+            }
+
+            if (storedMana <= ACTIVATE_MANA) {
                 return false;
             }
 
@@ -288,14 +292,12 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
             worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1 + facing.index * 2, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
             markDirty();
             return true;
-        } else if (isOnline) {
+        } else {
             isOnline = false;
             worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, facing.index * 2, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
             markDirty();
             return true;
         }
-
-        return false;
     }
 
     // Persistence
