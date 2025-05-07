@@ -2,6 +2,7 @@ package net.fuzzycraft.botanichorizons.addons.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.tile.IWrenchable;
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAlfPortal;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.minecraft.block.material.Material;
@@ -27,6 +28,8 @@ import vazkii.botania.common.lexicon.LexiconData;
 public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPortal> implements IWandHUD, IWandable, ILexiconable {
 
     public static final String NAME = "automatedAlfPortal";
+
+    // META: bit 0 = online, bit 1..2 = 2D facing
 
     public BlockAdvancedAlfPortal() {
         super(Material.wood);
@@ -72,7 +75,7 @@ public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPor
             EntityPlayerMP player = (EntityPlayerMP) placer;
             player.addChatMessage(new ChatComponentText("Facing index: " + facing.index + ": " + facing.name()));
         }
-        worldIn.setBlockMetadataWithNotify(x, y, z, facing.index * 2, 3);
+        worldIn.setBlockMetadataWithNotify(x, y, z, facing.index << 1, 3);
     }
 
 
@@ -86,6 +89,6 @@ public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPor
     }
 
     public int getLightValue(IBlockAccess world, int x, int y, int z) {
-        return world.getBlockMetadata(x, y, z) == 0 ? 0 : 15;
+        return (world.getBlockMetadata(x, y, z) & 1) == 0 ? 0 : 15;
     }
 }

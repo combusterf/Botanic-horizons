@@ -3,6 +3,7 @@ package net.fuzzycraft.botanichorizons.addons.tileentity;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.tile.IWrenchable;
 import net.fuzzycraft.botanichorizons.addons.BHBlocks;
 import net.fuzzycraft.botanichorizons.addons.Multiblocks;
 import net.fuzzycraft.botanichorizons.util.ChargeState;
@@ -45,7 +46,7 @@ import java.util.List;
 import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_SEND_TO_CLIENT;
 import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_UPDATE;
 
-public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IInvBasic, IManaReceiver, ISparkAttachable {
+public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IInvBasic, IManaReceiver, ISparkAttachable, IWrenchable {
 
     // Balance
     public final int MANA_CAPACITY = 200000;
@@ -104,7 +105,7 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
             cycleRemaining--;
         } else if (storedMana < CYCLE_UPKEEP) {
             isOnline = false;
-            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, facing.index << 1, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
             // TODO: more visual stuff
         } else if (partialStructureValidation()) {
             cycleRemaining = CYCLE_TICKS;
@@ -117,7 +118,7 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
             markDirty();
         } else {
             isOnline = false;
-            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, facing.index << 1, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
         }
     }
 
@@ -470,5 +471,43 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
     @Override
     public boolean areIncomingTranfersDone() {
         return storedMana >= (isOnline ? MANA_CAPACITY : ACTIVATE_MANA + SPARK_BUFFER_MANA);
+    }
+
+    // IWrenchable
+
+    @Override
+    public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int facingIndex) {
+        return Facing2D.fromIC2(facingIndex) != null;
+    }
+
+    @Override
+    public short getFacing() {
+        return (short)facing.ic2index;
+    }
+
+    @Override
+    public void setFacing(short facingIndex) {
+        Facing2D newFacing = Facing2D.fromIC2(facingIndex);
+        if (newFacing != null && newFacing == facing) return;
+
+        isOnline = false;
+        facing = newFacing;
+
+        worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, facing.index << 1, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
+    }
+
+    @Override
+    public boolean wrenchCanRemove(EntityPlayer entityPlayer) {
+        return true;
+    }
+
+    @Override
+    public float getWrenchDropRate() {
+        return 1;
+    }
+
+    @Override
+    public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
+        return new ItemStack(BHBlocks.autoPortal);
     }
 }
