@@ -1821,9 +1821,6 @@ public class CraftingPatches {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Multiblocks
 
-        // Placeholder recipe
-        addShapelessRecipe(new ItemStack(BHBlocks.autoPortal), new ItemStack(ModBlocks.alfPortal));
-        addShapelessRecipe(new ItemStack(ModBlocks.alfPortal), new ItemStack(BHBlocks.autoPortal));
     }
 
     public static void addOreDictRecipe(ItemStack output, Object... recipe) {
