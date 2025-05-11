@@ -50,13 +50,21 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
 
     // Balance
     public final int MANA_CAPACITY = 200000;
-    public final int CYCLE_TICKS = 20;
-    public final int SPARK_CYCLE_TICKS = 100;
-    public final int CYCLE_UPKEEP = 20;
-    public final int RECIPE_MANA = 100;
-    public final int ACTIVATE_MANA = 95000;
-    public final int SPARK_BUFFER_MANA = 500;
-    public final int MAX_PARALLELS = 64;
+    public final int CYCLE_TICKS = 20; // time between checks
+    public final int SPARK_CYCLE_TICKS = 100; // time between spark requests for extra mana
+    public final int CYCLE_UPKEEP = 75;
+    public final int RECIPE_MANA = 10; // added cost on top of upkeep
+    public final int ACTIVATE_MANA = 95000; // activation cost
+    public final int MAX_PARALLELS = 32;
+    // Startup safety buffer. Should be slightly more than the upkeep needed of one SPARK_CYCLE
+    public final int SPARK_BUFFER_MANA = 2000;
+    /*
+       Vanilla portal stats for comparison:
+       activation cost: 75000 mana
+       running cost: 2 mana/t = 40 mana/s
+       crafting rate: 4t/recipe = 5 items/s
+       crafting cost: no added cost, upkeep is 8 mana per recipe
+     */
 
     // Tile entity state
     public final InventoryBasic inventoryHandler;
@@ -157,9 +165,11 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
         int parallel = MAX_PARALLELS;
 
         // check energy capacity
-        final int max_mana_parallel = (storedMana - CYCLE_UPKEEP) / RECIPE_MANA;
-        parallel = Math.min(parallel, max_mana_parallel);
-        if (parallel <= 0) return;
+        if (RECIPE_MANA > 0) { // just in case some hack turns this off later.
+            final int max_mana_parallel = (storedMana - CYCLE_UPKEEP) / RECIPE_MANA;
+            parallel = Math.min(parallel, max_mana_parallel);
+            if (parallel <= 0) return;
+        }
 
         // check if last output slot is empty, i.e. we can safely dump the output
         final ItemStack currentLastSlot = inventoryHandler.getStackInSlot(INPUT_SIZE + OUTPUT_SIZE - 1);
