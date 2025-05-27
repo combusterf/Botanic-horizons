@@ -46,18 +46,16 @@ import java.util.List;
 import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_SEND_TO_CLIENT;
 import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_UPDATE;
 
-public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IInvBasic, IManaReceiver, ISparkAttachable, IWrenchable {
+public class TileAdvancedAlfPortal extends AutomationTileEntity implements IInventory, IInvBasic, IManaReceiver, ISparkAttachable, IWrenchable {
 
     // Balance
     public final int MANA_CAPACITY = 200000;
     public final int CYCLE_TICKS = 20; // time between checks
-    public final int SPARK_CYCLE_TICKS = 100; // time between spark requests for extra mana
     public final int CYCLE_UPKEEP = 75;
     public final int RECIPE_MANA = 10; // added cost on top of upkeep
     public final int ACTIVATE_MANA = 95000; // activation cost
     public final int MAX_PARALLELS = 32;
-    // Startup safety buffer. Should be slightly more than the upkeep needed of one SPARK_CYCLE
-    public final int SPARK_BUFFER_MANA = 2000;
+
     /*
        Vanilla portal stats for comparison:
        activation cost: 75000 mana
@@ -68,22 +66,15 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
 
     // Tile entity state
     public final InventoryBasic inventoryHandler;
-    protected int storedMana = 0; // can be > MANA_CAPACITY to avoid losses
     protected int cycleRemaining = 0;
-    protected int sparkCycleRemaining = 0;
-    protected int structureCycle = 0;
-    protected Facing2D facing = Facing2D.NORTH;
-    protected boolean isOnline = false;
-    protected boolean clientSparkTransfer = false;
 
     // Definitions
     static final int INPUT_SIZE = 2;
     static final int OUTPUT_SIZE = 2;
 
-    // Debug stats
-    protected boolean requestedSparkTransfer = false;
-
     public TileAdvancedAlfPortal() {
+        super(Multiblocks.alfPortal);
+
         inventoryHandler = new InventoryBasic("name", false, INPUT_SIZE + OUTPUT_SIZE);
 
         // Listen to change events so we can mark the chunk dirty on interactions
@@ -93,20 +84,7 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
     // Business logic
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
-        if (worldObj.isRemote) {
-            if (clientSparkTransfer) {
-                SparkHelper.requestSparkTransfers(worldObj, xCoord, yCoord, zCoord, getAttachedSpark());
-                clientSparkTransfer = false;
-            }
-        } else {
-            updateEntityCrafting();
-            updateEntitySparks();
-        }
-    }
-
-    private void updateEntityCrafting() {
+    protected void updateEntityCrafting() {
         if (!isOnline) {
             return;
         } else if (cycleRemaining > 0) {
@@ -128,36 +106,6 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
             isOnline = false;
             worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, facing.index << 1, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
         }
-    }
-
-    private void updateEntitySparks() {
-        if (sparkCycleRemaining > 0) {
-            sparkCycleRemaining--;
-        } else {
-            sparkCycleRemaining = SPARK_CYCLE_TICKS;
-            if (areIncomingTranfersDone()) {
-                return;
-            }
-
-            if (
-                ((!isOnline) && (storedMana < ACTIVATE_MANA + SPARK_BUFFER_MANA)) ||
-                 (isOnline && (storedMana < MANA_CAPACITY - SPARK_BUFFER_MANA))
-            ) {
-                requestedSparkTransfer = true;
-                SparkHelper.requestSparkTransfers(worldObj, xCoord, yCoord, zCoord, getAttachedSpark());
-                markDirty();
-            } else {
-                requestedSparkTransfer = false;
-            }
-        }
-    }
-
-    private boolean partialStructureValidation() {
-        structureCycle++;
-        if (structureCycle >= Multiblocks.alfPortal.blocks.length) {
-            structureCycle = 0;
-        }
-        return Multiblocks.alfPortal.checkStructurePart(worldObj, xCoord, yCoord, zCoord, facing, structureCycle);
     }
 
     // process recipes
@@ -313,51 +261,16 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
     // Persistence
 
     private static final String KEY_INVENTORY = "inv";
-    private static final String KEY_MANA = "mana";
-    private static final String KEY_ONLINE = "enabled";
-    private static final String KEY_SPARK_TRANSFER = "st";
-    private static final String KEY_FACING = "face";
-
-    @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound nbttagcompound = new NBTTagCompound();
-        writeCustomNBT(nbttagcompound);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, -999, nbttagcompound);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
-        readCustomNBT(packet.func_148857_g());
-    }
 
     public void writeCustomNBT(NBTTagCompound compound) {
+        super.writeCustomNBT(compound);
         compound.setTag(KEY_INVENTORY, InventoryHelper.saveInventoryToNBT(inventoryHandler));
-        compound.setBoolean(KEY_ONLINE, isOnline);
-        compound.setInteger(KEY_MANA, storedMana);
-        compound.setBoolean(KEY_SPARK_TRANSFER, requestedSparkTransfer);
-        compound.setByte(KEY_FACING, (byte)facing.index);
     }
 
     public void readCustomNBT(NBTTagCompound compound) {
+        super.writeCustomNBT(compound);
         InventoryHelper.readInventoryFromNBT(inventoryHandler, compound.getCompoundTag(KEY_INVENTORY));
-        isOnline = compound.getBoolean(KEY_ONLINE);
-        storedMana = compound.getInteger(KEY_MANA);
-        clientSparkTransfer = compound.getBoolean(KEY_SPARK_TRANSFER);
-        facing = Facing2D.fromIndex(compound.getByte(KEY_FACING));
     }
-
-    @Override
-    public void writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-        writeCustomNBT(compound);
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        readCustomNBT(compound);
-    }
-
 
     // IInventory
 
@@ -420,29 +333,6 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
         markDirty();
     }
 
-
-    // IManaReceiver
-
-    @Override
-    public boolean isFull() {
-        return storedMana >= MANA_CAPACITY;
-    }
-
-    @Override
-    public void recieveMana(int i) {
-        storedMana += i;
-    }
-
-    @Override
-    public boolean canRecieveManaFromBursts() {
-        return true;
-    }
-
-    @Override
-    public int getCurrentMana() {
-        return storedMana;
-    }
-
     // Mana HUD
 
     @SideOnly(Side.CLIENT)
@@ -452,72 +342,12 @@ public class TileAdvancedAlfPortal extends TileEntity implements IInventory, IIn
         HUDHandler.drawSimpleManaHUD(state.color, storedMana, MANA_CAPACITY, tooltip, res);
     }
 
-    // ISparkAttachable
-
     @Override
-    public boolean canAttachSpark(ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public void attachSpark(ISparkEntity entity) {
-        sparkCycleRemaining = 0;
-    }
-
-    @Override
-    public int getAvailableSpaceForMana() {
-        return Math.max(0, MANA_CAPACITY - storedMana);
-    }
-
-    @Override
-    public ISparkEntity getAttachedSpark() {
-        List<ISparkEntity> sparks = worldObj.getEntitiesWithinAABB(ISparkEntity.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord + 1, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
-        if(sparks.size() == 1) {
-            Entity e = (Entity) sparks.get(0);
-            return (ISparkEntity) e;
-        }
-
-        return null;
-    }
-
-    @Override
-    public boolean areIncomingTranfersDone() {
-        return storedMana >= (isOnline ? MANA_CAPACITY : ACTIVATE_MANA + SPARK_BUFFER_MANA);
+    public int getManaMaximum() {
+        return isOnline ? MANA_CAPACITY : ACTIVATE_MANA + SPARK_BUFFER_MANA;
     }
 
     // IWrenchable
-
-    @Override
-    public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int facingIndex) {
-        return Facing2D.fromIC2(facingIndex) != null;
-    }
-
-    @Override
-    public short getFacing() {
-        return (short)facing.ic2index;
-    }
-
-    @Override
-    public void setFacing(short facingIndex) {
-        Facing2D newFacing = Facing2D.fromIC2(facingIndex);
-        if (newFacing != null && newFacing == facing) return;
-
-        isOnline = false;
-        facing = newFacing;
-
-        worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, facing.index << 1, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
-    }
-
-    @Override
-    public boolean wrenchCanRemove(EntityPlayer entityPlayer) {
-        return true;
-    }
-
-    @Override
-    public float getWrenchDropRate() {
-        return 1;
-    }
-
     @Override
     public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
         return new ItemStack(BHBlocks.autoPortal);
