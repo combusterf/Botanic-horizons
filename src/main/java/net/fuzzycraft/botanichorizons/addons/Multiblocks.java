@@ -1,11 +1,14 @@
 package net.fuzzycraft.botanichorizons.addons;
 
+import gregtech.api.enums.Mods;
+import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAlfPortal;
 import net.fuzzycraft.botanichorizons.util.Constants;
 import net.fuzzycraft.botanichorizons.util.multiblock.BasicBlockCheck;
 import net.fuzzycraft.botanichorizons.util.multiblock.MetaBlockCheck;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockBuilder;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockCheck;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
+import net.fuzzycraft.botanichorizons.util.structurelib.HoloProjectorSupport;
 import net.minecraft.init.Blocks;
 import vazkii.botania.common.block.ModBlocks;
 
@@ -49,5 +52,11 @@ public final class Multiblocks {
                     "       ", " lllll ", " llgll ", " lglgl ", " llgll ", " lllll ", "       "
                 }
         );
+    }
+
+    public static void postInit() {
+        if (Mods.StructureLib.isModLoaded()) {
+            HoloProjectorSupport.registerWithStructureLib(alfPortal, TileAdvancedAlfPortal.class);
+        }
     }
 }
