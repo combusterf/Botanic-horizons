@@ -76,7 +76,7 @@ public class HoloProjectorSupport {
             builder.addElement(key, element);
         }
         IStructureDefinition<T> structure = builder.build();
-        HoloContainer<T> container = new HoloContainer<>(structure, "someString", -xMin, -yMin, -zMin);
+        HoloContainer<T> container = new HoloContainer<>(structure, -xMin, -yMin, -zMin);
         IMultiblockInfoContainer.registerTileClass(tileClass, container);
     }
 

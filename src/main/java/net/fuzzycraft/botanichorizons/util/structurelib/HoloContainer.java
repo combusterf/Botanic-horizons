@@ -12,15 +12,13 @@ import static net.fuzzycraft.botanichorizons.util.structurelib.HoloProjectorSupp
 public class HoloContainer<T extends TileEntity> implements IMultiblockInfoContainer<T> {
 
     private final IStructureDefinition<? super T> structrue;
-    private final String localisationKey;
     private final int offsetA, offsetB, offsetC;
 
-    public HoloContainer(IStructureDefinition<? super T> structrue, String localisationKey, int offsetA, int offsetB, int offsetC) {
+    public HoloContainer(IStructureDefinition<? super T> structrue, int offsetA, int offsetB, int offsetC) {
         this.structrue = structrue;
         this.offsetA = offsetA;
         this.offsetB = offsetB;
         this.offsetC = offsetC;
-        this.localisationKey = localisationKey;
     }
 
     @Override
@@ -62,7 +60,7 @@ public class HoloContainer<T extends TileEntity> implements IMultiblockInfoConta
 
     @Override
     public String[] getDescription(ItemStack stackSize) {
-        return new String[] {localisationKey};
+        return new String[0];
     }
 
     private static ExtendedFacing noSideWay(ExtendedFacing aSide) {
