@@ -94,10 +94,10 @@ abstract public class AutomationTileEntity extends TileEntity implements IManaRe
 
     // Persistence
 
-    private static final String KEY_MANA = "mana";
-    private static final String KEY_ONLINE = "enabled";
-    private static final String KEY_SPARK_TRANSFER = "st";
-    private static final String KEY_FACING = "face";
+    public static final String KEY_MANA = "mana";
+    public static final String KEY_ONLINE = "enabled";
+    public static final String KEY_SPARK_TRANSFER = "st";
+    public static final String KEY_FACING = "face";
 
     @Override
     public Packet getDescriptionPacket() {
