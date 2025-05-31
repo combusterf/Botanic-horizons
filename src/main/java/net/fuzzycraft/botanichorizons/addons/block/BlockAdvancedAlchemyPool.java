@@ -21,6 +21,8 @@ import vazkii.botania.api.wand.IWandable;
 import vazkii.botania.client.core.helper.IconHelper;
 import vazkii.botania.common.lexicon.LexiconData;
 
+import static net.fuzzycraft.botanichorizons.util.Constants.BH_ICON_PREFIX;
+
 public class BlockAdvancedAlchemyPool extends BlockModContainer<TileAdvancedAlchemyPool> implements IWandHUD, IWandable, ILexiconable {
 
     public static final String NAME = "automatedAlchemyPool";
@@ -39,21 +41,18 @@ public class BlockAdvancedAlchemyPool extends BlockModContainer<TileAdvancedAlch
         return new TileAdvancedAlchemyPool();
     }
 
-    IIcon iconOff;
-    IIcon iconOn;
-    public static IIcon portalTex;
+    IIcon iconPrimary;
+    IIcon iconSecondary;
 
     @SideOnly(Side.CLIENT) @Override
     public void registerBlockIcons(IIconRegister register) {
-        // Using Botania's IconHelper to get access to their assets
-        this.iconOff = IconHelper.forName(register, "alfheimPortal0");
-        this.iconOn = IconHelper.forName(register, "alfheimPortal1");
-        portalTex = IconHelper.forName(register, "alfheimPortalInside");
+        this.iconPrimary = register.registerIcon(BH_ICON_PREFIX + "quartzYellowTop");
+        this.iconSecondary = register.registerIcon(BH_ICON_PREFIX + "quartzYellowSide");
     }
 
     @SideOnly(Side.CLIENT) @Override
     public IIcon getIcon(int side, int meta) {
-        return (meta & 1) == 0 ? this.iconOff : this.iconOn;
+        return (side == 1 || Facing2D.fromIC2(side) == Facing2D.fromIndex(meta >> 1)) ? this.iconPrimary : this.iconSecondary;
     }
 
     @SideOnly(Side.CLIENT) @Override

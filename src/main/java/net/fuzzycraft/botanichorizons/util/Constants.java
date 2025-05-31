@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 public final class Constants {
     private Constants() {}
 
+    public static final String BH_ICON_PREFIX = "botanichorizons:";
+
     public static final int POOL_META_DILUTE = 2;
     public static final int POOL_META_REGULAR = 0;
     public static final int POOL_META_REGULAR_FABULOUS = 3;
