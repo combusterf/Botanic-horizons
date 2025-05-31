@@ -1,19 +1,11 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.fuzzycraft.botanichorizons.addons.BHBlocks;
-import net.fuzzycraft.botanichorizons.addons.Multiblocks;
-import net.fuzzycraft.botanichorizons.util.ChargeState;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import vazkii.botania.api.recipe.RecipeManaInfusion;
-import vazkii.botania.client.core.handler.HUDHandler;
 
 import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_SEND_TO_CLIENT;
 import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_UPDATE;
@@ -109,14 +101,5 @@ public abstract class TileAdvancedManaPool extends SimpleAutomationTileEntity<Re
             markDirty();
             return true;
         }
-    }
-
-    // Mana HUD
-
-    @SideOnly(Side.CLIENT)
-    public void renderHUD(Minecraft mc, ScaledResolution res) {
-        ChargeState state = ChargeState.genState(isOnline, storedMana, ACTIVATE_MANA);
-        String tooltip = state.getLocalisedHudString(BHBlocks.autoPortal);
-        HUDHandler.drawSimpleManaHUD(state.color, storedMana, MANA_CAPACITY, tooltip, res);
     }
 }

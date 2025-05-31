@@ -143,7 +143,7 @@ public abstract class SimpleAutomationTileEntity<R> extends AutomationTileEntity
     }
 
     public void readCustomNBT(NBTTagCompound compound) {
-        super.writeCustomNBT(compound);
+        super.readCustomNBT(compound);
         InventoryHelper.readInventoryFromNBT(inventoryHandler, compound.getCompoundTag(KEY_INVENTORY));
     }
 

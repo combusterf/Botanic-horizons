@@ -1,7 +1,7 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
+import cpw.mods.fml.common.FMLLog;
 import ic2.api.tile.IWrenchable;
-import net.fuzzycraft.botanichorizons.addons.Multiblocks;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.fuzzycraft.botanichorizons.util.SparkHelper;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
@@ -14,6 +14,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.api.mana.IManaReceiver;
 import vazkii.botania.api.mana.spark.ISparkAttachable;
 import vazkii.botania.api.mana.spark.ISparkEntity;
@@ -38,6 +39,9 @@ abstract public class AutomationTileEntity extends TileEntity implements IManaRe
     protected boolean clientSparkTransfer = false;
     protected int structureCycle = 0;
 
+    protected int cachedMana = Integer.MIN_VALUE;
+    protected int statusCycle = 0;
+
     // Delegated state
 
     public abstract int getManaMaximum();
@@ -53,6 +57,8 @@ abstract public class AutomationTileEntity extends TileEntity implements IManaRe
     public final int SPARK_CYCLE_TICKS = 100; // time between spark requests for extra mana
     // Startup safety buffer. Should be slightly more than the upkeep needed of one SPARK_CYCLE
     public final int SPARK_BUFFER_MANA = 2000;
+    public final int STATUS_CYCLE = 100;
+    public final int DEFAULT_MANA_ERROR_RANGE = 500;
 
     @Override
     public void updateEntity() {
@@ -65,6 +71,7 @@ abstract public class AutomationTileEntity extends TileEntity implements IManaRe
         } else {
             updateEntityCrafting();
             updateEntitySparks();
+            shareTEIfNeeded();
         }
     }
 
@@ -90,6 +97,22 @@ abstract public class AutomationTileEntity extends TileEntity implements IManaRe
             structureCycle = 0;
         }
         return structure.checkStructurePart(worldObj, xCoord, yCoord, zCoord, facing, structureCycle);
+    }
+
+    protected void shareTEIfNeeded() {
+        statusCycle++;
+        if (statusCycle > STATUS_CYCLE) {
+            if (shouldShareTE()) {
+                VanillaPacketDispatcher.dispatchTEToNearbyPlayers(this);
+                cachedMana = storedMana;
+            }
+            statusCycle = 0;
+        }
+    }
+
+    protected boolean shouldShareTE() {
+        int delta = cachedMana - storedMana;
+        return delta <= -DEFAULT_MANA_ERROR_RANGE || delta >= DEFAULT_MANA_ERROR_RANGE;
     }
 
     // Persistence
@@ -179,6 +202,7 @@ abstract public class AutomationTileEntity extends TileEntity implements IManaRe
     @Override
     public void recieveMana(int i) {
         storedMana += i;
+        markDirty();
     }
 
     @Override
