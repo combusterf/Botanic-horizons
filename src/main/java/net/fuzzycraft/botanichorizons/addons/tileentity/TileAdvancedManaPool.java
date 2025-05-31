@@ -95,11 +95,7 @@ public abstract class TileAdvancedManaPool extends SimpleAutomationTileEntity<Re
             worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1 + facing.index * 2, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
             markDirty();
             return true;
-        } else {
-            isOnline = false;
-            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, facing.index * 2, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
-            markDirty();
-            return true;
         }
+        return false;
     }
 }
