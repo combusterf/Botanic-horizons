@@ -65,6 +65,19 @@ tile.botanichorizons.automatedAlfPortal.name=Synthetic Elven Gateway
 tile.botanichorizons.automatedAlfPortal.hud.empty=Synthetic Elven Gateway (needs mana)
 tile.botanichorizons.automatedAlfPortal.hud.idle=Synthetic Elven Gateway (offline)
 tile.botanichorizons.automatedAlfPortal.hud.active=Synthetic Elven Gateway (online)
+tile.botanichorizons.automatedCraftingPool.name=Mana fountain
+tile.botanichorizons.automatedCraftingPool.hud.empty=Mana fountain (needs mana)
+tile.botanichorizons.automatedCraftingPool.hud.idle=Mana fountain (unformed)
+tile.botanichorizons.automatedCraftingPool.hud.active=Mana fountain (online)
+tile.botanichorizons.automatedAlchemyPool.name=Alchemical mana fountain
+tile.botanichorizons.automatedAlchemyPool.hud.empty=Alchemical mana fountain (needs mana)
+tile.botanichorizons.automatedAlchemyPool.hud.idle=Alchemical mana fountain (unformed)
+tile.botanichorizons.automatedAlchemyPool.hud.active=Alchemical mana fountain (online)
+tile.botanichorizons.automatedConjurationPool.name=Fountain of replication
+tile.botanichorizons.automatedConjurationPool.hud.empty=Fountain of replication (needs mana)
+tile.botanichorizons.automatedConjurationPool.hud.idle=Fountain of replication (unformed)
+tile.botanichorizons.automatedConjurationPool.hud.active=Fountain of replication (online)
+
 
 botanichorizons.lexicon.category.multiblock=Mechanised botany
 botanichorizons.lexicon.entry.multiblockInfo=New multiblocks
