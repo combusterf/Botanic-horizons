@@ -7,5 +7,5 @@ public class BHRecipes {
 
     public static IRecipe poolInfusionRecipe;
     public static IRecipe poolAlchemyRecipe;
-    public static IRecipe poolConjuraionRecipe;
+    public static IRecipe poolConjurationRecipe;
 }

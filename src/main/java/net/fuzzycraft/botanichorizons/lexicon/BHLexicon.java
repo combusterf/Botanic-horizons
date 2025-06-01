@@ -9,7 +9,7 @@ import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.lexicon.LexiconCategory;
 import vazkii.botania.api.lexicon.LexiconEntry;
 import vazkii.botania.common.block.ModBlocks;
-import vazkii.botania.common.lexicon.page.PageGuide;
+import vazkii.botania.common.lexicon.page.PageCraftingRecipe;
 import vazkii.botania.common.lexicon.page.PageMultiblock;
 import vazkii.botania.common.lexicon.page.PageText;
 
@@ -33,16 +33,19 @@ public final class BHLexicon {
         LexiconEntry poolEntry = new BHLexiconEntry("automatedManaPool", multiblockCategory);
         poolEntry.addPage(new PageText("botanichorizons.lexicon.text.automatedManaPool.1"));
         poolEntry.addPage(new PageText("botanichorizons.lexicon.text.automatedManaPool.2"));
+        poolEntry.addPage(new PageCraftingRecipe("botanichorizons.lexicon.crafting.automatedCraftingPool", BHRecipes.poolInfusionRecipe));
         poolEntry.addPage(new PageMultiblock("botanichorizons.lexicon.preview.automatedCraftingPool",
                 Multiblocks.poolInfusion.lexiconMultiblock(
                         0, 1, -2,
                         BHBlocks.autoPoolInfusion, 0
                 )));
+        poolEntry.addPage(new PageCraftingRecipe("botanichorizons.lexicon.crafting.automatedAlchemyPool", BHRecipes.poolAlchemyRecipe));
         poolEntry.addPage(new PageMultiblock("botanichorizons.lexicon.preview.automatedAlchemyPool",
                 Multiblocks.poolAlchemy.lexiconMultiblock(
                         0, 1, -2,
                         BHBlocks.autoPoolAlchemy, 0
                 )));
+        poolEntry.addPage(new PageCraftingRecipe("botanichorizons.lexicon.crafting.automatedConjurationPool", BHRecipes.poolConjurationRecipe));
         poolEntry.addPage(new PageMultiblock("botanichorizons.lexicon.preview.automatedConjurationPool",
                 Multiblocks.poolConjuration.lexiconMultiblock(
                         0, 1, -2,

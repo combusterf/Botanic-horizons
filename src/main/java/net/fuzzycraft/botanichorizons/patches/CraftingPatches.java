@@ -2,7 +2,6 @@ package net.fuzzycraft.botanichorizons.patches;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.MachineType;
 import gregtech.api.enums.ToolDictNames;
 import net.fuzzycraft.botanichorizons.addons.BHBlocks;
 import net.fuzzycraft.botanichorizons.lexicon.BHRecipes;
@@ -1848,7 +1847,7 @@ public class CraftingPatches {
                 'c', new ItemStack(ModBlocks.conjurationCatalyst, 1),
                 'B', Constants.gtChemicalBath(5)
         );
-        BHRecipes.poolConjuraionRecipe = BotaniaAPI.getLatestAddedRecipe();
+        BHRecipes.poolConjurationRecipe = BotaniaAPI.getLatestAddedRecipe();
     }
 
     public static void addOreDictRecipe(ItemStack output, Object... recipe) {
