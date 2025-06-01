@@ -2,12 +2,14 @@ package net.fuzzycraft.botanichorizons.lexicon;
 
 import net.fuzzycraft.botanichorizons.addons.BHBlocks;
 import net.fuzzycraft.botanichorizons.addons.Multiblocks;
+import net.fuzzycraft.botanichorizons.util.Constants;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.lexicon.LexiconCategory;
 import vazkii.botania.api.lexicon.LexiconEntry;
-import vazkii.botania.common.lexicon.page.PageGuide;
+import vazkii.botania.common.block.ModBlocks;
+import vazkii.botania.common.lexicon.page.PageCraftingRecipe;
 import vazkii.botania.common.lexicon.page.PageMultiblock;
 import vazkii.botania.common.lexicon.page.PageText;
 
@@ -27,6 +29,29 @@ public final class BHLexicon {
         titlePage.addPage(new PageText("botanichorizons.lexicon.text.multiblockInfo.1"));
         titlePage.setPriority();
         titlePage.setIcon(new ItemStack(Items.writable_book));
+
+        LexiconEntry poolEntry = new BHLexiconEntry("automatedManaPool", multiblockCategory);
+        poolEntry.addPage(new PageText("botanichorizons.lexicon.text.automatedManaPool.1"));
+        poolEntry.addPage(new PageText("botanichorizons.lexicon.text.automatedManaPool.2"));
+        poolEntry.addPage(new PageCraftingRecipe("botanichorizons.lexicon.crafting.automatedCraftingPool", BHRecipes.poolInfusionRecipe));
+        poolEntry.addPage(new PageMultiblock("botanichorizons.lexicon.preview.automatedCraftingPool",
+                Multiblocks.poolInfusion.lexiconMultiblock(
+                        0, 1, -2,
+                        BHBlocks.autoPoolInfusion, 0
+                )));
+        poolEntry.addPage(new PageCraftingRecipe("botanichorizons.lexicon.crafting.automatedAlchemyPool", BHRecipes.poolAlchemyRecipe));
+        poolEntry.addPage(new PageMultiblock("botanichorizons.lexicon.preview.automatedAlchemyPool",
+                Multiblocks.poolAlchemy.lexiconMultiblock(
+                        0, 1, -2,
+                        BHBlocks.autoPoolAlchemy, 0
+                )));
+        poolEntry.addPage(new PageCraftingRecipe("botanichorizons.lexicon.crafting.automatedConjurationPool", BHRecipes.poolConjurationRecipe));
+        poolEntry.addPage(new PageMultiblock("botanichorizons.lexicon.preview.automatedConjurationPool",
+                Multiblocks.poolConjuration.lexiconMultiblock(
+                        0, 1, -2,
+                        BHBlocks.autoPoolConjuration, 0
+                )));
+        poolEntry.setIcon(new ItemStack(ModBlocks.pool, 1, Constants.POOL_META_REGULAR_FABULOUS));
 
         LexiconEntry gatewayEntry = new BHLexiconEntry("automatedAlfPortal", multiblockCategory);
         gatewayEntry.addPage(new PageText("botanichorizons.lexicon.text.automatedAlfPortal.1"));

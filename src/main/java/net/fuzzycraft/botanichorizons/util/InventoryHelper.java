@@ -3,6 +3,7 @@ package net.fuzzycraft.botanichorizons.util;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
 
@@ -108,4 +109,23 @@ public class InventoryHelper {
             }
         }
     }
+
+    public static boolean isIngredient(ItemStack stack, Object recipe) {
+        if (recipe instanceof String) {
+            int[] oreIds = OreDictionary.getOreIDs(stack);
+            for (int oreId: oreIds) {
+                if (OreDictionary.getOreName(oreId).equals(recipe)) {
+                    return true;
+                }
+            }
+        } else if (recipe instanceof ItemStack) {
+            ItemStack compare = (ItemStack) recipe;
+            if (compare.isItemEqual(stack)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
