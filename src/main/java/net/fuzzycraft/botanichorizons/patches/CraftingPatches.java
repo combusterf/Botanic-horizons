@@ -916,7 +916,7 @@ public class CraftingPatches {
                 'S', "springSmallGold",
                 'R', "ringGold",
                 'w', ToolDictNames.craftingToolWrench.name(),
-                'm', ToolDictNames.craftingToolSoftHammer.name());
+                'm', ToolDictNames.craftingToolSoftMallet.name());
         ModCraftingRecipes.recipeMonocle = BotaniaAPI.getLatestAddedRecipe();
 
         // Ring of Correction Recipe
@@ -1056,7 +1056,7 @@ public class CraftingPatches {
                 'C', "craftingTableWood",
                 'S', "screwAluminium",
                 's', ToolDictNames.craftingToolScrewdriver.name(),
-                'h', ToolDictNames.craftingToolSoftHammer.name());
+                'h', ToolDictNames.craftingToolSoftMallet.name());
         ModCraftingRecipes.recipeCraftingHalo = BotaniaAPI.getLatestAddedRecipe();
 
         // Manufactory Halo Recipe
@@ -1186,7 +1186,7 @@ public class CraftingPatches {
                 '3', "pipeSmallBrass",
                 '4', "pipeTinyBrass",
                 'h', ToolDictNames.craftingToolHardHammer.name(),
-                'm', ToolDictNames.craftingToolSoftHammer.name(),
+                'm', ToolDictNames.craftingToolSoftMallet.name(),
                 'f', ToolDictNames.craftingToolFile.name());
         ModCraftingRecipes.recipeCacophonium = BotaniaAPI.getLatestAddedRecipe();
 
