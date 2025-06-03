@@ -1,6 +1,7 @@
 package net.fuzzycraft.botanichorizons.mod;
 
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -37,6 +38,9 @@ public class ForgeMod {
     @Mod.Instance(MOD_ID)
     public static ForgeMod instance;
 
+    @SidedProxy(clientSide = "net.fuzzycraft.botanichorizons.mod.ClientProxy", serverSide = "net.fuzzycraft.botanichorizons.mod.ServerProxy")
+    public static IProxy proxy;
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         BHBlocks.initBlocks();
@@ -61,11 +65,15 @@ public class ForgeMod {
     public void init(FMLInitializationEvent event) {
         Multiblocks.init();
         BHLexicon.init();
+
+        proxy.onInit();
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         Multiblocks.postInit();
+
+        proxy.onPostInit();
 
         if (!isPackMode()) return;
 

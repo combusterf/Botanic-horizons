@@ -1,10 +1,14 @@
 package net.fuzzycraft.botanichorizons.lexicon;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.fuzzycraft.botanichorizons.addons.BHBlocks;
 import net.fuzzycraft.botanichorizons.addons.Multiblocks;
+import net.fuzzycraft.botanichorizons.mod.ForgeMod;
 import net.fuzzycraft.botanichorizons.util.Constants;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.lexicon.LexiconCategory;
 import vazkii.botania.api.lexicon.LexiconEntry;
@@ -61,5 +65,10 @@ public final class BHLexicon {
                         BHBlocks.autoPortal, 0
                 )));
         gatewayEntry.setIcon(new ItemStack(BHBlocks.autoPortal));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void clientInit() {
+        multiblockCategory.setIcon(new ResourceLocation(ForgeMod.MOD_ID, "textures/gui/mechanisation.png"));
     }
 }
