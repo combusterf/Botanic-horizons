@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.tile.IWrenchable;
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAlfPortal;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -65,20 +66,25 @@ public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPor
         ((TileAdvancedAlfPortal) world.getTileEntity(x, y, z)).renderHUD(mc, res);
     }
 
+    @Override
     public LexiconEntry getEntry(World world, int x, int y, int z, EntityPlayer player, ItemStack lexicon) {
         return LexiconData.alfhomancyIntro;
     }
 
+    @Override
     public void onBlockPlacedBy(World worldIn, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn) {
         Facing2D facing = Facing2D.facingPlayer(placer);
-        if (placer instanceof EntityPlayerMP) {
-            EntityPlayerMP player = (EntityPlayerMP) placer;
-            player.addChatMessage(new ChatComponentText("Facing index: " + facing.index + ": " + facing.name()));
-        }
         worldIn.setBlockMetadataWithNotify(x, y, z, facing.index << 1, 3);
     }
 
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block blockBroken, int meta) {
+        TileAdvancedAlfPortal tileEntity = (TileAdvancedAlfPortal)world.getTileEntity(x, y, z);
+        tileEntity.dropItems(world, x, y, z);
+        super.breakBlock(world, x, y, z, blockBroken, meta);
+    }
 
+    @Override
     public boolean onUsedByWand(EntityPlayer player, ItemStack stack, World world, int x, int y, int z, int side) {
         boolean did = ((TileAdvancedAlfPortal)world.getTileEntity(x, y, z)).onWanded(player);
         if (did && player != null) {
@@ -88,6 +94,7 @@ public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPor
         return did;
     }
 
+    @Override
     public int getLightValue(IBlockAccess world, int x, int y, int z) {
         return (world.getBlockMetadata(x, y, z) & 1) == 0 ? 0 : 15;
     }

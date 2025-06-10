@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAlchemyPool;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -18,7 +19,6 @@ import vazkii.botania.api.lexicon.ILexiconable;
 import vazkii.botania.api.lexicon.LexiconEntry;
 import vazkii.botania.api.wand.IWandHUD;
 import vazkii.botania.api.wand.IWandable;
-import vazkii.botania.client.core.helper.IconHelper;
 import vazkii.botania.common.lexicon.LexiconData;
 
 import static net.fuzzycraft.botanichorizons.util.Constants.BH_ICON_PREFIX;
@@ -60,19 +60,30 @@ public class BlockAdvancedAlchemyPool extends BlockModContainer<TileAdvancedAlch
         ((TileAdvancedAlchemyPool) world.getTileEntity(x, y, z)).renderHUD(mc, res);
     }
 
+    @Override
     public LexiconEntry getEntry(World world, int x, int y, int z, EntityPlayer player, ItemStack lexicon) {
         return LexiconData.alfhomancyIntro;
     }
 
+    @Override
     public void onBlockPlacedBy(World worldIn, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn) {
         Facing2D facing = Facing2D.facingPlayer(placer);
         worldIn.setBlockMetadataWithNotify(x, y, z, facing.index << 1, 3);
     }
 
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block blockBroken, int meta) {
+        TileAdvancedAlchemyPool tileEntity = (TileAdvancedAlchemyPool)world.getTileEntity(x, y, z);
+        tileEntity.dropItems(world, x, y, z);
+        super.breakBlock(world, x, y, z, blockBroken, meta);
+    }
+
+    @Override
     public boolean onUsedByWand(EntityPlayer player, ItemStack stack, World world, int x, int y, int z, int side) {
         return ((TileAdvancedAlchemyPool)world.getTileEntity(x, y, z)).onWanded(player);
     }
 
+    @Override
     public int getLightValue(IBlockAccess world, int x, int y, int z) {
         return (world.getBlockMetadata(x, y, z) & 1) == 0 ? 0 : 10;
     }

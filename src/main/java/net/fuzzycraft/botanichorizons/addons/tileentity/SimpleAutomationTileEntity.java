@@ -1,7 +1,9 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
+import cpw.mods.fml.common.FMLLog;
 import net.fuzzycraft.botanichorizons.util.InventoryHelper;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInvBasic;
 import net.minecraft.inventory.IInventory;
@@ -9,6 +11,7 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -206,5 +209,20 @@ public abstract class SimpleAutomationTileEntity<R> extends AutomationTileEntity
     @Override
     public void onInventoryChanged(InventoryBasic p_76316_1_) {
         markDirty();
+    }
+
+    // Brock breaking
+    public void dropItems(World world, int x, int y, int z) {
+        for (int slot = 0; slot < inventoryHandler.getSizeInventory(); slot++) {
+            ItemStack drop = inventoryHandler.getStackInSlot(slot);
+
+            if (drop != null && drop.stackSize > 0) {
+                ItemStack copy = drop.copy();
+                inventoryHandler.setInventorySlotContents(slot, null);
+                EntityItem entity = new EntityItem(world, (double)x + 0.5, (double)y + 0.5, (double)z + 0.5, copy);
+                InventoryHelper.setRandomDropDirection(entity, world);
+                world.spawnEntityInWorld(entity);
+            }
+        }
     }
 }
