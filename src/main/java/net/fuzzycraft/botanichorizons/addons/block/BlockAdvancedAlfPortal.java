@@ -74,10 +74,6 @@ public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPor
     @Override
     public void onBlockPlacedBy(World worldIn, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn) {
         Facing2D facing = Facing2D.facingPlayer(placer);
-        if (placer instanceof EntityPlayerMP) {
-            EntityPlayerMP player = (EntityPlayerMP) placer;
-            player.addChatMessage(new ChatComponentText("Facing index: " + facing.index + ": " + facing.name()));
-        }
         worldIn.setBlockMetadataWithNotify(x, y, z, facing.index << 1, 3);
     }
 
