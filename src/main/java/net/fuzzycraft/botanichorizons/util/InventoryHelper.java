@@ -1,11 +1,14 @@
 package net.fuzzycraft.botanichorizons.util;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
+import java.util.Random;
 
 public class InventoryHelper {
 
@@ -128,4 +131,11 @@ public class InventoryHelper {
         return false;
     }
 
+    public static void setRandomDropDirection(EntityItem item, World world) {
+        double speed = 0.05;
+        Random random = world.rand;
+        item.motionX = random.nextGaussian() * speed;
+        item.motionY = random.nextGaussian() * speed + 0.2F;
+        item.motionZ = random.nextGaussian() * speed;
+    }
 }
