@@ -64,6 +64,11 @@ public abstract class TileAdvancedManaPool extends SimpleAutomationTileEntity<Re
     }
 
     @Override
+    public int getRecipeInputStackSize(@NotNull RecipeManaInfusion recipe) {
+        return 1;
+    }
+
+    @Override
     public @NotNull ItemStack getRecipeOutput(@NotNull RecipeManaInfusion recipe) {
         return recipe.getOutput();
     }

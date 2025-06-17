@@ -24,6 +24,7 @@ public abstract class SimpleAutomationTileEntity<R> extends AutomationTileEntity
     public abstract int getAvailableParallels(@Nonnull R recipe);
     @Nonnull
     public abstract ItemStack getRecipeOutput(@Nonnull R recipe);
+    public abstract int getRecipeInputStackSize(@Nonnull R recipe);
 
     // definitions
     public final InventoryBasic inventoryHandler;
@@ -52,6 +53,7 @@ public abstract class SimpleAutomationTileEntity<R> extends AutomationTileEntity
         // check available inputs
         final ItemStack craftStack = inventoryHandler.getStackInSlot(0);
         if (craftStack == null || craftStack.getItem() == null) return;
+        
         final int max_input_parallel = craftStack.stackSize;
         parallel = Math.min(parallel, max_input_parallel);
         if (parallel <= 0) return;
@@ -70,9 +72,18 @@ public abstract class SimpleAutomationTileEntity<R> extends AutomationTileEntity
             return;
         }
 
+        final int recipe_input_width = getRecipeInputStackSize(recipe);
+        if (recipe_input_width > 1) {
+            final int max_input_width = craftStack.stackSize / recipe_input_width;
+            parallel = Math.min(parallel, max_input_width);
+        }
         final ItemStack output_instance = getRecipeOutput(recipe);
         final int max_output_parallel = 64 / output_instance.stackSize;
-        parallel = Math.min(parallel, max_output_parallel); // will be > 0
+        parallel = Math.min(parallel, max_output_parallel);
+
+        if (parallel <= 0 || recipe_input_width <= 0) {
+            return;
+        }
 
         // perform recipe in batch
         ItemStack output = output_instance.copy();
@@ -80,7 +91,7 @@ public abstract class SimpleAutomationTileEntity<R> extends AutomationTileEntity
 
         // commit to inventory
         inventoryHandler.setInventorySlotContents(INPUT_SIZE + OUTPUT_SIZE - 1, output);
-        inventoryHandler.decrStackSize(0, parallel);
+        inventoryHandler.decrStackSize(0, parallel * recipe_input_width);
     }
 
     // Dump output downward
