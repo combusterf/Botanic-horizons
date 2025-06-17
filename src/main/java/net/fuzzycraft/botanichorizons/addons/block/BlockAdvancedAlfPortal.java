@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.tile.IWrenchable;
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAlfPortal;
+import net.fuzzycraft.botanichorizons.lexicon.BHLexicon;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -68,7 +69,7 @@ public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPor
 
     @Override
     public LexiconEntry getEntry(World world, int x, int y, int z, EntityPlayer player, ItemStack lexicon) {
-        return LexiconData.alfhomancyIntro;
+        return BHLexicon.automatedPortal;
     }
 
     @Override
