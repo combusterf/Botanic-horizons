@@ -90,11 +90,6 @@ public class TileAdvancedAlfPortal extends SimpleAutomationTileEntity<RecipeElve
     public int getAvailableParallels(@Nonnull RecipeElvenTrade recipe) {
         int parallel = MAX_PARALLELS;
 
-        // check inappropriate recipes
-        if (recipe.getInputs().size() != 1) {
-            return 0;
-        }
-
         // check energy capacity
         if (RECIPE_MANA > 0) { // just in case some hack turns this off later.
             final int max_mana_parallel = (storedMana - CYCLE_UPKEEP) / RECIPE_MANA;
@@ -107,13 +102,44 @@ public class TileAdvancedAlfPortal extends SimpleAutomationTileEntity<RecipeElve
     public RecipeElvenTrade findMatchingRecipe(@Nonnull ItemStack stack) {
         for(RecipeElvenTrade recipe : BotaniaAPI.elvenTradeRecipes) {
             final List<Object> inputs = recipe.getInputs();
-            for (Object input: inputs) {
+            if (getRecipeInputStackSize(recipe) <= 0) continue;
+
+            for (Object input : inputs) {
                 if (InventoryHelper.isIngredient(stack, input)) {
                     return recipe;
                 }
             }
         }
         return null;
+    }
+
+    // Botania has an annoying habit of specifying multiple ingredients as ["oreDict", "oreDict", "oreDict"]
+    // Reduce these cases into a simple number
+    //
+    // Returns 0 if this is a magic recipe or requires different ingredients
+    public int getRecipeInputStackSize(RecipeElvenTrade recipe) {
+        final List<Object> inputs = recipe.getInputs();
+        if (inputs.size() == 1) {
+            final Object entry = inputs.get(0);
+            if (entry instanceof String) {
+                return 1;
+            } else if (entry instanceof ItemStack) {
+                return ((ItemStack) entry).stackSize;
+            }
+        } else if (inputs.size() > 1) {
+            final Object reference = inputs.get(0);
+            if (!(reference instanceof String)) return 0;
+            String oredict = (String) reference;
+
+            for (int i = 1; i < inputs.size(); i++) {
+                Object compare = inputs.get(i);
+                if (!(compare instanceof String)) return 0;
+                if (!oredict.equals(compare)) return 0;
+            }
+            return inputs.size();
+        }
+
+        return 0;
     }
 
     @Override @Nonnull

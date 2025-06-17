@@ -10,6 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import vazkii.botania.api.BotaniaAPI;
+import vazkii.botania.api.lexicon.KnowledgeType;
 import vazkii.botania.api.lexicon.LexiconCategory;
 import vazkii.botania.api.lexicon.LexiconEntry;
 import vazkii.botania.common.block.ModBlocks;
@@ -22,6 +23,10 @@ public final class BHLexicon {
 
     public static LexiconCategory multiblockCategory;
 
+    public static LexiconEntry multiblockIntro;
+    public static LexiconEntry automatedManaPool;
+    public static LexiconEntry automatedPortal;
+
     public static void preInit() {
         multiblockCategory = new LexiconCategory("botanichorizons.lexicon.category.multiblock")
                 .setPriority(2);
@@ -33,6 +38,7 @@ public final class BHLexicon {
         titlePage.addPage(new PageText("botanichorizons.lexicon.text.multiblockInfo.1"));
         titlePage.setPriority();
         titlePage.setIcon(new ItemStack(Items.writable_book));
+        BHLexicon.multiblockIntro = titlePage;
 
         LexiconEntry poolEntry = new BHLexiconEntry("automatedManaPool", multiblockCategory);
         poolEntry.addPage(new PageText("botanichorizons.lexicon.text.automatedManaPool.1"));
@@ -56,8 +62,10 @@ public final class BHLexicon {
                         BHBlocks.autoPoolConjuration, 0
                 )));
         poolEntry.setIcon(new ItemStack(ModBlocks.pool, 1, Constants.POOL_META_REGULAR_FABULOUS));
+        BHLexicon.automatedManaPool = poolEntry;
 
         LexiconEntry gatewayEntry = new BHLexiconEntry("automatedAlfPortal", multiblockCategory);
+        gatewayEntry.setKnowledgeType(BotaniaAPI.elvenKnowledge);
         gatewayEntry.addPage(new PageText("botanichorizons.lexicon.text.automatedAlfPortal.1"));
         gatewayEntry.addPage(new PageMultiblock("botanichorizons.lexicon.preview.automatedAlfPortal",
                 Multiblocks.alfPortal.lexiconMultiblock(
@@ -65,6 +73,7 @@ public final class BHLexicon {
                         BHBlocks.autoPortal, 0
                 )));
         gatewayEntry.setIcon(new ItemStack(BHBlocks.autoPortal));
+        BHLexicon.automatedPortal = gatewayEntry;
     }
 
     @SideOnly(Side.CLIENT)

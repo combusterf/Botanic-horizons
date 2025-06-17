@@ -3,6 +3,7 @@ package net.fuzzycraft.botanichorizons.addons.block;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAlchemyPool;
+import net.fuzzycraft.botanichorizons.lexicon.BHLexicon;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -62,7 +63,7 @@ public class BlockAdvancedAlchemyPool extends BlockModContainer<TileAdvancedAlch
 
     @Override
     public LexiconEntry getEntry(World world, int x, int y, int z, EntityPlayer player, ItemStack lexicon) {
-        return LexiconData.alfhomancyIntro;
+        return BHLexicon.automatedManaPool;
     }
 
     @Override

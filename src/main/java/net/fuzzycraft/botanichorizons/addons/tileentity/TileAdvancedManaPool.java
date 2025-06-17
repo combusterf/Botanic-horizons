@@ -13,7 +13,7 @@ import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_UPDATE;
 public abstract class TileAdvancedManaPool extends SimpleAutomationTileEntity<RecipeManaInfusion> {
 
     // Balance
-    public final int MANA_CAPACITY = 20000;
+    public final int MANA_CAPACITY = 50000;
     public final int CYCLE_TICKS = 20; // time between checks
     public final int MAX_PARALLELS = 64;
     public final int ACTIVATE_MANA = 1000;
@@ -61,6 +61,11 @@ public abstract class TileAdvancedManaPool extends SimpleAutomationTileEntity<Re
         }
 
         return parallel;
+    }
+
+    @Override
+    public int getRecipeInputStackSize(@NotNull RecipeManaInfusion recipe) {
+        return 1;
     }
 
     @Override
