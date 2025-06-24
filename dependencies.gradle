@@ -7,9 +7,12 @@ dependencies {
     api("com.github.GTNewHorizons:Avaritia:1.52:dev")
     api("com.github.GTNewHorizons:StructureLib:1.4.10:dev")
 
+    compileOnly('com.github.GTNewHorizons:NotEnoughItems:2.6.50-GTNH:dev')
     compileOnly("com.github.GTNewHorizons:Chisel:2.15.2-GTNH:dev") {transitive = false}
 
     runtimeOnly('com.github.GTNewHorizons:Baubles:1.0.4:dev')
+
+    devOnlyNonPublishable('com.github.GTNewHorizons:NotEnoughItems:2.6.50-GTNH:dev')
 }
 
 repositories {
