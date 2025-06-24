@@ -121,6 +121,12 @@ public final class Constants {
     public static final int MC_BLOCK_SEND_TO_CLIENT = 2;
     public static final int MC_BLOCK_PREVENT_RENDER = 4;
 
+    public static final String NEI_RECIPE_HANDLER_PREFIX = "vazkii.botania.client.integration.nei.recipe.";
+    public static final String NEI_RECIPE_CATEGORY_POOL = NEI_RECIPE_HANDLER_PREFIX + "RecipeHandlerManaPool";
+    public static final String NEI_RECIPE_CATEGORY_BREWERY = NEI_RECIPE_HANDLER_PREFIX + "RecipeHandlerBrewery";
+    public static final String NEI_RECIPE_CATEGORY_ALFHEIM = NEI_RECIPE_HANDLER_PREFIX + "RecipeHandlerElvenTrade";
+    public static final String NEI_RECIPE_CATEGORY_APOTHECARY = NEI_RECIPE_HANDLER_PREFIX + "RecipeHandlerPetalApothecary";
+
     public static ItemStack thaumcraftCrucible() {
         return new ItemStack(Block.getBlockFromName(THAUMCRAFT_METAL_DEVICE), 1, THAUMCRAFT_METAL_META_CRUCIBLE);
     }
