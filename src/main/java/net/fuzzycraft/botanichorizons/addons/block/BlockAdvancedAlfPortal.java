@@ -3,14 +3,18 @@ package net.fuzzycraft.botanichorizons.addons.block;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.tile.IWrenchable;
+import journeymap.client.render.map.Tile;
+import net.fuzzycraft.botanichorizons.addons.Multiblocks;
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAlfPortal;
 import net.fuzzycraft.botanichorizons.lexicon.BHLexicon;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
+import net.fuzzycraft.botanichorizons.util.IBlockTooltip;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -27,7 +31,9 @@ import vazkii.botania.client.core.helper.IconHelper;
 import vazkii.botania.common.achievement.ModAchievements;
 import vazkii.botania.common.lexicon.LexiconData;
 
-public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPortal> implements IWandHUD, IWandable, ILexiconable {
+import java.util.List;
+
+public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPortal> implements IWandHUD, IWandable, ILexiconable, IBlockTooltip {
 
     public static final String NAME = "automatedAlfPortal";
 
@@ -98,5 +104,14 @@ public class BlockAdvancedAlfPortal extends BlockModContainer<TileAdvancedAlfPor
     @Override
     public int getLightValue(IBlockAccess world, int x, int y, int z) {
         return (world.getBlockMetadata(x, y, z) & 1) == 0 ? 0 : 15;
+    }
+
+    @SuppressWarnings("unchecked")
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addTooltipInformation(ItemStack itemStack, @SuppressWarnings("rawtypes") List tooltipStrings) {
+        tooltipStrings.add(I18n.format("botanichorizons.tooltip.parallels", TileAdvancedAlfPortal.MAX_PARALLELS));
+        Multiblocks.alfPortal.addBuildInfoToTooltip(tooltipStrings);
+        tooltipStrings.add(I18n.format("botanichorizons.author.combuster"));
     }
 }
