@@ -9,6 +9,7 @@ import net.fuzzycraft.botanichorizons.util.multiblock.MetaBlockCheck;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockCheck;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockStructure;
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 
 import java.util.Collections;
@@ -24,7 +25,7 @@ public class HoloProjectorSupport {
 
     public static final String HOLO_DEFAULT_CHANNEL = "main";
 
-    public static <T extends TileEntity> void registerWithStructureLib(MultiblockHelper definition, Class<T> tileClass) {
+    public static <T extends TileEntity> void registerWithStructureLib(MultiblockHelper definition, Block controllerBlock, Class<T> controllerTileClass) {
         final Map<MultiblockCheck, Character> keys = new HashMap<>();
         int xMin = definition.blocks[0].dx, xMax = definition.blocks[0].dx;
         int yMin = definition.blocks[0].dy, yMax = definition.blocks[0].dy;
@@ -45,6 +46,7 @@ public class HoloProjectorSupport {
                 counter++;
             }
         }
+        final String controllerChar = ((Character)counter).toString();
 
         // prepare definition string since we don't seem to have access to internals
         // note: stuff is too symmetric ATM, x/z indexing has not been fully tested
@@ -67,6 +69,11 @@ public class HoloProjectorSupport {
             structureString[zPos][yPos] = replaced;
         }
 
+        // insert controller block back into structure
+        final String controllerRowOld = structureString[-zMin][-yMin];
+        final String controllerReplaced = controllerRowOld.substring(0, -xMin) + controllerChar + controllerRowOld.substring(-xMin + 1);
+        structureString[-zMin][-yMin] = controllerReplaced;
+
         // Run everything through the StructureLib builder
         StructureDefinition.Builder<T> builder = IStructureDefinition.builder();
         builder.addShape(HOLO_DEFAULT_CHANNEL, structureString);
@@ -75,9 +82,11 @@ public class HoloProjectorSupport {
             IStructureElement<T> element = genStructureElement(check);
             builder.addElement(key, element);
         }
+        builder.addElement(counter, ofBlockAnyMeta(controllerBlock));
+
         IStructureDefinition<T> structure = builder.build();
         HoloContainer<T> container = new HoloContainer<>(structure, -xMin, -yMin, -zMin);
-        IMultiblockInfoContainer.registerTileClass(tileClass, container);
+        IMultiblockInfoContainer.registerTileClass(controllerTileClass, container);
     }
 
     private static <T> IStructureElement<T> genStructureElement(MultiblockCheck check) {
@@ -88,4 +97,5 @@ public class HoloProjectorSupport {
             return ofBlock(parsed.referenceBlock, parsed.referenceMeta);
         } else return null;
     }
+
 }
