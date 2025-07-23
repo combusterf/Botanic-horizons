@@ -102,10 +102,10 @@ public final class Multiblocks {
 
     public static void postInit() {
         if (Mods.StructureLib.isModLoaded()) {
-            HoloProjectorSupport.registerWithStructureLib(poolInfusion, TileAdvancedCraftingPool.class);
-            HoloProjectorSupport.registerWithStructureLib(poolAlchemy, TileAdvancedAlchemyPool.class);
-            HoloProjectorSupport.registerWithStructureLib(poolConjuration, TileAdvancedConjurationPool.class);
-            HoloProjectorSupport.registerWithStructureLib(alfPortal, TileAdvancedAlfPortal.class);
+            HoloProjectorSupport.registerWithStructureLib(poolInfusion, BHBlocks.autoPoolInfusion, TileAdvancedCraftingPool.class);
+            HoloProjectorSupport.registerWithStructureLib(poolAlchemy, BHBlocks.autoPoolAlchemy, TileAdvancedAlchemyPool.class);
+            HoloProjectorSupport.registerWithStructureLib(poolConjuration, BHBlocks.autoPoolConjuration, TileAdvancedConjurationPool.class);
+            HoloProjectorSupport.registerWithStructureLib(alfPortal, BHBlocks.autoPortal, TileAdvancedAlfPortal.class);
         }
     }
 }
