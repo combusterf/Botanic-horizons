@@ -113,6 +113,11 @@ public class TileAdvancedAlfPortal extends SimpleAutomationTileEntity<RecipeElve
         return null;
     }
 
+    @Override
+    void consumeNonItemResources(RecipeElvenTrade recipe, int parallel) {
+        storedMana = storedMana - parallel * RECIPE_MANA;
+    }
+
     // Botania has an annoying habit of specifying multiple ingredients as ["oreDict", "oreDict", "oreDict"]
     // Reduce these cases into a simple number
     //

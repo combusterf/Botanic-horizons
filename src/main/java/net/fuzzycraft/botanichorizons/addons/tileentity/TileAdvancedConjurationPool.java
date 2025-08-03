@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.recipe.RecipeManaInfusion;
@@ -18,8 +17,10 @@ import vazkii.botania.client.core.handler.HUDHandler;
 
 public class TileAdvancedConjurationPool extends TileAdvancedManaPool {
 
+    public static final int MANA_CAPACITY = 1000000;
+
     public TileAdvancedConjurationPool() {
-        super(Multiblocks.poolConjuration);
+        super(Multiblocks.poolConjuration, MANA_CAPACITY);
     }
 
     @Override
@@ -43,6 +44,6 @@ public class TileAdvancedConjurationPool extends TileAdvancedManaPool {
     public void renderHUD(Minecraft mc, ScaledResolution res) {
         ChargeState state = ChargeState.genState(isOnline, storedMana, ACTIVATE_MANA);
         String tooltip = state.getLocalisedHudString(BHBlocks.autoPoolConjuration);
-        HUDHandler.drawSimpleManaHUD(state.color, storedMana, MANA_CAPACITY, tooltip, res);
+        HUDHandler.drawSimpleManaHUD(state.color, storedMana, manaCapacity, tooltip, res);
     }
 }

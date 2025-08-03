@@ -17,8 +17,10 @@ import vazkii.botania.client.core.handler.HUDHandler;
 
 public class TileAdvancedAlchemyPool extends TileAdvancedManaPool {
 
+    public static final int MANA_CAPACITY = 50000;
+
     public TileAdvancedAlchemyPool() {
-        super(Multiblocks.poolAlchemy);
+        super(Multiblocks.poolAlchemy, MANA_CAPACITY);
     }
 
     @Override
@@ -42,6 +44,6 @@ public class TileAdvancedAlchemyPool extends TileAdvancedManaPool {
     public void renderHUD(Minecraft mc, ScaledResolution res) {
         ChargeState state = ChargeState.genState(isOnline, storedMana, ACTIVATE_MANA);
         String tooltip = state.getLocalisedHudString(BHBlocks.autoPoolAlchemy);
-        HUDHandler.drawSimpleManaHUD(state.color, storedMana, MANA_CAPACITY, tooltip, res);
+        HUDHandler.drawSimpleManaHUD(state.color, storedMana, manaCapacity, tooltip, res);
     }
 }
