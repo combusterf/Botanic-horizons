@@ -1,6 +1,5 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
-import cpw.mods.fml.common.FMLLog;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -69,7 +68,6 @@ public abstract class TileAdvancedManaPool extends SimpleAutomationTileEntity<Re
     void consumeNonItemResources(RecipeManaInfusion recipe, int parallel) {
         int currentMana = storedMana;
         storedMana = storedMana - parallel * recipe.getManaToConsume();
-        FMLLog.info("Mana: %d - %d * %d = %d", currentMana, parallel, recipe.getManaToConsume(), storedMana);
     }
 
     @Override
