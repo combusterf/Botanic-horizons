@@ -66,8 +66,7 @@ public abstract class TileAdvancedManaPool extends SimpleAutomationTileEntity<Re
 
     @Override
     void consumeNonItemResources(RecipeManaInfusion recipe, int parallel) {
-        int currentMana = storedMana;
-        storedMana = storedMana - parallel * recipe.getManaToConsume();
+        storedMana -= parallel * recipe.getManaToConsume();
     }
 
     @Override

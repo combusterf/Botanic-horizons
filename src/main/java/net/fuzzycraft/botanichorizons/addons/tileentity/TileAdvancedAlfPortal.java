@@ -115,7 +115,7 @@ public class TileAdvancedAlfPortal extends SimpleAutomationTileEntity<RecipeElve
 
     @Override
     void consumeNonItemResources(RecipeElvenTrade recipe, int parallel) {
-        storedMana = storedMana - parallel * RECIPE_MANA;
+        storedMana -= parallel * RECIPE_MANA;
     }
 
     // Botania has an annoying habit of specifying multiple ingredients as ["oreDict", "oreDict", "oreDict"]
