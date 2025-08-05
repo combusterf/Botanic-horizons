@@ -1,6 +1,5 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.fuzzycraft.botanichorizons.addons.BHBlocks;
@@ -18,8 +17,10 @@ import vazkii.botania.client.core.handler.HUDHandler;
 
 public class TileAdvancedCraftingPool extends TileAdvancedManaPool {
 
+    public static final int MANA_CAPACITY = 50000;
+
     public TileAdvancedCraftingPool() {
-        super(Multiblocks.poolInfusion);
+        super(Multiblocks.poolInfusion, MANA_CAPACITY);
     }
 
     @Override
@@ -45,6 +46,6 @@ public class TileAdvancedCraftingPool extends TileAdvancedManaPool {
     public void renderHUD(Minecraft mc, ScaledResolution res) {
         ChargeState state = ChargeState.genState(isOnline, storedMana, ACTIVATE_MANA);
         String tooltip = state.getLocalisedHudString(BHBlocks.autoPoolInfusion);
-        HUDHandler.drawSimpleManaHUD(state.color, storedMana, MANA_CAPACITY, tooltip, res);
+        HUDHandler.drawSimpleManaHUD(state.color, storedMana, manaCapacity, tooltip, res);
     }
 }

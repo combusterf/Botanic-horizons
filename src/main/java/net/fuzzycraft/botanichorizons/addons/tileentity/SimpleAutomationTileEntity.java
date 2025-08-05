@@ -1,6 +1,5 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
-import cpw.mods.fml.common.FMLLog;
 import net.fuzzycraft.botanichorizons.util.InventoryHelper;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
 import net.minecraft.entity.item.EntityItem;
@@ -41,6 +40,8 @@ public abstract class SimpleAutomationTileEntity<R> extends AutomationTileEntity
     }
 
     // Business logic
+
+    abstract void consumeNonItemResources(R recipe, int parallel);
 
     // process recipes
     public void handleCrafts() {
@@ -88,6 +89,7 @@ public abstract class SimpleAutomationTileEntity<R> extends AutomationTileEntity
         // perform recipe in batch
         ItemStack output = output_instance.copy();
         output.stackSize = output.stackSize * parallel;
+        consumeNonItemResources(recipe, parallel);
 
         // commit to inventory
         inventoryHandler.setInventorySlotContents(INPUT_SIZE + OUTPUT_SIZE - 1, output);
