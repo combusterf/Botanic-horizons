@@ -25,6 +25,7 @@ public final class Multiblocks {
     public static MultiblockHelper poolConjuration;
     public static MultiblockHelper poolAlchemy;
     public static MultiblockHelper poolInfusion;
+    public static MultiblockHelper placeholder;
 
     public static void init() {
         MultiblockCheck air = new BasicBlockCheck(Blocks.air);
@@ -98,6 +99,19 @@ public final class Multiblocks {
                     "       ", " lllll ", " llgll ", " lglgl ", " llgll ", " lllll ", "       "
                 }
         );
+
+        // For new multiblocks
+
+        MultiblockBuilder tempBuilder = new MultiblockBuilder();
+        builder.setRootCharacter("x");
+        builder.addCheck("w", livingWood);
+        builder.addCheck("r", livingRock);
+        placeholder = tempBuilder.buildForMap(
+                new String[] {
+                        "rwr", "w w", "rxr"
+                }
+        );
+
     }
 
     public static void postInit() {
