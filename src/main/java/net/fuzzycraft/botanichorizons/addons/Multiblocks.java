@@ -3,8 +3,11 @@ package net.fuzzycraft.botanichorizons.addons;
 import gregtech.api.enums.Mods;
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAlchemyPool;
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAlfPortal;
+import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedAltar;
+import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedApothecary;
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedConjurationPool;
 import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedCraftingPool;
+import net.fuzzycraft.botanichorizons.addons.tileentity.TileAdvancedTerraPlate;
 import net.fuzzycraft.botanichorizons.util.Constants;
 import net.fuzzycraft.botanichorizons.util.multiblock.BasicBlockCheck;
 import net.fuzzycraft.botanichorizons.util.multiblock.MetaBlockCheck;
@@ -103,9 +106,9 @@ public final class Multiblocks {
         // For new multiblocks
 
         MultiblockBuilder tempBuilder = new MultiblockBuilder();
-        builder.setRootCharacter("x");
-        builder.addCheck("w", livingWood);
-        builder.addCheck("r", livingRock);
+        tempBuilder.setRootCharacter("x");
+        tempBuilder.addCheck("w", livingWood);
+        tempBuilder.addCheck("r", livingRock);
         placeholder = tempBuilder.buildForMap(
                 new String[] {
                         "rwr", "w w", "rxr"
@@ -120,6 +123,10 @@ public final class Multiblocks {
             HoloProjectorSupport.registerOrientedWithStructureLib(poolAlchemy, BHBlocks.autoPoolAlchemy, TileAdvancedAlchemyPool.class);
             HoloProjectorSupport.registerOrientedWithStructureLib(poolConjuration, BHBlocks.autoPoolConjuration, TileAdvancedConjurationPool.class);
             HoloProjectorSupport.registerOrientedWithStructureLib(alfPortal, BHBlocks.autoPortal, TileAdvancedAlfPortal.class);
+
+            HoloProjectorSupport.registerOrientedWithStructureLib(placeholder, BHBlocks.autoApothecary, TileAdvancedApothecary.class);
+            HoloProjectorSupport.registerOrientedWithStructureLib(placeholder, BHBlocks.autoAltar, TileAdvancedAltar.class);
+            HoloProjectorSupport.registerOrientedWithStructureLib(placeholder, BHBlocks.autoPlate, TileAdvancedTerraPlate.class);
         }
     }
 }

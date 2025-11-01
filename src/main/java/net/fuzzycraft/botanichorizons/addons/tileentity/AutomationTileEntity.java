@@ -39,7 +39,7 @@ abstract public class AutomationTileEntity extends TileEntity implements IManaRe
     protected boolean clientSparkTransfer = false;
     protected int structureCycle = 0;
 
-    protected int cachedMana = Integer.MIN_VALUE;
+    private int cachedMana = Integer.MIN_VALUE;
     protected int statusCycle = 0;
 
     // Delegated state
@@ -113,6 +113,13 @@ abstract public class AutomationTileEntity extends TileEntity implements IManaRe
     protected boolean shouldShareTE() {
         int delta = cachedMana - storedMana;
         return delta <= -DEFAULT_MANA_ERROR_RANGE || delta >= DEFAULT_MANA_ERROR_RANGE;
+    }
+
+    public void markTEForSharing(boolean immediate) {
+        cachedMana = Integer.MIN_VALUE;
+        if (immediate) {
+            statusCycle = STATUS_CYCLE;
+        }
     }
 
     // Persistence

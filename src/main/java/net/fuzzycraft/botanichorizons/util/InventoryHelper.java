@@ -1,5 +1,6 @@
 package net.fuzzycraft.botanichorizons.util;
 
+import cofh.api.inventory.IInventoryHandler;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -138,4 +139,18 @@ public class InventoryHelper {
         item.motionY = random.nextGaussian() * speed + 0.2F;
         item.motionZ = random.nextGaussian() * speed;
     }
+
+    public static void dropAllItems(World world, int x, int y, int z, IInventory inventoryHandler) {
+        for (int slot = 0; slot < inventoryHandler.getSizeInventory(); slot++) {
+        ItemStack drop = inventoryHandler.getStackInSlot(slot);
+
+        if (drop != null && drop.stackSize > 0) {
+            ItemStack copy = drop.copy();
+            inventoryHandler.setInventorySlotContents(slot, null);
+            EntityItem entity = new EntityItem(world, (double)x + 0.5, (double)y + 0.5, (double)z + 0.5, copy);
+            InventoryHelper.setRandomDropDirection(entity, world);
+            world.spawnEntityInWorld(entity);
+        }
+    }
+}
 }

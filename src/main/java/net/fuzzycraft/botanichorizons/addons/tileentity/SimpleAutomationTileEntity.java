@@ -226,16 +226,6 @@ public abstract class SimpleAutomationTileEntity<R> extends AutomationTileEntity
 
     // Brock breaking
     public void dropItems(World world, int x, int y, int z) {
-        for (int slot = 0; slot < inventoryHandler.getSizeInventory(); slot++) {
-            ItemStack drop = inventoryHandler.getStackInSlot(slot);
-
-            if (drop != null && drop.stackSize > 0) {
-                ItemStack copy = drop.copy();
-                inventoryHandler.setInventorySlotContents(slot, null);
-                EntityItem entity = new EntityItem(world, (double)x + 0.5, (double)y + 0.5, (double)z + 0.5, copy);
-                InventoryHelper.setRandomDropDirection(entity, world);
-                world.spawnEntityInWorld(entity);
-            }
-        }
+        InventoryHelper.dropAllItems(world, x, y, z, inventoryHandler);
     }
 }
