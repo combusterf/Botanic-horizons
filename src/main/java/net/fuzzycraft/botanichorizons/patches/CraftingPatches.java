@@ -303,7 +303,7 @@ public class CraftingPatches {
         if(NewHorizonsCoreMod.isModLoaded()) {
             addOreDictRecipe(new ItemStack(ModItems.lens, 1, 7),
                     " P ", "ALA", " R ",
-                    'P', Item.itemRegistry.getObject("dreamcraft:item.DiamondDrillTip"),
+                    'P', Item.itemRegistry.getObject("dreamcraft:DiamondDrillTip"),
                     'R', "dustRedstone",
                     'A', "gemLapis",
                     'L', new ItemStack(ModItems.lens));

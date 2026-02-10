@@ -151,7 +151,7 @@ public class ThaumcraftPatches {
                     ItemStack blockWhite = new ItemStack(ModBlocks.livingrock);
                     ItemStack blockBlue = new ItemStack(Blocks.lapis_block);
                     ItemStack blockMana = new ItemStack(ModBlocks.storage, 1, 0);
-                    ItemStack gemTier = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:item.EngravedDiamondCrystalChip"));
+                    ItemStack gemTier = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:EngravedDiamondCrystalChip"));
                     ingredients.add(blockWhite);
                     ingredients.add(8, blockWhite);
                     ingredients.add(blockBlue);
@@ -189,7 +189,7 @@ public class ThaumcraftPatches {
             .apply(builder -> {
                 ItemStack glimmer = new ItemStack(ModBlocks.livingwood, 1, Constants.LIVINGWOOD_META_GLIMMERING);
                 ItemStack glow = new ItemStack(Blocks.glowstone);
-                ItemStack gemEV = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:item.QuantumCrystal"));
+                ItemStack gemEV = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:QuantumCrystal"));
                 ItemStack construct = Constants.thaumcraftConstruct();
                 ItemStack terra = OreDict.preference("plateTerrasteel", LibOreDict.TERRA_STEEL);
 
@@ -294,7 +294,7 @@ public class ThaumcraftPatches {
                 ItemStack pinkGem = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_DRAGONSTONE);
                 ItemStack blackPlate = OreDictionary.getOres("plateNaquadah").get(0);
                 ItemStack voidCap = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:WandCap"), 1, 7);
-                ItemStack pinkChip = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:item.EngravedManyullynCrystalChip"));
+                ItemStack pinkChip = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:EngravedManyullynCrystalChip"));
                 builder.addInfusionRecipe(
                     new AspectList().add(Aspect.ELDRITCH, 64).add(Aspect.TRAP, 64).add(Aspect.MAGIC, 64).add(Aspect.DARKNESS, 32).add(Aspect.CRYSTAL, 32),
                     new ItemStack(ModBlocks.pylon, 1, Constants.PYLON_META_GAIA),
@@ -318,7 +318,7 @@ public class ThaumcraftPatches {
                 .apply(builder -> {
                     ItemStack glass = new ItemStack(ModBlocks.manaGlass);
                     ItemStack slab = new ItemStack(ModFluffBlocks.livingrockSlab);
-                    ItemStack orangeChip = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:item.EngravedGoldChip"));
+                    ItemStack orangeChip = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:EngravedGoldChip"));
                     builder.addInfusionRecipe(
                             new AspectList().add(Aspect.MECHANISM, 32).add(Aspect.MAN, 16).add(Aspect.MAGIC, 16),
                             new ItemStack(ModBlocks.brewery),
@@ -526,7 +526,7 @@ public class ThaumcraftPatches {
                     ItemStack gaia = new ItemStack(ModItems.manaResource, 1, Constants.MANARESOURCE_META_GAIA_INGOT);
                     ItemStack ingot = OreDictionary.getOres(LibOreDict.TERRA_STEEL).get(0);
                     ItemStack crystal = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:blockCrystal"), 1, 0);
-                    ItemStack chip = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:item.EngravedQuantumChip"), 1, 0);
+                    ItemStack chip = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:EngravedQuantumChip"), 1, 0);
                     ItemStack gem1 = OreDictionary.getOres("gemExquisiteOpal").get(0);
                     ItemStack gem2 = OreDictionary.getOres("gemExquisiteDiamond").get(0);
                     ItemStack rune1 = new ItemStack(ModItems.rune, 1, 2);
@@ -553,7 +553,7 @@ public class ThaumcraftPatches {
                             ingots = OreDictionary.getOres("ingotInfinity");
                         }
                         ItemStack crystal = new ItemStack((Item) Item.itemRegistry.getObject("Thaumcraft:blockCrystal"), 1, 0);
-                        ItemStack chip = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:item.EngravedQuantumChip"), 1, 0);
+                        ItemStack chip = new ItemStack((Item) Item.itemRegistry.getObject("dreamcraft:EngravedQuantumChip"), 1, 0);
                         for (ItemStack ingot: ingots) {
                             ArrayList<ItemStack> ingredients = new ArrayList<>();
                             ingredients.add(ingot);
