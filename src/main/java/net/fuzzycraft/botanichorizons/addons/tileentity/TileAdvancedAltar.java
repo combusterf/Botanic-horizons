@@ -8,10 +8,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import vazkii.botania.api.BotaniaAPI;
+import vazkii.botania.api.recipe.RecipePetals;
+import vazkii.botania.api.recipe.RecipeRuneAltar;
 
-public class TileAdvancedAltar extends RecipeAutomationTileEntity {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-    public static int MAX_PARALLELS = 16;
+public class TileAdvancedAltar extends RecipeAutomationTileEntity<RecipeRuneAltar> {
+
+    public static final int MAX_PARALLELS = 16;
+    public static int cachedMaxRecipeWidth = 0;
 
     public TileAdvancedAltar() {
         super(Multiblocks.placeholder);
@@ -39,4 +49,40 @@ public class TileAdvancedAltar extends RecipeAutomationTileEntity {
         //String tooltip = state.getLocalisedHudString(BHBlocks.autoAltar);
         //HUDHandler.drawSimpleManaHUD(state.color, storedMana, MANA_CAPACITY, tooltip, res);
     }
+
+    @Override
+    public Collection<RecipeRuneAltar> getAllRecipes() {
+        return BotaniaAPI.runeAltarRecipes;
+    }
+
+    @Override
+    public int maxRecipeWidth() {
+        int max = cachedMaxRecipeWidth;
+        if (max > 0) {
+            return max;
+        } else {
+            for (RecipeRuneAltar recipe: getAllRecipes()) {
+                int recipeMax = recipe.getInputs().size();
+                if (recipeMax > max) {
+                    max = recipeMax;
+                }
+            }
+            cachedMaxRecipeWidth = max;
+            return max;
+        }
+    }
+
+    @Override
+    public List<Object> getInputs(@NotNull RecipeRuneAltar recipe) {
+        return recipe.getInputs();
+    }
+
+    @Override
+    public List<ItemStack> getOutputs(@NotNull RecipeRuneAltar recipe) {
+        List<ItemStack> outputs = new ArrayList<>(1);
+        outputs.add(recipe.getOutput());
+        // TODO: return runes
+        return outputs;
+    }
+
 }
