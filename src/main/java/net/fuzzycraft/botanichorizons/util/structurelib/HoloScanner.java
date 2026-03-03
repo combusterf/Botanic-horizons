@@ -23,7 +23,7 @@ public class HoloScanner {
 
         // This API stinks, send events to OnStructureEvent though a callback located in ThreadLocalStorage
         ItemStack buildStack = new ItemStack(StructureLibAPI.getDefaultHologramItem());
-        constructable.construct(buildStack, true);
+        constructable.construct(buildStack, false);
 
         StructureLibAPI.disableInstrument();
         MinecraftForge.EVENT_BUS.unregister(this);

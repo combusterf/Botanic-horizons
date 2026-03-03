@@ -92,7 +92,7 @@ public class HoloExtractor {
                 return null;
             }
             return scanner;
-        } catch (Exception e) {
+        } catch (Throwable e) {
             FMLLog.log(Level.WARN, e, "Scanning for hologram failed: %s at %d, %d, %d",
                     tileEntity.getClass().getName(),
                     tileEntity.xCoord,
