@@ -4,7 +4,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.fuzzycraft.botanichorizons.addons.BHBlocks;
 import net.fuzzycraft.botanichorizons.addons.Multiblocks;
+import net.fuzzycraft.botanichorizons.util.ChargeState;
+import net.fuzzycraft.botanichorizons.util.Facing2D;
 import net.fuzzycraft.botanichorizons.util.InventoryHelper;
+import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,16 +16,21 @@ import org.jetbrains.annotations.NotNull;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.recipe.RecipePetals;
 import vazkii.botania.api.recipe.RecipeRuneAltar;
+import vazkii.botania.client.core.handler.HUDHandler;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_SEND_TO_CLIENT;
+import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_UPDATE;
+
 public class TileAdvancedApothecary extends RecipeAutomationTileEntity<RecipePetals> {
 
     public static final int MAX_PARALLELS = 8;
     public static final int RECIPE_MANA = 1000;
+    public static final int ACTIVATE_MANA = 5000;
     public static int cachedMaxRecipeWidth = 0;
 
     public TileAdvancedApothecary() {
@@ -32,15 +40,6 @@ public class TileAdvancedApothecary extends RecipeAutomationTileEntity<RecipePet
     @Override
     public int getManaMaximum() {
         return MAX_PARALLELS * RECIPE_MANA;
-    }
-
-    @Override
-    public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
-        return new ItemStack(BHBlocks.autoApothecary);
-    }
-
-    public boolean onWanded(EntityPlayer wandUser) {
-        return false;
     }
 
     // Recipe wrangling
@@ -93,8 +92,41 @@ public class TileAdvancedApothecary extends RecipeAutomationTileEntity<RecipePet
 
     @SideOnly(Side.CLIENT)
     public void renderHUD(@Nonnull Minecraft mc, @Nonnull ScaledResolution res) {
-        //ChargeState state = ChargeState.genState(isOnline, storedMana, ACTIVATE_MANA);
-        //String tooltip = state.getLocalisedHudString(BHBlocks.autoApothecary);
-        //HUDHandler.drawSimpleManaHUD(state.color, storedMana, MANA_CAPACITY, tooltip, res);
+        ChargeState state = ChargeState.genState(isOnline, storedMana, ACTIVATE_MANA);
+        String tooltip = state.getLocalisedHudString(BHBlocks.autoApothecary);
+        HUDHandler.drawSimpleManaHUD(state.color, storedMana, getManaMaximum(), tooltip, res);
+    }
+
+    // IWrenchable
+
+    @Override
+    public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
+        return new ItemStack(BHBlocks.autoApothecary);
+    }
+
+
+    // IWandable delegate
+
+    public boolean onWanded(EntityPlayer wandUser) {
+        this.facing = Facing2D.fromIndex((worldObj.getBlockMetadata(xCoord, yCoord, zCoord) >> 1) & 3);
+
+        if (!isOnline) {
+            Exception error = structure.checkEntireStructure(worldObj, xCoord, yCoord, zCoord, this.facing);
+            if (error != null) {
+                boolean handled = MultiblockHelper.handleFailedStructure(worldObj, wandUser, error);
+                return false;
+            }
+
+            if (storedMana <= ACTIVATE_MANA) {
+                return false;
+            }
+
+            storedMana -= ACTIVATE_MANA;
+            isOnline = true;
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1 + facing.index * 2, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
+            markDirty();
+            return true;
+        }
+        return false;
     }
 }

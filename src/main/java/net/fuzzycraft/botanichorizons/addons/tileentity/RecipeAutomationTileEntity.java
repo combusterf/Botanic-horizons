@@ -46,8 +46,6 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
         inventoryHandler = new InventoryBasic("name", false, inputSize + outputSize);
 
         possibleRecipes.addAll(getAllRecipes());
-
-        isOnline = true; // TODO: apply block activation specifics
     }
 
     @Override

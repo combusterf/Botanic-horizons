@@ -6,6 +6,8 @@ import net.fuzzycraft.botanichorizons.addons.BHBlocks;
 import net.fuzzycraft.botanichorizons.addons.Multiblocks;
 import net.fuzzycraft.botanichorizons.util.ChargeState;
 import net.fuzzycraft.botanichorizons.util.Constants;
+import net.fuzzycraft.botanichorizons.util.Facing2D;
+import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +25,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_SEND_TO_CLIENT;
+import static net.fuzzycraft.botanichorizons.util.Constants.MC_BLOCK_UPDATE;
+
 public class TileAdvancedAltar extends RecipeAutomationTileEntity<RecipeRuneAltar> {
 
     public static final int MAX_PARALLELS = 16;
@@ -37,32 +42,6 @@ public class TileAdvancedAltar extends RecipeAutomationTileEntity<RecipeRuneAlta
     @Override
     public int getManaMaximum() {
         return setRecipe == null ? IDLE_MANA : IDLE_MANA + lastCheckedMana;
-    }
-
-    @Override
-    public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
-        return new ItemStack(BHBlocks.autoAltar);
-    }
-
-    public boolean onWanded(EntityPlayer wandUser) {
-        return false;
-    }
-
-    // Mana HUD
-
-    // Mana HUD
-
-    @SideOnly(Side.CLIENT)
-    public void renderHUD(Minecraft mc, ScaledResolution res) {
-        if (lastCheckedMana == 0 || setRecipe == null) {
-            ChargeState state = ChargeState.genState(isOnline, storedMana, ACTIVATE_MANA);
-            String tooltip = state.getLocalisedHudString(BHBlocks.autoAltar);
-            HUDHandler.drawSimpleManaHUD(state.color, storedMana, IDLE_MANA, tooltip, res);
-        } else {
-            // crafting state
-            String tooltip = StatCollector.translateToLocal(BHBlocks.autoAltar.getUnlocalizedName() + ".hud.collecting");
-            HUDHandler.drawSimpleManaHUD(0xE0A044, storedMana, lastCheckedMana + IDLE_MANA, tooltip, res);
-        }
     }
 
     @Override
@@ -111,5 +90,53 @@ public class TileAdvancedAltar extends RecipeAutomationTileEntity<RecipeRuneAlta
     @Override
     public int getAvailableParallels(@NotNull RecipeRuneAltar recipe) {
         return MAX_PARALLELS;
+    }
+
+    // Mana HUD
+
+    @SideOnly(Side.CLIENT)
+    public void renderHUD(Minecraft mc, ScaledResolution res) {
+        if (lastCheckedMana == 0 || setRecipe == null) {
+            ChargeState state = ChargeState.genState(isOnline, storedMana, ACTIVATE_MANA);
+            String tooltip = state.getLocalisedHudString(BHBlocks.autoAltar);
+            HUDHandler.drawSimpleManaHUD(state.color, storedMana, IDLE_MANA, tooltip, res);
+        } else {
+            // crafting state
+            String tooltip = StatCollector.translateToLocal(BHBlocks.autoAltar.getUnlocalizedName() + ".hud.collecting");
+            HUDHandler.drawSimpleManaHUD(0xE0A044, storedMana, lastCheckedMana + IDLE_MANA, tooltip, res);
+        }
+    }
+
+    // IWrenchable
+
+    @Override
+    public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
+        return new ItemStack(BHBlocks.autoAltar);
+    }
+
+
+    // IWandable delegate
+
+    public boolean onWanded(EntityPlayer wandUser) {
+        this.facing = Facing2D.fromIndex((worldObj.getBlockMetadata(xCoord, yCoord, zCoord) >> 1) & 3);
+
+        if (!isOnline) {
+            Exception error = structure.checkEntireStructure(worldObj, xCoord, yCoord, zCoord, this.facing);
+            if (error != null) {
+                boolean handled = MultiblockHelper.handleFailedStructure(worldObj, wandUser, error);
+                return false;
+            }
+
+            if (storedMana <= ACTIVATE_MANA) {
+                return false;
+            }
+
+            storedMana -= ACTIVATE_MANA;
+            isOnline = true;
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1 + facing.index * 2, MC_BLOCK_UPDATE + MC_BLOCK_SEND_TO_CLIENT);
+            markDirty();
+            return true;
+        }
+        return false;
     }
 }
