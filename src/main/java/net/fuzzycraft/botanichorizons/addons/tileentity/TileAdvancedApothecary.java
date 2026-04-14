@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.recipe.RecipePetals;
+import vazkii.botania.api.recipe.RecipeRuneAltar;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -21,15 +22,16 @@ import java.util.List;
 public class TileAdvancedApothecary extends RecipeAutomationTileEntity<RecipePetals> {
 
     public static final int MAX_PARALLELS = 8;
+    public static final int RECIPE_MANA = 1000;
     public static int cachedMaxRecipeWidth = 0;
 
     public TileAdvancedApothecary() {
-        super(Multiblocks.placeholder);
+        super(Multiblocks.placeholder, 2);
     }
 
     @Override
     public int getManaMaximum() {
-        return 0;
+        return MAX_PARALLELS * RECIPE_MANA;
     }
 
     @Override
@@ -40,7 +42,6 @@ public class TileAdvancedApothecary extends RecipeAutomationTileEntity<RecipePet
     public boolean onWanded(EntityPlayer wandUser) {
         return false;
     }
-
 
     // Recipe wrangling
 
@@ -78,6 +79,15 @@ public class TileAdvancedApothecary extends RecipeAutomationTileEntity<RecipePet
         return result;
     }
 
+    @Override
+    public int getManaRequired(@NotNull RecipePetals recipe, int copies) {
+        return copies * RECIPE_MANA;
+    }
+
+    @Override
+    public int getAvailableParallels(@NotNull RecipePetals recipe) {
+        return MAX_PARALLELS;
+    }
 
     // Mana HUD
 

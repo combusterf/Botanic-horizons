@@ -1,5 +1,6 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
+import cpw.mods.fml.common.FMLLog;
 import net.fuzzycraft.botanichorizons.util.InventoryHelper;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,9 +8,8 @@ import net.minecraft.inventory.IInvBasic;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import scala.Int;
-import vazkii.botania.api.recipe.RecipePetals;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity implements IInventory, IInvBasic {
 
@@ -25,29 +24,71 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
     public abstract int maxRecipeWidth();
     public abstract List<Object> getInputs(@Nonnull T recipe);
     public abstract List<ItemStack> getOutputs(@Nonnull T recipe);
+    public abstract int getManaRequired(@Nonnull T recipe, int copies);
+    public abstract int getAvailableParallels(@Nonnull T recipe);
 
     public final int inputSize;
     public final int outputSize;
 
     public final InventoryBasic inventoryHandler;
     private final HashSet<T> possibleRecipes = new HashSet<>();
-    private T setRecipe = null; // Are we limited to 1 recipe
+    protected T setRecipe = null; // Are we limited to 1 recipe
+    protected boolean clientRecipeSet = false;
+    protected int lastCheckedMana = 0;
 
-    public RecipeAutomationTileEntity(@Nonnull MultiblockHelper structure) {
+    protected int checkTicks = 0;
+    protected final int TICKS_PER_RECIPE_CHECK = 20;
+
+    public RecipeAutomationTileEntity(@Nonnull final MultiblockHelper structure, final int outputSize) {
         super(structure);
         inputSize = maxRecipeWidth();
-        outputSize = 2; // increase later to handle rune returns
+        this.outputSize = outputSize; // increase later to handle rune returns
         inventoryHandler = new InventoryBasic("name", false, inputSize + outputSize);
 
         possibleRecipes.addAll(getAllRecipes());
+
+        isOnline = true; // TODO: apply block activation specifics
     }
 
     @Override
     protected void updateEntityCrafting() {
         if (setRecipe == null) {
-            // TODO: in progress cleanups
+            checkTicks = 0;
+            lastCheckedMana = 0;
+        } else if (checkTicks > 0) {
+            checkTicks--;
         } else {
+            checkTicks = TICKS_PER_RECIPE_CHECK - 1;
+            handleOutputs();
+            cleanupInventory();
 
+            int craftable = getCopiesCraftable();
+            FMLLog.warning("recipe length: %d, craftable items: %d", getInputs(setRecipe).size(), craftable);
+            if (craftable > 0) {
+                int maxParallel = getAvailableParallels(setRecipe);
+                if (craftable > maxParallel) {
+                    craftable = maxParallel;
+                }
+
+                int mana = getManaRequired(setRecipe, craftable);
+                FMLLog.warning("mana: %d/%d/%d, parallels %d/%d", storedMana, mana, lastCheckedMana, craftable, maxParallel);
+                if (storedMana >= mana) {
+                    if (commitCrafts(craftable)) {
+                        storedMana -= mana;
+                        lastCheckedMana = 0;
+
+                        recalculateAvailableRecipes();
+                        handleOutputs();
+                        cleanupInventory();
+                        markTEForSharing(true);
+                        markDirty();
+                    }
+                } else if (mana != lastCheckedMana) {
+                    lastCheckedMana = mana;
+                    sparkCycleRemaining = 0;
+                    markTEForSharing(true);
+                }
+            }
         }
     }
 
@@ -105,6 +146,7 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
             if (copiesForThisIngredient < searchMaximum) {
                 searchMaximum = copiesForThisIngredient;
             }
+            FMLLog.info("computing copies: %d available, %d max", copiesForThisIngredient, searchMaximum);
         }
 
         // Avoid doing +1 scans, these are notoriously slow even though we already pinned the recipe
@@ -113,6 +155,7 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
         int attempt = searchMaximum;
         // if the recipe lacks specific items, the loop is not started
         while (searchMinimum != searchMaximum) {
+            //FMLLog.info("iterating (%d, %d)", searchMinimum, searchMaximum);
             int[] trialMap = remainingMap.clone();
             boolean success = true;
             for (List<Integer> application: applyMap) {
@@ -140,6 +183,7 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
                 searchMaximum = attempt - 1;
             }
             attempt = (searchMaximum + searchMinimum + 1) / 2; // round up
+            //FMLLog.info("iteration result (%b, %d, %d)", success, searchMinimum, searchMaximum);
         }
 
         return searchMinimum;
@@ -184,17 +228,20 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
         List<Object> ingredientList = getInputs(setRecipe);
         List<Integer>[] applyMap = new List[ingredientList.size()];
         for (int recipeSlot = 0; recipeSlot < ingredientList.size(); recipeSlot++) {
+            List<Integer> mappings = new ArrayList<>();
             for (int inputSlot = 0; inputSlot < inputSize; inputSlot++) {
                 ItemStack inputStack = inventoryHandler.getStackInSlot(inputSlot);
-                List<Integer> mappings = new ArrayList<>();
                 if (inputStack != null && inputStack.stackSize != 0) {
                     if (InventoryHelper.isIngredient(inputStack, ingredientList.get(recipeSlot))) {
                         mappings.add(inputSlot);
+                        //FMLLog.info("Assigning slot %d to ingredient %d", inputSlot, recipeSlot);
                     }
                 }
-                applyMap[recipeSlot] = mappings;
             }
+            //FMLLog.info("cumulative mapping: %s, %s", mappings.toString(), Arrays.deepToString(applyMap));
+            applyMap[recipeSlot] = mappings;
         }
+        //FMLLog.info("recipe mapping: %s", Arrays.deepToString(applyMap));
         return applyMap;
     }
 
@@ -207,8 +254,10 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
                 remainingMap[inputSlot] = 0;
             } else {
                 remainingMap[inputSlot] = inputStack.stackSize;
+                //FMLLog.info("%d items available in slot %d", inputStack.stackSize, inputSlot);
             }
         }
+        //FMLLog.info("stockpile mapping: %s", Arrays.toString(remainingMap));
         return remainingMap;
     }
 
@@ -238,6 +287,7 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
     }
 
     private void truncateRecipes(@Nonnull ItemStack changedStack) {
+        int currentCount = possibleRecipes.size();
         Iterator<T> iterator = possibleRecipes.iterator();
         while (iterator.hasNext()) {
             T recipe = iterator.next();
@@ -246,6 +296,43 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
             }
         }
         setRecipe = (possibleRecipes.size() == 1) ? possibleRecipes.iterator().next() : null;
+        FMLLog.warning("recipes %d -> %d after %s", currentCount, possibleRecipes.size(), changedStack.toString());
+        if (setRecipe != null) {
+            FMLLog.warning("selected recipe: %s", setRecipe.toString());
+        }
+    }
+
+    private void recalculateAvailableRecipes() {
+        resetPossibleRecipes();
+        for (int slot = 0; slot < inputSize; slot++) {
+            ItemStack stack = inventoryHandler.getStackInSlot(slot);
+            if (stack != null && stack.stackSize > 0) {
+                truncateRecipes(stack);
+            }
+        }
+    }
+
+    // Persistence
+
+    private static final String KEY_INVENTORY = "inv";
+    private static final String KEY_RECIPE_SET = "rcp";
+    private static final String KEY_RECIPE_MANA = "mana";
+
+    public void writeCustomNBT(NBTTagCompound compound) {
+        super.writeCustomNBT(compound);
+        compound.setTag(KEY_INVENTORY, InventoryHelper.saveInventoryToNBT(inventoryHandler));
+        compound.setBoolean(KEY_RECIPE_SET, worldObj.isRemote ? clientRecipeSet : setRecipe != null);
+        compound.setInteger(KEY_RECIPE_MANA, lastCheckedMana);
+    }
+
+    public void readCustomNBT(NBTTagCompound compound) {
+        super.readCustomNBT(compound);
+        InventoryHelper.readInventoryFromNBT(inventoryHandler, compound.getCompoundTag(KEY_INVENTORY));
+        clientRecipeSet = compound.getBoolean(KEY_RECIPE_SET);
+        lastCheckedMana = compound.getInteger(KEY_RECIPE_MANA);
+
+        resetPossibleRecipes();
+        recalculateAvailableRecipes();
     }
 
     // IInventory

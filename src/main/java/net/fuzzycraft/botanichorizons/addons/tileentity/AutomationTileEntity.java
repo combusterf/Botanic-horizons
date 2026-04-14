@@ -85,6 +85,7 @@ abstract public class AutomationTileEntity extends TileEntity implements IManaRe
             }
 
             if (storedMana < getManaMaximum() + SPARK_BUFFER_MANA) {
+                FMLLog.warning("Requesting spark transfers: %d/%d mana", storedMana, getManaMaximum());
                 SparkHelper.requestSparkTransfers(worldObj, xCoord, yCoord, zCoord, getAttachedSpark());
                 markDirty();
             }
