@@ -36,7 +36,7 @@ public class TileAdvancedAltar extends RecipeAutomationTileEntity<RecipeRuneAlta
     public static int cachedMaxRecipeWidth = 0;
 
     public TileAdvancedAltar() {
-        super(Multiblocks.placeholder, 5);
+        super(Multiblocks.altar, 5);
     }
 
     @Override

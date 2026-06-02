@@ -49,7 +49,7 @@ public class TileAdvancedTerraPlate extends AutomationTileEntity implements IInv
     protected int cycleRemaining = 0;
 
     public TileAdvancedTerraPlate() {
-        super(Multiblocks.placeholder);
+        super(Multiblocks.terraPlate);
         inventoryHandler = new InventoryBasic("name", false, VIRTUAL_SLOTS);
     }
 

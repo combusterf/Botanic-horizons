@@ -1,12 +1,12 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.fuzzycraft.botanichorizons.addons.BHBlocks;
 import net.fuzzycraft.botanichorizons.addons.Multiblocks;
 import net.fuzzycraft.botanichorizons.util.ChargeState;
 import net.fuzzycraft.botanichorizons.util.Facing2D;
-import net.fuzzycraft.botanichorizons.util.InventoryHelper;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.recipe.RecipePetals;
-import vazkii.botania.api.recipe.RecipeRuneAltar;
 import vazkii.botania.client.core.handler.HUDHandler;
 
 import javax.annotation.Nonnull;
@@ -34,7 +33,7 @@ public class TileAdvancedApothecary extends RecipeAutomationTileEntity<RecipePet
     public static int cachedMaxRecipeWidth = 0;
 
     public TileAdvancedApothecary() {
-        super(Multiblocks.placeholder, 2);
+        super(Multiblocks.apothecary, 2);
     }
 
     @Override
