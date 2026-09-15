@@ -46,17 +46,15 @@ public class BlockAdvancedTerraPlate extends BlockModContainer<TileAdvancedTerra
     }
 
     IIcon iconPrimary;
-    IIcon iconSecondary;
 
     @SideOnly(Side.CLIENT) @Override
     public void registerBlockIcons(IIconRegister register) {
-        this.iconPrimary = register.registerIcon(BH_ICON_PREFIX + "quartzYellowTop");
-        this.iconSecondary = register.registerIcon(BH_ICON_PREFIX + "quartzYellowSide");
+        this.iconPrimary = register.registerIcon(BH_ICON_PREFIX + "stoneRunePurple");
     }
 
     @SideOnly(Side.CLIENT) @Override
     public IIcon getIcon(int side, int meta) {
-        return (side == 1 || Facing2D.fromIC2(side) == Facing2D.fromIndex(meta >> 1)) ? this.iconPrimary : this.iconSecondary;
+        return this.iconPrimary;
     }
 
     @SideOnly(Side.CLIENT) @Override
