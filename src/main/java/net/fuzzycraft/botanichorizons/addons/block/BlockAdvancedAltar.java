@@ -38,6 +38,9 @@ public class BlockAdvancedAltar extends BlockModContainer<TileAdvancedAltar> imp
         setHardness(10.0F);
         setStepSound(soundTypeStone);
         setBlockName(NAME);
+
+        float pixel = 1F / 16F;
+        setBlockBounds(0, 0, 0, 1F, 12 * pixel, 1F);
     }
 
     @Override
@@ -50,13 +53,13 @@ public class BlockAdvancedAltar extends BlockModContainer<TileAdvancedAltar> imp
 
     @SideOnly(Side.CLIENT) @Override
     public void registerBlockIcons(IIconRegister register) {
-        this.iconPrimary = register.registerIcon(BH_ICON_PREFIX + "quartzYellowTop");
-        this.iconSecondary = register.registerIcon(BH_ICON_PREFIX + "quartzYellowSide");
+        this.iconPrimary = register.registerIcon(BH_ICON_PREFIX + "stoneRuneBlue");
+        this.iconSecondary = register.registerIcon(BH_ICON_PREFIX + "stoneAltarSide");
     }
 
     @SideOnly(Side.CLIENT) @Override
     public IIcon getIcon(int side, int meta) {
-        return (side == 1 || Facing2D.fromIC2(side) == Facing2D.fromIndex(meta >> 1)) ? this.iconPrimary : this.iconSecondary;
+        return (side < 2) ? this.iconPrimary : this.iconSecondary;
     }
 
     @SideOnly(Side.CLIENT) @Override
