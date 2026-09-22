@@ -132,11 +132,13 @@ botanichorizons.lexicon.text.automatedAlfPortal.2=There is however a price to pa
 
 botanichorizons.lexicon.entry.automatedAltar=Synthetic Rune Infuser
 botanichorizons.lexicon.tagline.automatedAltar=Pyramids of Power
+botanichorizons.lexicon.crafting.automatedAltar=Crafting the altar stone
 botanichorizons.lexicon.preview.automatedAltar=Building the device
 botanichorizons.lexicon.text.automatedAltar.1=Feeding the Runic Altar all the parts at the correct place at the correct time is a chore, by scaling up the device into the &1Synthetic Rune Infuser&0 and turning it in a pyramid, the focal point ends up inside of the machine. This allows the internal mechanics to supply the items as needed, and perform multiple crafts at the same time.
 
 botanichorizons.lexicon.entry.automatedApothecary=Industrial Grafting Station
 botanichorizons.lexicon.tagline.automatedApothecary=A bouquet of flowers
+botanichorizons.lexicon.crafting.automatedApothecary=Crafting the controller
 botanichorizons.lexicon.preview.automatedApothecary=Building the device
 botanichorizons.lexicon.text.automatedApothecary.1=The &1Industrial Grafting Station&0 solves the issue of having a small workspace and having to source your materials from elsewhere all the time. This upgrade allows you to automatically craft flowers, without their water or seed cost. Instead, a bit of mana is used to regenerate the biomass included in the station.
 
