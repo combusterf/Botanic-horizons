@@ -102,7 +102,7 @@ public class BlockAdvancedAltar extends BlockModContainer<TileAdvancedAltar> imp
     public void addTooltipInformation(ItemStack itemStack, List<String> tooltipStrings) {
         // every rune beyond the first gets a ??% mana discount
         tooltipStrings.add(I18n.format("botanichorizons.tooltip.parallels", TileAdvancedAltar.MAX_PARALLELS));
-        Multiblocks.poolAlchemy.addBuildInfoToTooltip(tooltipStrings);
+        Multiblocks.altar.addBuildInfoToTooltip(tooltipStrings);
         tooltipStrings.add(I18n.format("botanichorizons.author.combuster"));
     }
 }

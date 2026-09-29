@@ -98,7 +98,7 @@ public class BlockAdvancedTerraPlate extends BlockModContainer<TileAdvancedTerra
         // Consumes mana as long as there are items in its inventory
         // Crafts all terrasteel in one go
         tooltipStrings.add(I18n.format("botanichorizons.tooltip.parallels", TileAdvancedTerraPlate.MAX_PARALLELS));
-        Multiblocks.poolAlchemy.addBuildInfoToTooltip(tooltipStrings);
+        Multiblocks.terraPlate.addBuildInfoToTooltip(tooltipStrings);
         tooltipStrings.add(I18n.format("botanichorizons.author.combuster"));
     }
 }

@@ -99,7 +99,7 @@ public class BlockAdvancedApothecary extends BlockModContainer<TileAdvancedApoth
     public void addTooltipInformation(ItemStack itemStack, List<String> tooltipStrings) {
         // uses a bit of mana for instead of water or seeds
         tooltipStrings.add(I18n.format("botanichorizons.tooltip.parallels", TileAdvancedApothecary.MAX_PARALLELS));
-        Multiblocks.poolAlchemy.addBuildInfoToTooltip(tooltipStrings);
+        Multiblocks.apothecary.addBuildInfoToTooltip(tooltipStrings);
         tooltipStrings.add(I18n.format("botanichorizons.author.combuster"));
     }
 }

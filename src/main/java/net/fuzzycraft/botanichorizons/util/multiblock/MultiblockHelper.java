@@ -130,9 +130,9 @@ public class MultiblockHelper {
 
     @SideOnly(Side.CLIENT)
     public void addBuildInfoToTooltip(List<String> tooltipStrings) {
-        int minX = blocks[0].dx;
-        int minY = blocks[0].dy;
-        int minZ = blocks[0].dz;
+        int minX = 0;
+        int minY = 0;
+        int minZ = 0;
         int maxX = minX;
         int maxY = minY;
         int maxZ = minZ;
