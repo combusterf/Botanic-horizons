@@ -2,7 +2,6 @@ package net.fuzzycraft.botanichorizons.util.nei;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
-import cpw.mods.fml.common.FMLLog;
 import net.fuzzycraft.botanichorizons.addons.BHBlocks;
 import net.fuzzycraft.botanichorizons.mod.ForgeMod;
 import net.fuzzycraft.botanichorizons.util.Constants;

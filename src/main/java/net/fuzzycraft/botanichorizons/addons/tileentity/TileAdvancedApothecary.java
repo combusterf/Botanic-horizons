@@ -1,6 +1,5 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.fuzzycraft.botanichorizons.addons.BHBlocks;

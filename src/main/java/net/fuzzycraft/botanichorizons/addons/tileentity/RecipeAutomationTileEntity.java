@@ -1,6 +1,5 @@
 package net.fuzzycraft.botanichorizons.addons.tileentity;
 
-import cpw.mods.fml.common.FMLLog;
 import net.fuzzycraft.botanichorizons.util.InventoryHelper;
 import net.fuzzycraft.botanichorizons.util.multiblock.MultiblockHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -61,7 +60,7 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
             cleanupInventory();
 
             int craftable = getCopiesCraftable();
-            FMLLog.warning("recipe length: %d, craftable items: %d", getInputs(setRecipe).size(), craftable);
+            //FMLLog.warning("recipe length: %d, craftable items: %d", getInputs(setRecipe).size(), craftable);
             if (craftable > 0) {
                 int maxParallel = getAvailableParallels(setRecipe);
                 if (craftable > maxParallel) {
@@ -69,7 +68,7 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
                 }
 
                 int mana = getManaRequired(setRecipe, craftable);
-                FMLLog.warning("mana: %d/%d/%d, parallels %d/%d", storedMana, mana, lastCheckedMana, craftable, maxParallel);
+                //FMLLog.warning("mana: %d/%d/%d, parallels %d/%d", storedMana, mana, lastCheckedMana, craftable, maxParallel);
                 if (storedMana >= mana) {
                     if (commitCrafts(craftable)) {
                         storedMana -= mana;
@@ -126,7 +125,7 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
         InventoryHelper.defragInventory(inventoryHandler, inputSize, inputSize + outputSize);
     }
 
-    // get the amount or recipes that can be run with the current ingredients.
+    // get the amount of recipes that can be run with the current ingredients.
     // Limitation: if input 1 applies to ingredient A and B and input 2 applies to ingredient A,
     // input 1 will not get assigned to ingredient B and the recipe won't work.
     // TLDR: Don't do NP-hard recipes.
@@ -144,7 +143,7 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
             if (copiesForThisIngredient < searchMaximum) {
                 searchMaximum = copiesForThisIngredient;
             }
-            FMLLog.info("computing copies: %d available, %d max", copiesForThisIngredient, searchMaximum);
+            //FMLLog.info("computing copies: %d available, %d max", copiesForThisIngredient, searchMaximum);
         }
 
         // Avoid doing +1 scans, these are notoriously slow even though we already pinned the recipe
@@ -294,9 +293,9 @@ public abstract class RecipeAutomationTileEntity<T> extends AutomationTileEntity
             }
         }
         setRecipe = (possibleRecipes.size() == 1) ? possibleRecipes.iterator().next() : null;
-        FMLLog.warning("recipes %d -> %d after %s", currentCount, possibleRecipes.size(), changedStack.toString());
+        //FMLLog.warning("recipes %d -> %d after %s", currentCount, possibleRecipes.size(), changedStack.toString());
         if (setRecipe != null) {
-            FMLLog.warning("selected recipe: %s", setRecipe.toString());
+            //FMLLog.warning("selected recipe: %s", setRecipe.toString());
         }
     }
 
