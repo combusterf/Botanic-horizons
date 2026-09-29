@@ -289,7 +289,7 @@ public class GregtechPatches {
                         ItemList.Field_Generator_IV.get(1),
                         ItemList.Conveyor_Module_IV.get(2),
                         ItemList.Robot_Arm_IV.get(2),
-                        new ItemStack(ModItems.rune, Constants.RUNE_MANA, 4),
+                        new ItemStack(ModItems.rune, 4, Constants.RUNE_MANA),
                         GTOreDictUnificator.get(OrePrefixes.stick, Materials.Terrasteel, 4),
                         GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Manasteel, 4),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Lapis, 16),
